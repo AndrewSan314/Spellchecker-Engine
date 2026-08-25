@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMS Content Validation — Demo</title>
+<style>
+  :root {
+    --bg: #0d1117; --panel: #161b22; --panel2: #1c2330; --border: #2d3748;
+    --text: #e6edf3; --muted: #8b949e; --accent: #58a6ff;
+    --error: #f85149; --warn: #d29922; --info: #58a6ff; --ok: #3fb950;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif; line-height: 1.5; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 24px 20px 80px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .sub code { color: var(--accent); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 4px; text-transform: uppercase; letter-spacing: .04em; }
+  textarea, input[type=text], select { width: 100%; background: var(--panel2);
+    border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+    padding: 10px; font-size: 14px; font-family: inherit; resize: vertical; }
+  textarea { min-height: 110px; }
+  textarea:focus, input:focus, select:focus { outline: 1px solid var(--accent); }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  button { background: var(--accent); border: none; color: #06101d; font-weight: 600;
+    padding: 10px 18px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+  button.secondary { background: var(--panel2); color: var(--text); border: 1px solid var(--border); }
+  button:hover { filter: brightness(1.12); }
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .chip { font-size: 12px; background: var(--panel2); border: 1px solid var(--border);
+    color: var(--muted); padding: 4px 10px; border-radius: 999px; cursor: pointer; }
+  .chip:hover { color: var(--text); border-color: var(--accent); }
+  .slider-row { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-top: 8px; }
+  .slider-row input[type=range] { flex: 1; accent-color: var(--accent); }
+  .slider-val { min-width: 42px; text-align: right; color: var(--accent); font-variant-numeric: tabular-nums; }
+  /* highlighted output */
+  .preview { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px; font-size: 15px; white-space: pre-wrap; word-break: break-word; min-height: 60px; }
+  mark { border-radius: 4px; padding: 1px 3px; cursor: help; }
+  mark.err { background: rgba(248,81,73,.28); outline: 1px solid var(--error); }
+  mark.warn { background: rgba(210,153,34,.25); outline: 1px solid var(--warn); }
+  mark.info { background: rgba(88,166,255,.25); outline: 1px solid var(--info); }
+  .verdict { display: inline-flex; gap: 8px; align-items: center; font-weight: 600; margin: 14px 0 6px; }
+  .badge { font-size: 11px; padding: 3px 10px; border-radius: 999px; font-weight: 700; letter-spacing:.03em; }
+  .badge.ok   { background: rgba(63,185,80,.15); color: var(--ok); }
+  .badge.bad  { background: rgba(248,81,73,.15); color: var(--error); }
+  .badge.warnb{ background: rgba(210,153,34,.15); color: var(--warn); }
+  .issues { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+  .issue { background: var(--panel2); border: 1px solid var(--border); border-left-width: 3px;
+    border-radius: 8px; padding: 10px 12px; font-size: 13.5px; }
+  .issue.ERROR { border-left-color: var(--error); }
+  .issue.WARNING { border-left-color: var(--warn); }
+  .issue.INFO { border-left-color: var(--info); }
+  .issue .rid { font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: var(--accent); }
+  .issue .val { font-family: ui-monospace, Consolas, monospace; color: var(--muted); font-size: 12px; }
+  .issue .sug { color: var(--ok); }
+  .clean-msg { color: var(--muted); font-style: italic; padding: 8px 2px; }
+  /* benchmark */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 10px; margin: 12px 0; }
+  .stat { background: var(--panel2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+  .stat .num { font-size: 26px; font-weight: 700; }
+  .stat .lbl { font-size: 12px; color: var(--muted); }
+  .good { color: var(--ok); } .mid { color: var(--warn); } .badc { color: var(--error); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 10px; }
+  th, td { border-bottom: 1px solid var(--border); padding: 7px 8px; text-align: left; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .failrow { color: var(--error); font-size: 12.5px; margin-top: 6px;
+    font-family: ui-monospace, Consolas, monospace; overflow-wrap: anywhere; }
+  details summary { cursor: pointer; color: var(--muted); font-size: 13px; margin-top: 12px; }
+  pre.json { background: var(--panel2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px; font-size: 12px; overflow: auto; max-height: 340px; }
+  h2 { font-size: 17px; margin: 0 0 10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>📩 SMS Content Validation Engine — Demo POC</h1>
+  <div class="sub">Kiến trúc theo <code>SMS_CONTENT_VALIDATION_IMPLEMENTATION_PLAN.md</code>: deterministic rules + protected ranges + accent index + n-gram beam + confidence gate · local-first · không AI/API · không tự sửa nội dung</div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Nội dung SMS</h2>
+      <label for="content">Text (giữ nguyên offset UTF-16)</label>
+      <textarea id="content" spellcheck="false"></textarea>
+      <div class="row" style="margin-top:10px">
+        <div style="flex:1;min-width:150px">
+          <label for="mode">Message mode</label>
+          <select id="mode">
+            <option value="ACCENTED">ACCENTED (có dấu)</option>
+            <option value="NON_ACCENTED">NON_ACCENTED (không dấu)</option>
+          </select>
+        </div>
+        <div style="flex:1;min-width:150px">
+          <label for="brand">Brandname</label>
+          <input type="text" id="brand" value="VT_TENDOO">
+        </div>
+      </div>
+      <div class="slider-row"><span style="min-width:130px;color:var(--muted)">min confidence</span>
+        <input type="range" id="conf" min="0.5" max="0.99" step="0.01" value="0.85">
+        <span class="slider-val" id="confV">0.85</span></div>
+      <div class="slider-row"><span style="min-width:130px;color:var(--muted)">min margin</span>
+        <input type="range" id="margin" min="0.02" max="0.6" step="0.01" value="0.20">
+        <span class="slider-val" id="marginV">0.20</span></div>
+      <div class="row" style="margin-top:14px">
+        <button id="btnValidate">⚡ Kiểm tra</button>
+        <button class="secondary" id="btnClear">Xóa</button>
+      </div>
+      <div class="chips" id="examples"></div>
+    </div>
+
+    <div class="card">
+      <h2>Kết quả</h2>
+      <div class="preview" id="preview"><span class="clean-msg">Chưa có kết quả.</span></div>
+      <div id="verdictBox"></div>
+      <div class="issues" id="issues"></div>
+      <details><summary>Xem JSON (API contract)</summary><pre class="json" id="jsonOut">// —</pre></details>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>Benchmark corpus có nhãn <span style="color:var(--muted);font-size:12px;font-weight:400">(plan §31 — đo recall lỗi &amp; false positive)</span></h2>
+    <div class="row">
+      <button id="btnBench">▶ Chạy benchmark trên toàn bộ corpus</button>
+      <span class="sub" id="benchNote" style="margin:0">Trả lời câu hỏi: engine bắt được bao nhiêu % lỗi trong câu chứa lỗi?</span>
+    </div>
+    <div id="benchOut"></div>
+  </div>
+</div>
+
+<script>
+const EXAMPLES = [
+  ['Kính chao quý khách', 'ACCENTED'],
+  ['Quy khach vui long nhap thong tin', 'ACCENTED'],
+  ['Cam on quy khach da su dung dich vu', 'ACCENTED'],
+  ['Chuc mung sinh nhat quý khach', 'NON_ACCENTED'],
+  ['Xin chào.Quý khách !', 'ACCENTED'],
+  ['Khuyến mãi!!!!!', 'ACCENTED'],
+  ['Xin chào\u200Bquý khách', 'ACCENTED'],
+  ['Gia 1,5 trieu, hen 12/10/2026 luc 23:59', 'NON_ACCENTED'],
+  ['Ma don DH123456 da duoc tao, truy cap https://tendoo.vn/kiem-hang', 'NON_ACCENTED'],
+  ['Quy KH vui long kiem tra SDT truoc 30/06', 'ACCENTED'],
+  ['Don hangf cua ban da giao thanh cong', 'ACCENTED'],
+  ['long', 'ACCENTED'],
+];
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+EXAMPLES.forEach(([text, mode]) => {
+  const b = document.createElement('span');
+  b.className = 'chip';
+  b.textContent = text.length > 38 ? text.slice(0, 37) + '…' : text;
+  b.onclick = () => { $('content').value = text; $('mode').value = mode; validate(); };
+  $('examples').appendChild(b);
+});
+
+$('conf').oninput = () => $('confV').textContent = Number($('conf').value).toFixed(2);
+$('margin').oninput = () => $('marginV').textContent = Number($('margin').value).toFixed(2);
+$('btnClear').onclick = () => { $('content').value=''; $('issues').innerHTML=''; $('preview').innerHTML='<span class="clean-msg">Chưa có kết quả.</span>'; $('verdictBox').innerHTML=''; };
+$('btnValidate').onclick = validate;
+$('content').addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') validate(); });
+$('btnBench').onclick = runBenchmark;
+
+async function validate() {
+  const payload = {
+    content: $('content').value,
+    messageMode: $('mode').value,
+    brandname: $('brand').value.trim() || null,
+    options: { minConfidence: Number($('conf').value), minMargin: Number($('margin').value) },
+  };
+  const res = await fetch('/api/v1/sms/content/validate', {
+    method: 'POST', headers: {'content-type': 'application/json'},
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) { $('preview').textContent = 'Lỗi: ' + (data.error || res.status); return; }
+  render(payload.content, data);
+}
+
+function render(text, data) {
+  // build highlighted preview from exact spans
+  let html = '';
+  let last = 0;
+  for (const i of data.issues.slice().sort((a,b)=>a.start-b.start)) {
+    if (i.start < last) continue; // overlap guard
+    html += esc(text.slice(last, i.start));
+    const cls = i.severity === 'ERROR' ? 'err' : i.severity === 'WARNING' ? 'warn' : 'info';
+    const tip = `${i.ruleId}\n${i.message}` + (i.suggestions?.length ? `\n→ gợi ý: ${i.suggestions.join(', ')}` : '');
+    html += `<mark class="${cls}" title="${esc(tip)}">${esc(text.slice(i.start, i.end))}</mark>`;
+    last = i.end;
+  }
+  html += esc(text.slice(last));
+  $('preview').innerHTML = html || '<span class="clean-msg">(rỗng)</span>';
+
+  const v = $('verdictBox');
+  if (data.valid && !data.hasWarnings) {
+    v.innerHTML = '<span class="verdict"><span class="badge ok">VALID</span> Không phát hiện vấn đề.</span>';
+  } else if (data.valid) {
+    v.innerHTML = '<span class="verdict"><span class="badge warnb">WARNINGS</span>' +
+      ` ${data.issues.length} cảnh báo · xử lý ${data.tookMs} ms</span>`;
+  } else {
+    v.innerHTML = '<span class="verdict"><span class="badge bad">INVALID</span>' +
+      ` Có ERROR · ${data.issues.length} issue · xử lý ${data.tookMs} ms</span>`;
+  }
+
+  $('issues').innerHTML = data.issues.length === 0
+    ? '<div class="clean-msg">Không có issue nào.</div>'
+    : data.issues.map((i) =>
+      `<div class="issue ${i.severity}">
+         <span class="rid">${i.ruleId}</span>
+         <span class="badge ${i.severity==='ERROR'?'bad':i.severity==='WARNING'?'warnb':'ok'}" style="margin-left:8px">${i.severity}</span>
+         <div>[${i.start},${i.end}) value=<span class="val">${JSON.stringify(i.value)}</span>${i.confidence!=null?` conf=${i.confidence}`:''}</div>
+         <div>${esc(i.message)}${i.suggestions?.length?` <span class="sug">→ gợi ý: ${i.suggestions.map(esc).join(', ')}</span>`:''}</div>
+       </div>`).join('');
+
+  $('jsonOut').textContent = JSON.stringify(data, null, 2);
+}
+
+async function runBenchmark() {
+  $('benchOut').innerHTML = '<div class="clean-msg">Đang chạy…</div>';
+  const res = await fetch('/api/v1/sms/content/benchmark', { method: 'POST' });
+  const r = await res.json();
+  const t = r.totals;
+  const pct = (x) => (x * 100).toFixed(1) + '%';
+  const cls = (x) => x >= 0.95 ? 'good' : x >= 0.9 ? 'mid' : 'badc';
+  const fails = r.rows.filter((row) => !row.ok);
+
+  $('benchOut').innerHTML = `
+    <div class="stats">
+      <div class="stat"><div class="num ${cls(t.errorRecall)}">${pct(t.errorRecall)}</div><div class="lbl">Error recall<br>(bắt được ${t.caughtIssues}/${t.expectedIssues} lỗi)</div></div>
+      <div class="stat"><div class="num good">${pct(t.precisionProxy)}</div><div class="lbl">Precision proxy<br>(0 false positive)</div></div>
+      <div class="stat"><div class="num ${cls(t.sentencePerfectRate)}">${pct(t.sentencePerfectRate)}</div><div class="lbl">Câu hoàn hảo<br>(${r.rowCount} câu test)</div></div>
+      <div class="stat"><div class="num">${r.latencyMs.p95.toFixed(2)} ms</div><div class="lbl">Latency p95<br>(p50 ${r.latencyMs.p50.toFixed(2)})</div></div>
+    </div>
+    <table>
+      <thead><tr><th>Nhóm lỗi</th><th class="num">Câu</th><th class="num">Lỗi kỳ vọng</th><th class="num">Bắt được</th><th class="num">Recall</th><th class="num">FP</th></tr></thead>
+      <tbody>${Object.entries(r.categories).map(([name, c]) =>
+        `<tr><td>${name}</td><td class="num">${c.rows}</td><td class="num">${c.expected}</td><td class="num">${c.caught}</td><td class="num ${c.recall==null?'':cls(c.recall)}">${c.recall==null?'n/a':pct(c.recall)}</td><td class="num ${c.fp?'badc':'good'}">${c.fp}</td></tr>`).join('')}
+      </tbody>
+    </table>
+    ${fails.length ? `<details open><summary>Các câu còn miss (${fails.length}) — precision-first ưu tiên im lặng khi mơ hồ</summary>
+      ${fails.map((row) => `<div class="failrow">[${row.id}] ${esc(JSON.stringify(row.text))}<br>&nbsp;&nbsp;missed: ${row.missed.map((m)=>m.ruleId+(m.value?':'+m.value:'')).join(', ')||'—'}${row.forbidHits.length?` | forbid fired: ${row.forbidHits.join(',')}`:''}${row.unexpectedOnClean.length?` | unexpected: ${row.unexpectedOnClean.join(',')}`:''}</div>`).join('')}
+    </details>` : '<div class="clean-msg" style="color:var(--ok)">Tất cả các câu đều pass ✓</div>'}`;
+}
+</script>
+</body>
+</html>

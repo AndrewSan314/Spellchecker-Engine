@@ -1,0 +1,66 @@
+[
+  {
+    "id": "F1",
+    "kind": "ENGINE-ARCHITECTURE",
+    "severity": "MEDIUM (recall ceiling; zero precision risk)",
+    "title": "PMD can never fire on a token the beam top-1 path keeps as original — locally obvious fixes are structurally invisible",
+    "repro": [
+      { "text": "tot dep", "mode": "ACCENTED", "brand": "VT_TENDOO", "actual": "only tot->tốt fires; dep->đẹp NEVER suggested although đẹp is the only sensible fix" },
+      { "text": "giam den 50%", "mode": "ACCENTED", "brand": "VT_TENDOO", "actual": "giảm never suggested; den->đến fires" },
+      { "row": "L05", "text": "Uu dai dac biet hom nay giam den 50%", "missed": "giam" }
+    ],
+    "expectedVsActual": "Emit condition in src/rules/linguistic-rules.mjs requires top1.words[posIdx] !== pos.token.normalized, so only tokens FLIPPED by the global beam can ever be flagged; when the beam keeps the original spelling (originalPriorBonus=0.8 frequently wins globally) the per-position local softmax is never evaluated (verified: no SMS_VAL_DEBUG trace line is printed for such tokens). Corpus impact on the settled snapshot: L05:giam and L10:dep.",
+    "disposition": "Real engine limitation, not a label error. Suggested direction: evaluate the local softmax for every ambiguous position regardless of the beam choice, or add a second pass over beam-kept ambiguous positions."
+  },
+  {
+    "id": "F2",
+    "kind": "ENGINE-GATES",
+    "severity": "MEDIUM (recall gap on clear contexts; precision-first behavior preserved)",
+    "title": "conf>=0.70 / margin>=0.20 gates reject human-obvious flips when the LM splits probability mass; newly added bare lexicon forms make it worse",
+    "repro": [
+      { "row": "L10", "token": "ban", "best": "bạn", "conf": 0.448, "margin": 0.239, "note": "competes against its own bare form 'ban' (freq 150000)" },
+      { "row": "L08", "token": "so", "best": "số", "conf": 0.551, "margin": 0.199, "note": "margin missed threshold by 0.001" },
+      { "row": "L15", "token": "hang", "best": "hàng", "conf": 0.589, "margin": 0.301, "note": "junk single-letter left neighbor 'h' (from '22h') pollutes bigram context" },
+      { "row": "M02", "token": "tu", "best": "từ", "conf": 0.359, "margin": 0.117, "note": "right neighbor is whitelisted brand 'Tendoo', unknown to LM; từ/tự/tư/tử split" },
+      { "row": "M03", "token": "mot", "best": "một", "conf": 0.550, "margin": 0.218, "note": "'mốt' steals 33%" },
+      { "row": "L06", "token": "Gui", "best": "(keep original)", "conf": 0.976, "margin": 0.951, "note": "REGRESSION: bare 'gui' entry (freq 150000) + prior bonus makes the model PREFER the wrong unaccented form over gửi (0.024)" },
+      { "row": "L13", "token": "toan", "best": "toán", "conf": 0.505, "margin": 0.088, "note": "REGRESSION: newly added sibling 'toàn' splits mass ('thanh toán gói cước' is unambiguous to humans)" }
+    ],
+    "expectedVsActual": "All listed corrections are common vocabulary and contextually forced for a human reader, yet every one stayed SILENT. All rejections are precision-safe (zero false positives emitted) but cost recall: 11 tokens across 9 rows on the settled snapshot.",
+    "disposition": "Direction: grow corpus-train.txt collocation coverage; resolve single-letter junk neighbors away from LM context; reconsider seeding BARE unaccented forms at high frequency (they invert the intended bias, see F4); keep gates otherwise (they held FP at 0)."
+  },
+  {
+    "id": "F3",
+    "kind": "POSITIVE-SIGNAL",
+    "severity": "INFO",
+    "title": "Extra flags beyond expectations were 10/10 contextually CORRECT; hard disambiguation directions were right",
+    "repro": [
+      { "row": "L03", "extras": ["va->và", "nhan->nhận", "thong->thông"] },
+      { "row": "L09", "extras": ["tien->tiền"] },
+      { "row": "L12", "extras": ["he->hệ (in 'Lien he hotline')"] },
+      { "row": "L14", "extras": ["trong->trọng ('Tran trong thong bao' -> trân trọng thông báo)", "thong->thông", "nghi->nghỉ"] },
+      { "row": "M01", "extras": ["thong->thông"] },
+      { "row": "M05", "extras": ["truong->trương ('khai truong' -> khai trương)"] }
+    ],
+    "expectedVsActual": "Every tolerated extra was correct Vietnamese for its context, including two tricky direction calls: store-hours 'Gio mo cua' resolved to CỬA (door) not CỦA (of, conf=0.999), and 'Thanh toan goi cuoc' correctly KEPT 'thanh' while flagging 'toan' (pre-regression snapshot). Zero wrong-direction flags in 30 rows across all runs.",
+    "disposition": "No action; recorded as quality evidence for the verdict."
+  },
+  {
+    "id": "F4",
+    "kind": "PROCESS-NOTE",
+    "severity": "HIGH for reproducibility (data volatility), INFO for labels",
+    "title": "src/data/lexicon.txt was concurrently rewritten DURING evaluation; measured recall moved 93.6% -> 90.0%, with one transient 82.7% read mid-write",
+    "repro": "Initial read: 532 lines, no bare 'ban'/'giam'. Settled snapshot at time of writing: 888 lines including bare unaccented entries 'kinh\\t150000', 'ban\\t150000', 'giam\\t150000' and new siblings (toàn, trương, nghỉ...). Same corpus, same code: pre-expansion runs = 103/110 (93.6%, 6x byte-stable); settled post-expansion runs = 99/110 (90.0%, 3x stable); one run that loaded the file DURING rewrite scored 91/110 (82.7%).",
+    "expectedVsActual": "No expectation in my-corpus.json needed correcting (all 110 judged fair post-hoc via SMS_VAL_DEBUG traces; misses decompose into F1/F2). The bare-form additions REGRESSED PMD recall by flipping previously-won tokens (L06 Gui, L07 Nap, L10 Chuc, L11 mai, L13 toan) through the keep-original bias, while fixing others (L15 hang, L14 Tet). Absolute numbers are only meaningful per lexicon snapshot.",
+    "disposition": "Evaluator did not modify any protected path. Recommendation: benchmark runs should pin/hash data files (record sha of src/data/* with results.json) and avoid concurrent edits during measurement."
+  },
+  {
+    "id": "F5",
+    "kind": "OBSERVATION-UNREPRODUCED",
+    "severity": "LOW (single occurrence; all later runs deterministic within a snapshot)",
+    "title": "First-ever harness invocation collapsed (30.9%) and never reproduced; most likely explained by F4-style mid-edit data read",
+    "repro": "First 'node agent-eval/agent2/run.mjs' reported caught=34/110 with e.g. L02 issues=3 (truth: 11), L03 issues=0 (truth: 6). Immediate rerun plus sequence tests (shared-engine chains, shifted-text interleaves, repeat calls, 6 consecutive full runs) were fully deterministic and correct.",
+    "expectedVsActual": "Same inputs, different outputs on exactly one process launch. No engine-state leak found (engine verified stateless across validate calls). Most plausible cause: the same concurrent-file-write race documented in F4 (the corpus/data read caught a partially settled state), though not directly observed.",
+    "disposition": "Not counted against the engine score. Demo-hardening suggestion: boot-time warmup self-check that validates a known sentence and asserts its expected issue count."
+  }
+]

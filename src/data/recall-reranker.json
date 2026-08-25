@@ -1,0 +1,110 @@
+{
+  "schema": "recall-reranker-v1",
+  "featureContract": "recall-pairwise-v1",
+  "featureOrder": [
+    "bias",
+    "editDistance",
+    "sameAccentKey",
+    "candidateMinusOriginalLogFrequency",
+    "leftBigramLogRatio",
+    "rightBigramLogRatio",
+    "centeredTrigramLogRatio",
+    "forwardTrigramLogRatio",
+    "backwardTrigramLogRatio",
+    "candidateAttestedWindows",
+    "originalAttestedWindows",
+    "tokenLength",
+    "originalIsDictionary",
+    "candidateCheapRank",
+    "candidatePoolRank"
+  ],
+  "weights": {
+    "bias": -0.9721570500707322,
+    "editDistance": -0.8392290154752206,
+    "sameAccentKey": 0.4767464868662548,
+    "candidateMinusOriginalLogFrequency": -0.18514848628406808,
+    "leftBigramLogRatio": 0.634270811798865,
+    "rightBigramLogRatio": 0.8029866932919726,
+    "centeredTrigramLogRatio": 0.7300432078631488,
+    "forwardTrigramLogRatio": 0.4888701978377958,
+    "backwardTrigramLogRatio": 0.3162087320221041,
+    "candidateAttestedWindows": 1.078970355198432,
+    "originalAttestedWindows": 0.4613973028440872,
+    "tokenLength": 0.2679937393924028,
+    "originalIsDictionary": -0.25879891815872713,
+    "candidateCheapRank": 0.23672709758843263,
+    "candidatePoolRank": 0.23040045871619852
+  },
+  "standardization": {
+    "editDistance": {
+      "mean": 1.385612634501909,
+      "std": 0.5438474924110358
+    },
+    "sameAccentKey": {
+      "mean": 0.5330180492884415,
+      "std": 0.49890861730499914
+    },
+    "candidateMinusOriginalLogFrequency": {
+      "mean": 3.1017074208638937,
+      "std": 4.842168470144487
+    },
+    "leftBigramLogRatio": {
+      "mean": 1.723002625524425,
+      "std": 4.506154948027965
+    },
+    "rightBigramLogRatio": {
+      "mean": 1.641705648942627,
+      "std": 4.738973775122814
+    },
+    "centeredTrigramLogRatio": {
+      "mean": 0.26088448065932934,
+      "std": 3.6888196937694633
+    },
+    "forwardTrigramLogRatio": {
+      "mean": 0.0015364135645376553,
+      "std": 3.9728882461815003
+    },
+    "backwardTrigramLogRatio": {
+      "mean": 0.5657330387829902,
+      "std": 3.265741355270141
+    },
+    "candidateAttestedWindows": {
+      "mean": 1.961688649774384,
+      "std": 1.518730263144121
+    },
+    "originalAttestedWindows": {
+      "mean": 1.5889881985421728,
+      "std": 1.5066306820217372
+    },
+    "tokenLength": {
+      "mean": 3.567077403679278,
+      "std": 1.1361708363160135
+    },
+    "originalIsDictionary": {
+      "mean": 0.9246789309267616,
+      "std": 0.26390870699335195
+    },
+    "candidateCheapRank": {
+      "mean": 3.142528635890316,
+      "std": 4.525098704440762
+    },
+    "candidatePoolRank": {
+      "mean": 4.31677368969108,
+      "std": 7.811250206292123
+    }
+  },
+  "classWeights": {
+    "positive": 1.6174035087719298,
+    "negative": 0.7237329648935502
+  },
+  "training": {
+    "seed": 20260824,
+    "iterations": 400,
+    "learningRate": 0.35,
+    "learningRateDecay": 0.005,
+    "l2": 0.0001,
+    "rowsPositive": 7125,
+    "rowsNegative": 15923,
+    "ordering": "(label,id,source) stable sort; full-batch GD"
+  }
+}

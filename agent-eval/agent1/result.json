@@ -1,0 +1,1027 @@
+{
+  "harness": "agent-eval/agent1/run.mjs",
+  "corpusFile": "agent-eval/agent1/my-corpus.json",
+  "generatedAt": "2026-08-23T12:14:03.132Z",
+  "rowCount": 32,
+  "cleanRowCount": 12,
+  "dirtyRowCount": 20,
+  "expectedCount": 29,
+  "caughtCount": 29,
+  "missedCount": 0,
+  "falsePositiveCount": 0,
+  "recall": 1,
+  "precision": 1,
+  "offsetInvariant": {
+    "checkedIssueCount": 38,
+    "violationCount": 0,
+    "violations": []
+  },
+  "rowsPass": 32,
+  "rowsFail": 0,
+  "rows": [
+    {
+      "id": "D01",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "leading ASCII spaces at offset 0",
+      "textAscii": "   Xin ch\\u00E0o qu\\u00FD kh\\u00E1ch",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "LEADING_WHITESPACE",
+          "value": "   "
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "LEADING_WHITESPACE",
+          "severity": "WARNING",
+          "start": 0,
+          "end": 3,
+          "value": "   ",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D02",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "trailing ASCII spaces at end of text",
+      "textAscii": "C\\u1EA3m \\u01A1n b\\u1EA1n \\u0111\\u00E3 mua h\\u00E0ng   ",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "TRAILING_WHITESPACE",
+          "value": "   "
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "TRAILING_WHITESPACE",
+          "severity": "WARNING",
+          "start": 22,
+          "end": 25,
+          "value": "   ",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D03",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "double space between words",
+      "textAscii": "Giao h\\u00E0ng  t\\u1EADn n\\u01A1i",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "MULTIPLE_WHITESPACE",
+          "value": "  "
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "MULTIPLE_WHITESPACE",
+          "severity": "WARNING",
+          "start": 9,
+          "end": 11,
+          "value": "  ",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D04",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "leading tab (\\s matches tab)",
+      "textAscii": "\\u0009Ch\\u00FAc m\\u1EEBng n\\u0103m m\\u1EDBi",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "LEADING_WHITESPACE",
+          "value": "\t"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "LEADING_WHITESPACE",
+          "severity": "WARNING",
+          "start": 0,
+          "end": 1,
+          "value": "\t",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D05",
+      "mode": "NON_ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "allowExtra": false,
+      "why": "observation row: mid-text TAB per plan §11.4 regex {2,} is ASCII-space-only and tab is CONTROL_ALLOWED -> expected zero issues; recorded as product question in findings",
+      "textAscii": "Ma don hang\\u0009DH123456",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D06",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "double space before dot: same span as MULTIPLE_WHITESPACE, conflict resolver keeps WHITESPACE_BEFORE_PUNCTUATION (specificity tiebreak)",
+      "textAscii": "Gia chi con 1000  .",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "WHITESPACE_BEFORE_PUNCTUATION",
+          "value": "  "
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "WHITESPACE_BEFORE_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 16,
+          "end": 18,
+          "value": "  ",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D07",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "space before comma AND no space after comma (A,B pattern)",
+      "textAscii": "Xin ch\\u00E0o ,qu\\u00FD kh\\u00E1ch",
+      "expectedCount": 2,
+      "caughtCount": 2,
+      "actualIssueCount": 2,
+      "expected": [
+        {
+          "ruleId": "WHITESPACE_BEFORE_PUNCTUATION",
+          "value": " "
+        },
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "value": ","
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "WHITESPACE_BEFORE_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 8,
+          "end": 9,
+          "value": " ",
+          "confidence": null
+        },
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 9,
+          "end": 10,
+          "value": ",",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D08",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "space before ? plus ? glued to next word",
+      "textAscii": "B\\u1EA1n mu\\u1ED1n nh\\u1EADn kh\\u00F4ng ?Tr\\u1EA3 l\\u1EDDi ngay",
+      "expectedCount": 2,
+      "caughtCount": 2,
+      "actualIssueCount": 3,
+      "expected": [
+        {
+          "ruleId": "WHITESPACE_BEFORE_PUNCTUATION",
+          "value": " "
+        },
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "value": "?"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "WHITESPACE_BEFORE_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 19,
+          "end": 20,
+          "value": " ",
+          "confidence": null
+        },
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 20,
+          "end": 21,
+          "value": "?",
+          "confidence": null
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 29,
+          "end": 33,
+          "value": "ngay",
+          "confidence": 0.73
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D09",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "triple bang triggers REPEATED_PUNCTUATION; single bang glued to next word triggers MISSING_WHITESPACE_AFTER_PUNCTUATION (runs themselves never emit the latter - by design)",
+      "textAscii": "San sale online!!!Chot don ngay!Nhan qua",
+      "expectedCount": 2,
+      "caughtCount": 2,
+      "actualIssueCount": 2,
+      "expected": [
+        {
+          "ruleId": "REPEATED_PUNCTUATION",
+          "value": "!!!"
+        },
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "value": "!"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "REPEATED_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 15,
+          "end": 18,
+          "value": "!!!",
+          "confidence": null
+        },
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 31,
+          "end": 32,
+          "value": "!",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D10",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "five question marks at end",
+      "textAscii": "Ban co muon nhan khong?????",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "REPEATED_PUNCTUATION",
+          "value": "?????"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "REPEATED_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 22,
+          "end": 27,
+          "value": "?????",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D11",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "four dots warn (exactly three would be allowed)",
+      "textAscii": "Uu dai keo dai den het thang....",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 6,
+      "expected": [
+        {
+          "ruleId": "REPEATED_PUNCTUATION",
+          "value": "...."
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 0,
+          "end": 2,
+          "value": "Uu",
+          "confidence": 0.99
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 3,
+          "end": 6,
+          "value": "dai",
+          "confidence": 1
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 15,
+          "end": 18,
+          "value": "den",
+          "confidence": 1
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 19,
+          "end": 22,
+          "value": "het",
+          "confidence": 1
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 23,
+          "end": 28,
+          "value": "thang",
+          "confidence": 1
+        },
+        {
+          "ruleId": "REPEATED_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 28,
+          "end": 32,
+          "value": "....",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D12",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "sentence dot glued to capital word",
+      "textAscii": "Xin ch\\u00E0o.Qu\\u00FD kh\\u00E1ch vui l\\u00F2ng li\\u00EAn h\\u1EC7",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "value": "."
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 8,
+          "end": 9,
+          "value": ".",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D13",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "colon glued to next word",
+      "textAscii": "L\\u01B0u \\u00FD:H\\u1EA1n s\\u1EED d\\u1EE5ng in tr\\u00EAn bao b\\u00EC",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "value": ":"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 5,
+          "end": 6,
+          "value": ":",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D14",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "semicolon glued to next word",
+      "textAscii": "G\\u1ECDi ngay;t\\u1EADn h\\u01B0\\u1EDFng \\u01B0u \\u0111\\u00E3i",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "value": ";"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 8,
+          "end": 9,
+          "value": ";",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D15",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "allowExtra": false,
+      "why": "initialism A.B.C needs no spaces; 23:59 is a protected TIME range",
+      "textAscii": "Van phong A.B.C mo cua den 23:59",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D16",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "allowExtra": false,
+      "why": "URL with query string is fully protected",
+      "textAscii": "Truy cap https://a.vn/x?id=10 de dat lich",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D17",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "allowExtra": false,
+      "why": "bare domain tendoo.com is protected (known TLD)",
+      "textAscii": "Xem them tai tendoo.com ngay hom nay",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D18",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "allowExtra": false,
+      "why": "money 10.000 and decimal 1,5 are NUMBER-protected; dot/comma inside must not warn",
+      "textAscii": "Giam con 10.000d va tra gop 1,5%",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D19",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "allowExtra": false,
+      "why": "date 12/10/2026 and time 08:30 are protected ranges",
+      "textAscii": "Hen gap lai 12/10/2026 luc 08:30 nhe",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D20",
+      "mode": "NON_ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "allowExtra": false,
+      "why": "transaction/product codes protected; comma properly followed by space; DH token inside code must not hit other word rules",
+      "textAscii": "Don hang DH123456 da gui, OTP123 het han",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D21",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "allowExtra": false,
+      "why": "{{placeholder}} is protected",
+      "textAscii": "Ma xac minh {{otp_code}} co hieu luc 60 giay",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D22",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "NBSP between words and zero-width space inside text",
+      "textAscii": "Khuy\\u1EBFn m\\u00E3i\\u00A0\\u0111\\u1EB7c bi\\u1EC7t\\u200B duy nh\\u1EA5t",
+      "expectedCount": 2,
+      "caughtCount": 2,
+      "actualIssueCount": 2,
+      "expected": [
+        {
+          "ruleId": "NON_BREAKING_SPACE",
+          "value": " "
+        },
+        {
+          "ruleId": "ZERO_WIDTH_CHARACTER",
+          "value": "​"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "NON_BREAKING_SPACE",
+          "severity": "WARNING",
+          "start": 10,
+          "end": 11,
+          "value": " ",
+          "confidence": null
+        },
+        {
+          "ruleId": "ZERO_WIDTH_CHARACTER",
+          "severity": "WARNING",
+          "start": 19,
+          "end": 20,
+          "value": "​",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D23",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "leading NBSP: same span as LEADING_WHITESPACE; conflict resolver keeps NON_BREAKING_SPACE (higher priority)",
+      "textAscii": "\\u00A0Xin chao cac ban",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "NON_BREAKING_SPACE",
+          "value": " "
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "NON_BREAKING_SPACE",
+          "severity": "WARNING",
+          "start": 0,
+          "end": 1,
+          "value": " ",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D24",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "zero-width char INSIDE a protected URL must STILL fire (never suppressed)",
+      "textAscii": "Truy cap https://a.vn/x\\u200Bid=10 de xem",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "ZERO_WIDTH_CHARACTER",
+          "value": "​"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "ZERO_WIDTH_CHARACTER",
+          "severity": "WARNING",
+          "start": 23,
+          "end": 24,
+          "value": "​",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D25",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "allowExtra": true,
+      "why": "leading BOM U+FEFF is \\s so LEADING_WHITESPACE overlaps, but ZERO_WIDTH_CHARACTER wins the same-span conflict",
+      "textAscii": "\\uFEFFKhuyen mai cuoi tuan",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "ZERO_WIDTH_CHARACTER",
+          "value": "﻿"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "ZERO_WIDTH_CHARACTER",
+          "severity": "WARNING",
+          "start": 0,
+          "end": 1,
+          "value": "﻿",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D26",
+      "mode": "NON_ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": false,
+      "allowExtra": true,
+      "why": "mixed-mode trap: only the token quy carries diacritics in NON_ACCENTED mode -> ERROR grouped per token",
+      "textAscii": "Chuc mung qu\\u00FD khach nam moi",
+      "expectedCount": 1,
+      "caughtCount": 1,
+      "actualIssueCount": 1,
+      "expected": [
+        {
+          "ruleId": "ACCENT_CHARACTER_IN_NON_ACCENT_MODE",
+          "value": "quý"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "ACCENT_CHARACTER_IN_NON_ACCENT_MODE",
+          "severity": "ERROR",
+          "start": 10,
+          "end": 13,
+          "value": "quý",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D27",
+      "mode": "NON_ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "allowExtra": false,
+      "why": "ellipsis of exactly three dots is allowed; legitimate unaccented Vietnamese in NON_ACCENTED mode",
+      "textAscii": "Dat hang nhanh... nhan dia chi trong 2 ngay",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D28",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "allowExtra": false,
+      "why": "fully accented polite sentence must be spotless (linguistic layer included)",
+      "textAscii": "Xin ch\\u00E0o qu\\u00FD kh\\u00E1ch, c\\u1EA3m \\u01A1n b\\u1EA1n \\u0111\\u00E3 tin t\\u01B0\\u1EDFng Tendoo.",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D29",
+      "mode": "NON_ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": false,
+      "allowExtra": true,
+      "why": "whole-token abbreviations under VT_TENDOO",
+      "textAscii": "KH nhan KM danh cho SDT da dang ky",
+      "expectedCount": 3,
+      "caughtCount": 3,
+      "actualIssueCount": 3,
+      "expected": [
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "value": "KH"
+        },
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "value": "KM"
+        },
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "value": "SDT"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "severity": "WARNING",
+          "start": 0,
+          "end": 2,
+          "value": "KH",
+          "confidence": null
+        },
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "severity": "WARNING",
+          "start": 8,
+          "end": 10,
+          "value": "KM",
+          "confidence": null
+        },
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "severity": "WARNING",
+          "start": 20,
+          "end": 23,
+          "value": "SDT",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D30",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "allowExtra": false,
+      "why": "same text under non-Tendoo brand: abbreviation rule must stay disabled",
+      "textAscii": "KH nhan KM danh cho SDT da dang ky",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D31",
+      "mode": "NON_ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "allowExtra": false,
+      "why": "trap: KHACH starts with KH but whole-token match only -> no abbreviation warning",
+      "textAscii": "KHACH hang mua nhieu qua tang hap dan",
+      "expectedCount": 0,
+      "caughtCount": 0,
+      "actualIssueCount": 0,
+      "expected": [],
+      "actual": [],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    },
+    {
+      "id": "D32",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": false,
+      "allowExtra": true,
+      "why": "coverage of remaining abbreviation entries CT/TT/KM/DV",
+      "textAscii": "CT TT KM ap dung cho moi DV",
+      "expectedCount": 4,
+      "caughtCount": 4,
+      "actualIssueCount": 7,
+      "expected": [
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "value": "CT"
+        },
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "value": "TT"
+        },
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "value": "KM"
+        },
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "value": "DV"
+        }
+      ],
+      "actual": [
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "severity": "WARNING",
+          "start": 0,
+          "end": 2,
+          "value": "CT",
+          "confidence": null
+        },
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "severity": "WARNING",
+          "start": 3,
+          "end": 5,
+          "value": "TT",
+          "confidence": null
+        },
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "severity": "WARNING",
+          "start": 6,
+          "end": 8,
+          "value": "KM",
+          "confidence": null
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 9,
+          "end": 11,
+          "value": "ap",
+          "confidence": 0.99
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 12,
+          "end": 16,
+          "value": "dung",
+          "confidence": 1
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 21,
+          "end": 24,
+          "value": "moi",
+          "confidence": 1
+        },
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "severity": "WARNING",
+          "start": 25,
+          "end": 27,
+          "value": "DV",
+          "confidence": null
+        }
+      ],
+      "missed": [],
+      "falsePositives": [],
+      "pass": true
+    }
+  ]
+}

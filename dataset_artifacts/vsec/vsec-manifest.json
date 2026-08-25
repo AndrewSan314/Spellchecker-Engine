@@ -1,0 +1,50 @@
+{
+  "format": "vsec-jsonl-split-v1",
+  "source": "VSEC parquet; raw input is never modified",
+  "seed": 20260824,
+  "ratios": {
+    "train": 0.8,
+    "dev": 0.1,
+    "test": 0.1
+  },
+  "grouping": {
+    "keys": [
+      "normalized text",
+      "normalized corrected_text",
+      "annotation error template",
+      "variable-masked template"
+    ],
+    "algorithm": "union-find connected components, then largest-deficit whole-group assignment"
+  },
+  "schema": [
+    "corrected_text",
+    "correction_pairs",
+    "error_count",
+    "error_positions",
+    "has_errors",
+    "syllable_annotations",
+    "text"
+  ],
+  "rows": 9341,
+  "groups": 9329,
+  "splits": {
+    "train": {
+      "rows": 7473,
+      "groups": 7463
+    },
+    "dev": {
+      "rows": 934,
+      "groups": 933
+    },
+    "test": {
+      "rows": 934,
+      "groups": 933
+    }
+  },
+  "artifacts": {
+    "train": "vsec-train.jsonl",
+    "dev": "vsec-dev.jsonl",
+    "test": "vsec-test.jsonl"
+  },
+  "index": "vsec-index.jsonl"
+}

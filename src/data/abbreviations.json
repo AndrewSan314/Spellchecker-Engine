@@ -1,0 +1,7 @@
+{
+  "ruleEnabledForBrandname": {
+    "VT_TENDOO": true
+  },
+  "entries": ["KH", "SDT", "ĐT", "TT", "KM", "DV", "CT"],
+  "note": "plan §11.11 / §12.2 — seed POC; production loads from DB via ValidationConfigService"
+}

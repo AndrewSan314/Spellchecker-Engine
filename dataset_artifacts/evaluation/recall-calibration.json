@@ -1,0 +1,663 @@
+{
+  "split": "dev",
+  "heldOutOpened": false,
+  "constraints": {
+    "lanePrecisionMin": 0.7,
+    "semanticPrecisionMaxDrop": 0.02,
+    "semanticRecallMinAbsolute": 0.2677,
+    "mdRecallDropMaxPp": 0.5,
+    "sms160P95MaxMs": 15,
+    "cleanCorpusNewIssuesMax": 0
+  },
+  "baseline": {
+    "dev": {
+      "labels": 1115,
+      "tpStrict": 69,
+      "fpStrict": 7,
+      "strictPrecision": 0.9078947368421053,
+      "tpSem": 188,
+      "semanticPrecision": 0.6416,
+      "semanticRecall": 0.1686,
+      "semanticF05": 0.411,
+      "sms160P95Ms": 3.8
+    },
+    "mdRecallSynthetic": 0.9559,
+    "cleanCorpusUnexpectedIssues": 16
+  },
+  "replay": {
+    "ACCENTED_SAME_KEY": [
+      {
+        "minProbability": 0.8,
+        "maxOriginalWindows": 0,
+        "wouldEmit": 17,
+        "tp": 9,
+        "fp": 8,
+        "precision": 0.5294
+      },
+      {
+        "minProbability": 0.8,
+        "maxOriginalWindows": 1,
+        "wouldEmit": 31,
+        "tp": 16,
+        "fp": 15,
+        "precision": 0.5161
+      },
+      {
+        "minProbability": 0.8,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 46,
+        "tp": 21,
+        "fp": 25,
+        "precision": 0.4565
+      },
+      {
+        "minProbability": 0.85,
+        "maxOriginalWindows": 0,
+        "wouldEmit": 14,
+        "tp": 7,
+        "fp": 7,
+        "precision": 0.5
+      },
+      {
+        "minProbability": 0.85,
+        "maxOriginalWindows": 1,
+        "wouldEmit": 26,
+        "tp": 12,
+        "fp": 14,
+        "precision": 0.4615
+      },
+      {
+        "minProbability": 0.85,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 39,
+        "tp": 16,
+        "fp": 23,
+        "precision": 0.4103
+      },
+      {
+        "minProbability": 0.9,
+        "maxOriginalWindows": 0,
+        "wouldEmit": 13,
+        "tp": 7,
+        "fp": 6,
+        "precision": 0.5385
+      },
+      {
+        "minProbability": 0.9,
+        "maxOriginalWindows": 1,
+        "wouldEmit": 20,
+        "tp": 11,
+        "fp": 9,
+        "precision": 0.55
+      },
+      {
+        "minProbability": 0.9,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 27,
+        "tp": 13,
+        "fp": 14,
+        "precision": 0.4815
+      },
+      {
+        "minProbability": 0.95,
+        "maxOriginalWindows": 0,
+        "wouldEmit": 6,
+        "tp": 4,
+        "fp": 2,
+        "precision": 0.6667
+      },
+      {
+        "minProbability": 0.95,
+        "maxOriginalWindows": 1,
+        "wouldEmit": 9,
+        "tp": 6,
+        "fp": 3,
+        "precision": 0.6667
+      },
+      {
+        "minProbability": 0.95,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 9,
+        "tp": 6,
+        "fp": 3,
+        "precision": 0.6667
+      }
+    ],
+    "DIFFERENT_KEY_REAL_WORD": [
+      {
+        "minProbability": 0.8,
+        "maxOriginalWindows": 0,
+        "wouldEmit": 65,
+        "tp": 41,
+        "fp": 24,
+        "precision": 0.6308
+      },
+      {
+        "minProbability": 0.8,
+        "maxOriginalWindows": 1,
+        "wouldEmit": 125,
+        "tp": 82,
+        "fp": 43,
+        "precision": 0.656
+      },
+      {
+        "minProbability": 0.8,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 181,
+        "tp": 123,
+        "fp": 58,
+        "precision": 0.6796
+      },
+      {
+        "minProbability": 0.85,
+        "maxOriginalWindows": 0,
+        "wouldEmit": 57,
+        "tp": 39,
+        "fp": 18,
+        "precision": 0.6842
+      },
+      {
+        "minProbability": 0.85,
+        "maxOriginalWindows": 1,
+        "wouldEmit": 113,
+        "tp": 79,
+        "fp": 34,
+        "precision": 0.6991
+      },
+      {
+        "minProbability": 0.85,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 162,
+        "tp": 119,
+        "fp": 43,
+        "precision": 0.7346
+      },
+      {
+        "minProbability": 0.9,
+        "maxOriginalWindows": 0,
+        "wouldEmit": 53,
+        "tp": 39,
+        "fp": 14,
+        "precision": 0.7358
+      },
+      {
+        "minProbability": 0.9,
+        "maxOriginalWindows": 1,
+        "wouldEmit": 101,
+        "tp": 78,
+        "fp": 23,
+        "precision": 0.7723
+      },
+      {
+        "minProbability": 0.9,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 144,
+        "tp": 115,
+        "fp": 29,
+        "precision": 0.7986
+      },
+      {
+        "minProbability": 0.95,
+        "maxOriginalWindows": 0,
+        "wouldEmit": 41,
+        "tp": 35,
+        "fp": 6,
+        "precision": 0.8537
+      },
+      {
+        "minProbability": 0.95,
+        "maxOriginalWindows": 1,
+        "wouldEmit": 83,
+        "tp": 72,
+        "fp": 11,
+        "precision": 0.8675
+      },
+      {
+        "minProbability": 0.95,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 119,
+        "tp": 106,
+        "fp": 13,
+        "precision": 0.8908
+      }
+    ]
+  },
+  "verifiedTrials": [
+    {
+      "id": "DIFFERENT_KEY_REAL_WORD_p0.95_o3",
+      "lane": "DIFFERENT_KEY_REAL_WORD",
+      "overrides": {
+        "realWordTypoMode": "ACTIVE",
+        "realWordTypoMinProbability": 0.95,
+        "realWordTypoMaxOriginalWindows": 3
+      },
+      "replay": {
+        "minProbability": 0.95,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 119,
+        "tp": 106,
+        "fp": 13,
+        "precision": 0.8908
+      },
+      "baseline": {
+        "semanticPrecision": 0.6416,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16
+      },
+      "metrics": {
+        "lanePrecision": 0.8908,
+        "laneTp": 115,
+        "semanticF05": 0.5086,
+        "semanticPrecision": 0.6502,
+        "semanticRecall": 0.2717,
+        "strictPrecision": 0.7796610169491526,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16,
+        "sms160P95Ms": 13.83
+      },
+      "latencyMs": 13.83
+    },
+    {
+      "id": "DIFFERENT_KEY_REAL_WORD_p0.95_o1",
+      "lane": "DIFFERENT_KEY_REAL_WORD",
+      "overrides": {
+        "realWordTypoMode": "ACTIVE",
+        "realWordTypoMinProbability": 0.95,
+        "realWordTypoMaxOriginalWindows": 1
+      },
+      "replay": {
+        "minProbability": 0.95,
+        "maxOriginalWindows": 1,
+        "wouldEmit": 83,
+        "tp": 72,
+        "fp": 11,
+        "precision": 0.8675
+      },
+      "baseline": {
+        "semanticPrecision": 0.6416,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16
+      },
+      "metrics": {
+        "lanePrecision": 0.8675,
+        "laneTp": 79,
+        "semanticF05": 0.4983,
+        "semanticPrecision": 0.6829,
+        "semanticRecall": 0.2395,
+        "strictPrecision": 0.9079754601226994,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16,
+        "sms160P95Ms": 13.67
+      },
+      "latencyMs": 13.67
+    },
+    {
+      "id": "DIFFERENT_KEY_REAL_WORD_p0.95_o0",
+      "lane": "DIFFERENT_KEY_REAL_WORD",
+      "overrides": {
+        "realWordTypoMode": "ACTIVE",
+        "realWordTypoMinProbability": 0.95,
+        "realWordTypoMaxOriginalWindows": 0
+      },
+      "replay": {
+        "minProbability": 0.95,
+        "maxOriginalWindows": 0,
+        "wouldEmit": 41,
+        "tp": 35,
+        "fp": 6,
+        "precision": 0.8537
+      },
+      "baseline": {
+        "semanticPrecision": 0.6416,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16
+      },
+      "metrics": {
+        "lanePrecision": 0.8537,
+        "laneTp": 40,
+        "semanticF05": 0.4606,
+        "semanticPrecision": 0.6706,
+        "semanticRecall": 0.2045,
+        "strictPrecision": 0.9316239316239316,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16,
+        "sms160P95Ms": 14.75
+      },
+      "latencyMs": 14.75
+    },
+    {
+      "id": "DIFFERENT_KEY_REAL_WORD_p0.9_o3",
+      "lane": "DIFFERENT_KEY_REAL_WORD",
+      "overrides": {
+        "realWordTypoMode": "ACTIVE",
+        "realWordTypoMinProbability": 0.9,
+        "realWordTypoMaxOriginalWindows": 3
+      },
+      "replay": {
+        "minProbability": 0.9,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 144,
+        "tp": 115,
+        "fp": 29,
+        "precision": 0.7986
+      },
+      "baseline": {
+        "semanticPrecision": 0.6416,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16
+      },
+      "metrics": {
+        "lanePrecision": 0.7986,
+        "laneTp": 124,
+        "semanticF05": 0.47,
+        "semanticPrecision": 0.5662,
+        "semanticRecall": 0.2798,
+        "strictPrecision": 0.6348684210526315,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16,
+        "sms160P95Ms": 12.39
+      },
+      "latencyMs": 12.39
+    },
+    {
+      "id": "DIFFERENT_KEY_REAL_WORD_p0.9_o1",
+      "lane": "DIFFERENT_KEY_REAL_WORD",
+      "overrides": {
+        "realWordTypoMode": "ACTIVE",
+        "realWordTypoMinProbability": 0.9,
+        "realWordTypoMaxOriginalWindows": 1
+      },
+      "replay": {
+        "minProbability": 0.9,
+        "maxOriginalWindows": 1,
+        "wouldEmit": 101,
+        "tp": 78,
+        "fp": 23,
+        "precision": 0.7723
+      },
+      "baseline": {
+        "semanticPrecision": 0.6416,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16
+      },
+      "metrics": {
+        "lanePrecision": 0.7723,
+        "laneTp": 85,
+        "semanticF05": 0.4856,
+        "semanticPrecision": 0.6439,
+        "semanticRecall": 0.2448,
+        "strictPrecision": 0.8369565217391305,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16,
+        "sms160P95Ms": 13.55
+      },
+      "latencyMs": 13.55
+    },
+    {
+      "id": "DIFFERENT_KEY_REAL_WORD_p0.9_o0",
+      "lane": "DIFFERENT_KEY_REAL_WORD",
+      "overrides": {
+        "realWordTypoMode": "ACTIVE",
+        "realWordTypoMinProbability": 0.9,
+        "realWordTypoMaxOriginalWindows": 0
+      },
+      "replay": {
+        "minProbability": 0.9,
+        "maxOriginalWindows": 0,
+        "wouldEmit": 53,
+        "tp": 39,
+        "fp": 14,
+        "precision": 0.7358
+      },
+      "baseline": {
+        "semanticPrecision": 0.6416,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16
+      },
+      "metrics": {
+        "lanePrecision": 0.7358,
+        "laneTp": 44,
+        "semanticF05": 0.4583,
+        "semanticPrecision": 0.6554,
+        "semanticRecall": 0.2081,
+        "strictPrecision": 0.9186991869918699,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16,
+        "sms160P95Ms": 12.67
+      },
+      "latencyMs": 12.67
+    },
+    {
+      "id": "DIFFERENT_KEY_REAL_WORD_p0.85_o3",
+      "lane": "DIFFERENT_KEY_REAL_WORD",
+      "overrides": {
+        "realWordTypoMode": "ACTIVE",
+        "realWordTypoMinProbability": 0.85,
+        "realWordTypoMaxOriginalWindows": 3
+      },
+      "replay": {
+        "minProbability": 0.85,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 162,
+        "tp": 119,
+        "fp": 43,
+        "precision": 0.7346
+      },
+      "baseline": {
+        "semanticPrecision": 0.6416,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16
+      },
+      "metrics": {
+        "lanePrecision": 0.7346,
+        "laneTp": 131,
+        "semanticF05": 0.4452,
+        "semanticPrecision": 0.517,
+        "semanticRecall": 0.2861,
+        "strictPrecision": 0.5617977528089888,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16,
+        "sms160P95Ms": 12.37
+      },
+      "latencyMs": 12.37
+    },
+    {
+      "id": "COMBINED_RW_WB",
+      "lane": "COMBINED",
+      "overrides": {
+        "realWordTypoMode": "ACTIVE",
+        "realWordTypoMinProbability": 0.95,
+        "realWordTypoMaxOriginalWindows": 3,
+        "wordBoundaryCorrectionMode": "ACTIVE"
+      },
+      "replay": {
+        "minProbability": 0.95,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 119,
+        "tp": 106,
+        "fp": 13,
+        "precision": 0.8908
+      },
+      "baseline": {
+        "semanticPrecision": 0.6416,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16
+      },
+      "metrics": {
+        "lanePrecision": 0.8908,
+        "laneTp": 126,
+        "semanticF05": 0.5112,
+        "semanticPrecision": 0.6421,
+        "semanticRecall": 0.2816,
+        "strictPrecision": 0.752895752895753,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16,
+        "sms160P95Ms": 11.35
+      },
+      "latencyMs": 11.35
+    }
+  ],
+  "selection": {
+    "winner": {
+      "id": "COMBINED_RW_WB",
+      "lane": "COMBINED",
+      "overrides": {
+        "realWordTypoMode": "ACTIVE",
+        "realWordTypoMinProbability": 0.95,
+        "realWordTypoMaxOriginalWindows": 3,
+        "wordBoundaryCorrectionMode": "ACTIVE"
+      },
+      "replay": {
+        "minProbability": 0.95,
+        "maxOriginalWindows": 3,
+        "wouldEmit": 119,
+        "tp": 106,
+        "fp": 13,
+        "precision": 0.8908
+      },
+      "baseline": {
+        "semanticPrecision": 0.6416,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16
+      },
+      "metrics": {
+        "lanePrecision": 0.8908,
+        "laneTp": 126,
+        "semanticF05": 0.5112,
+        "semanticPrecision": 0.6421,
+        "semanticRecall": 0.2816,
+        "strictPrecision": 0.752895752895753,
+        "mdRecallSynthetic": 0.9559,
+        "cleanCorpusUnexpectedIssues": 16,
+        "sms160P95Ms": 11.35
+      },
+      "latencyMs": 11.35
+    },
+    "feasible": [
+      {
+        "id": "COMBINED_RW_WB",
+        "lane": "COMBINED",
+        "overrides": {
+          "realWordTypoMode": "ACTIVE",
+          "realWordTypoMinProbability": 0.95,
+          "realWordTypoMaxOriginalWindows": 3,
+          "wordBoundaryCorrectionMode": "ACTIVE"
+        },
+        "replay": {
+          "minProbability": 0.95,
+          "maxOriginalWindows": 3,
+          "wouldEmit": 119,
+          "tp": 106,
+          "fp": 13,
+          "precision": 0.8908
+        },
+        "baseline": {
+          "semanticPrecision": 0.6416,
+          "mdRecallSynthetic": 0.9559,
+          "cleanCorpusUnexpectedIssues": 16
+        },
+        "metrics": {
+          "lanePrecision": 0.8908,
+          "laneTp": 126,
+          "semanticF05": 0.5112,
+          "semanticPrecision": 0.6421,
+          "semanticRecall": 0.2816,
+          "strictPrecision": 0.752895752895753,
+          "mdRecallSynthetic": 0.9559,
+          "cleanCorpusUnexpectedIssues": 16,
+          "sms160P95Ms": 11.35
+        },
+        "latencyMs": 11.35
+      },
+      {
+        "id": "DIFFERENT_KEY_REAL_WORD_p0.95_o3",
+        "lane": "DIFFERENT_KEY_REAL_WORD",
+        "overrides": {
+          "realWordTypoMode": "ACTIVE",
+          "realWordTypoMinProbability": 0.95,
+          "realWordTypoMaxOriginalWindows": 3
+        },
+        "replay": {
+          "minProbability": 0.95,
+          "maxOriginalWindows": 3,
+          "wouldEmit": 119,
+          "tp": 106,
+          "fp": 13,
+          "precision": 0.8908
+        },
+        "baseline": {
+          "semanticPrecision": 0.6416,
+          "mdRecallSynthetic": 0.9559,
+          "cleanCorpusUnexpectedIssues": 16
+        },
+        "metrics": {
+          "lanePrecision": 0.8908,
+          "laneTp": 115,
+          "semanticF05": 0.5086,
+          "semanticPrecision": 0.6502,
+          "semanticRecall": 0.2717,
+          "strictPrecision": 0.7796610169491526,
+          "mdRecallSynthetic": 0.9559,
+          "cleanCorpusUnexpectedIssues": 16,
+          "sms160P95Ms": 13.83
+        },
+        "latencyMs": 13.83
+      }
+    ],
+    "rejected": [
+      {
+        "id": "DIFFERENT_KEY_REAL_WORD_p0.85_o3",
+        "violations": [
+          "semanticPrecision drop 0.1246"
+        ]
+      },
+      {
+        "id": "DIFFERENT_KEY_REAL_WORD_p0.9_o0",
+        "violations": [
+          "semanticRecall 0.2081 < 0.2677 (plan +10pp bar before activation)"
+        ]
+      },
+      {
+        "id": "DIFFERENT_KEY_REAL_WORD_p0.9_o1",
+        "violations": [
+          "semanticRecall 0.2448 < 0.2677 (plan +10pp bar before activation)"
+        ]
+      },
+      {
+        "id": "DIFFERENT_KEY_REAL_WORD_p0.9_o3",
+        "violations": [
+          "semanticPrecision drop 0.0754"
+        ]
+      },
+      {
+        "id": "DIFFERENT_KEY_REAL_WORD_p0.95_o0",
+        "violations": [
+          "semanticRecall 0.2045 < 0.2677 (plan +10pp bar before activation)"
+        ]
+      },
+      {
+        "id": "DIFFERENT_KEY_REAL_WORD_p0.95_o1",
+        "violations": [
+          "semanticRecall 0.2395 < 0.2677 (plan +10pp bar before activation)"
+        ]
+      }
+    ],
+    "selection": "max semanticF05; ties: precision desc, latency asc, id lex",
+    "constraints": {
+      "lanePrecisionMin": 0.7,
+      "semanticPrecisionMaxDrop": 0.02,
+      "semanticRecallMinAbsolute": 0.2677,
+      "mdRecallDropMaxPp": 0.5,
+      "sms160P95MaxMs": 15,
+      "cleanCorpusNewIssuesMax": 0
+    }
+  },
+  "acceptedConfig": {
+    "overrides": {
+      "realWordTypoMode": "ACTIVE",
+      "realWordTypoMinProbability": 0.95,
+      "realWordTypoMaxOriginalWindows": 3,
+      "wordBoundaryCorrectionMode": "ACTIVE"
+    }
+  }
+}

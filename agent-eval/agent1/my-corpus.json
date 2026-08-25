@@ -1,0 +1,234 @@
+{
+  "meta": {
+    "name": "agent1-deterministic-corpus",
+    "focus": ["whitespace", "punctuation", "unicode", "message-mode", "abbreviation"],
+    "author": "QA agent1",
+    "notes": "expect = intentionally planted errors (ruleId match, value match when specified). clean:true rows must yield ZERO issues. forbid hits always count as FP. Extra issues on dirty rows (allowExtra:true) are ignored."
+  },
+  "rows": [
+    {
+      "id": "D01", "text": "   Xin chào quý khách", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "LEADING_WHITESPACE", "value": "   " }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "leading ASCII spaces at offset 0"
+    },
+    {
+      "id": "D02", "text": "Cảm ơn bạn đã mua hàng   ", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "TRAILING_WHITESPACE", "value": "   " }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "trailing ASCII spaces at end of text"
+    },
+    {
+      "id": "D03", "text": "Giao hàng  tận nơi", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "MULTIPLE_WHITESPACE", "value": "  " }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "double space between words"
+    },
+    {
+      "id": "D04", "text": "\tChúc mừng năm mới", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "LEADING_WHITESPACE", "value": "\t" }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "leading tab (\\s matches tab)"
+    },
+    {
+      "id": "D05", "text": "Ma don hang\tDH123456", "mode": "NON_ACCENTED", "brand": "VT_TENDOO",
+      "expect": [],
+      "forbid": [], "clean": true, "allowExtra": false,
+      "why": "observation row: mid-text TAB per plan §11.4 regex {2,} is ASCII-space-only and tab is CONTROL_ALLOWED -> expected zero issues; recorded as product question in findings"
+    },
+    {
+      "id": "D06", "text": "Gia chi con 1000  .", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "WHITESPACE_BEFORE_PUNCTUATION", "value": "  " }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "double space before dot: same span as MULTIPLE_WHITESPACE, conflict resolver keeps WHITESPACE_BEFORE_PUNCTUATION (specificity tiebreak)"
+    },
+    {
+      "id": "D07", "text": "Xin chào ,quý khách", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [
+        { "ruleId": "WHITESPACE_BEFORE_PUNCTUATION", "value": " " },
+        { "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION", "value": "," }
+      ],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "space before comma AND no space after comma (A,B pattern)"
+    },
+    {
+      "id": "D08", "text": "Bạn muốn nhận không ?Trả lời ngay", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [
+        { "ruleId": "WHITESPACE_BEFORE_PUNCTUATION", "value": " " },
+        { "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION", "value": "?" }
+      ],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "space before ? plus ? glued to next word"
+    },
+    {
+      "id": "D09", "text": "San sale online!!!Chot don ngay!Nhan qua", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [
+        { "ruleId": "REPEATED_PUNCTUATION", "value": "!!!" },
+        { "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION", "value": "!" }
+      ],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "triple bang triggers REPEATED_PUNCTUATION; single bang glued to next word triggers MISSING_WHITESPACE_AFTER_PUNCTUATION (runs themselves never emit the latter - by design)"
+    },
+    {
+      "id": "D10", "text": "Ban co muon nhan khong?????", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "REPEATED_PUNCTUATION", "value": "?????" }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "five question marks at end"
+    },
+    {
+      "id": "D11", "text": "Uu dai keo dai den het thang....", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "REPEATED_PUNCTUATION", "value": "...." }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "four dots warn (exactly three would be allowed)"
+    },
+    {
+      "id": "D12", "text": "Xin chào.Quý khách vui lòng liên hệ", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION", "value": "." }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "sentence dot glued to capital word"
+    },
+    {
+      "id": "D13", "text": "Lưu ý:Hạn sử dụng in trên bao bì", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION", "value": ":" }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "colon glued to next word"
+    },
+    {
+      "id": "D14", "text": "Gọi ngay;tận hưởng ưu đãi", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION", "value": ";" }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "semicolon glued to next word"
+    },
+    {
+      "id": "D15", "text": "Van phong A.B.C mo cua den 23:59", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [],
+      "forbid": ["MISSING_WHITESPACE_AFTER_PUNCTUATION"],
+      "clean": true, "allowExtra": false,
+      "why": "initialism A.B.C needs no spaces; 23:59 is a protected TIME range"
+    },
+    {
+      "id": "D16", "text": "Truy cap https://a.vn/x?id=10 de dat lich", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [],
+      "forbid": ["MISSING_WHITESPACE_AFTER_PUNCTUATION", "WHITESPACE_BEFORE_PUNCTUATION"],
+      "clean": true, "allowExtra": false,
+      "why": "URL with query string is fully protected"
+    },
+    {
+      "id": "D17", "text": "Xem them tai tendoo.com ngay hom nay", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [],
+      "forbid": ["MISSING_WHITESPACE_AFTER_PUNCTUATION"],
+      "clean": true, "allowExtra": false,
+      "why": "bare domain tendoo.com is protected (known TLD)"
+    },
+    {
+      "id": "D18", "text": "Giam con 10.000d va tra gop 1,5%", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [],
+      "forbid": ["MISSING_WHITESPACE_AFTER_PUNCTUATION", "REPEATED_PUNCTUATION", "WHITESPACE_BEFORE_PUNCTUATION"],
+      "clean": true, "allowExtra": false,
+      "why": "money 10.000 and decimal 1,5 are NUMBER-protected; dot/comma inside must not warn"
+    },
+    {
+      "id": "D19", "text": "Hen gap lai 12/10/2026 luc 08:30 nhe", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [],
+      "forbid": ["MISSING_WHITESPACE_AFTER_PUNCTUATION"],
+      "clean": true, "allowExtra": false,
+      "why": "date 12/10/2026 and time 08:30 are protected ranges"
+    },
+    {
+      "id": "D20", "text": "Don hang DH123456 da gui, OTP123 het han", "mode": "NON_ACCENTED", "brand": "VT_TENDOO",
+      "expect": [],
+      "forbid": ["ABBREVIATION_DETECTED", "MISSING_WHITESPACE_AFTER_PUNCTUATION"],
+      "clean": true, "allowExtra": false,
+      "why": "transaction/product codes protected; comma properly followed by space; DH token inside code must not hit other word rules"
+    },
+    {
+      "id": "D21", "text": "Ma xac minh {{otp_code}} co hieu luc 60 giay", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [],
+      "forbid": ["MISSING_WHITESPACE_AFTER_PUNCTUATION", "WHITESPACE_BEFORE_PUNCTUATION"],
+      "clean": true, "allowExtra": false,
+      "why": "{{placeholder}} is protected"
+    },
+    {
+      "id": "D22", "text": "Khuyến mãi\u00A0đặc biệt\u200B duy nhất", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [
+        { "ruleId": "NON_BREAKING_SPACE", "value": "\u00A0" },
+        { "ruleId": "ZERO_WIDTH_CHARACTER", "value": "\u200B" }
+      ],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "NBSP between words and zero-width space inside text"
+    },
+    {
+      "id": "D23", "text": "\u00A0Xin chao cac ban", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "NON_BREAKING_SPACE", "value": "\u00A0" }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "leading NBSP: same span as LEADING_WHITESPACE; conflict resolver keeps NON_BREAKING_SPACE (higher priority)"
+    },
+    {
+      "id": "D24", "text": "Truy cap https://a.vn/x\u200Bid=10 de xem", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "ZERO_WIDTH_CHARACTER", "value": "\u200B" }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "zero-width char INSIDE a protected URL must STILL fire (never suppressed)"
+    },
+    {
+      "id": "D25", "text": "\uFEFFKhuyen mai cuoi tuan", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [{ "ruleId": "ZERO_WIDTH_CHARACTER", "value": "\uFEFF" }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "leading BOM U+FEFF is \\s so LEADING_WHITESPACE overlaps, but ZERO_WIDTH_CHARACTER wins the same-span conflict"
+    },
+    {
+      "id": "D26", "text": "Chuc mung quý khach nam moi", "mode": "NON_ACCENTED", "brand": "VT_TENDOO",
+      "expect": [{ "ruleId": "ACCENT_CHARACTER_IN_NON_ACCENT_MODE", "value": "quý" }],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "mixed-mode trap: only the token quy carries diacritics in NON_ACCENTED mode -> ERROR grouped per token"
+    },
+    {
+      "id": "D27", "text": "Dat hang nhanh... nhan dia chi trong 2 ngay", "mode": "NON_ACCENTED", "brand": "VT_TENDOO",
+      "expect": [],
+      "forbid": ["REPEATED_PUNCTUATION", "MISSING_WHITESPACE_AFTER_PUNCTUATION"],
+      "clean": true, "allowExtra": false,
+      "why": "ellipsis of exactly three dots is allowed; legitimate unaccented Vietnamese in NON_ACCENTED mode"
+    },
+    {
+      "id": "D28", "text": "Xin chào quý khách, cảm ơn bạn đã tin tưởng Tendoo.", "mode": "ACCENTED", "brand": "ABC_BANK",
+      "expect": [],
+      "forbid": ["POSSIBLE_SPELLING_ERROR", "POSSIBLE_MISSING_DIACRITIC"],
+      "clean": true, "allowExtra": false,
+      "why": "fully accented polite sentence must be spotless (linguistic layer included)"
+    },
+    {
+      "id": "D29", "text": "KH nhan KM danh cho SDT da dang ky", "mode": "NON_ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "ABBREVIATION_DETECTED", "value": "KH" },
+        { "ruleId": "ABBREVIATION_DETECTED", "value": "KM" },
+        { "ruleId": "ABBREVIATION_DETECTED", "value": "SDT" }
+      ],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "whole-token abbreviations under VT_TENDOO"
+    },
+    {
+      "id": "D30", "text": "KH nhan KM danh cho SDT da dang ky", "mode": "NON_ACCENTED", "brand": "ABC_BANK",
+      "expect": [],
+      "forbid": ["ABBREVIATION_DETECTED"],
+      "clean": true, "allowExtra": false,
+      "why": "same text under non-Tendoo brand: abbreviation rule must stay disabled"
+    },
+    {
+      "id": "D31", "text": "KHACH hang mua nhieu qua tang hap dan", "mode": "NON_ACCENTED", "brand": "VT_TENDOO",
+      "expect": [],
+      "forbid": ["ABBREVIATION_DETECTED"],
+      "clean": true, "allowExtra": false,
+      "why": "trap: KHACH starts with KH but whole-token match only -> no abbreviation warning"
+    },
+    {
+      "id": "D32", "text": "CT TT KM ap dung cho moi DV", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "ABBREVIATION_DETECTED", "value": "CT" },
+        { "ruleId": "ABBREVIATION_DETECTED", "value": "TT" },
+        { "ruleId": "ABBREVIATION_DETECTED", "value": "KM" },
+        { "ruleId": "ABBREVIATION_DETECTED", "value": "DV" }
+      ],
+      "forbid": [], "clean": false, "allowExtra": true,
+      "why": "coverage of remaining abbreviation entries CT/TT/KM/DV"
+    }
+  ]
+}

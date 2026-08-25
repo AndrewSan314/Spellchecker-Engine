@@ -1,0 +1,18 @@
+{
+  "artifact": "recall-reranker.json",
+  "bytes": 3042,
+  "sha256": "583d3ae722539d6b758bba999e034eb7066735480472372be1953563816a0725",
+  "command": "train_recall_reranker.py --rows .tmp/recall-training-rows.jsonl --out src/data/recall-reranker.json",
+  "python": "3.14.2",
+  "inputs": [
+    {
+      "path": ".tmp/recall-training-rows.jsonl",
+      "sha256": "6426b672b1f4bc883ab78bffe79ac94772f6be9e41f676edcccfb2f2aa9a3e99"
+    }
+  ],
+  "counts": {
+    "rows": 23048,
+    "positive": 7125,
+    "negative": 15923
+  }
+}

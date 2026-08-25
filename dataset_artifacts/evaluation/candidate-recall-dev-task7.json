@@ -1,0 +1,331 @@
+{
+  "split": "dev",
+  "rows": 934,
+  "labeledCorrections": 1085,
+  "evaluated": 1085,
+  "tokenNotMatched": 0,
+  "accentFamilyCovered": 741,
+  "symspellTop6Keys": 206,
+  "symspellTop12Keys": 255,
+  "symspellTop20Keys": 273,
+  "losses": {
+    "sameKeyBeyondAccentCap": 0,
+    "surfacePruned": 8,
+    "editDistanceOutOfRange": 9,
+    "telexOnlyLoss": 0,
+    "multiTokenUnsupported": 28,
+    "other": 26
+  },
+  "relations": {
+    "UNACCENTED_SAME_KEY": 126,
+    "DIFFERENT_KEY_SINGLE_TOKEN": 316,
+    "ACCENTED_SAME_KEY": 612,
+    "IDENTITY": 3,
+    "SPLIT": 28
+  },
+  "laneCoverage": {
+    "UNKNOWN_TYPO": {
+      "labelsBuilt": 1085,
+      "targetInLane": 885,
+      "coveragePct": 81.6
+    },
+    "UNACCENTED_SAME_KEY": {
+      "labelsBuilt": 1085,
+      "targetInLane": 738,
+      "coveragePct": 68
+    },
+    "ACCENTED_SAME_KEY": {
+      "labelsBuilt": 1085,
+      "targetInLane": 738,
+      "coveragePct": 68
+    },
+    "DIFFERENT_KEY_REAL_WORD": {
+      "labelsBuilt": 1085,
+      "targetInLane": 273,
+      "coveragePct": 25.2
+    }
+  },
+  "ownedLaneCoverage": {
+    "UNACCENTED_SAME_KEY": {
+      "total": 126,
+      "covered": 126,
+      "coveragePct": 100
+    },
+    "DIFFERENT_KEY_REAL_WORD": {
+      "total": 316,
+      "covered": 273,
+      "coveragePct": 86.4
+    },
+    "ACCENTED_SAME_KEY": {
+      "total": 612,
+      "covered": 612,
+      "coveragePct": 100
+    }
+  },
+  "shortlistCoverageNoContext": {
+    "UNACCENTED_SAME_KEY": {
+      "total": 126,
+      "survivedSize4": 125,
+      "survivalPct": 99.2
+    },
+    "DIFFERENT_KEY_REAL_WORD": {
+      "total": 316,
+      "survivedSize4": 139,
+      "survivalPct": 44
+    },
+    "ACCENTED_SAME_KEY": {
+      "total": 612,
+      "survivedSize4": 596,
+      "survivalPct": 97.4
+    }
+  },
+  "rates": {
+    "accentFamilyPct": 68.3,
+    "top6Pct": 19,
+    "top12Pct": 23.5,
+    "top20Pct": 25.2,
+    "oracleCoveragePct": 93.5
+  },
+  "missExamples": [
+    {
+      "value": "đã",
+      "target": "đãi",
+      "reason": "surfacePruned",
+      "freq": 143594
+    },
+    {
+      "value": "bật",
+      "target": "bậc",
+      "reason": "surfacePruned",
+      "freq": 132769
+    },
+    {
+      "value": "chính",
+      "target": "kiến",
+      "reason": "editDistanceOutOfRange",
+      "freq": 1305182
+    },
+    {
+      "value": "trương",
+      "target": "chương",
+      "reason": "other",
+      "freq": 1193740
+    },
+    {
+      "value": "trọn",
+      "target": "chọn",
+      "reason": "other",
+      "freq": 556461
+    },
+    {
+      "value": "gj",
+      "target": "động",
+      "reason": "editDistanceOutOfRange",
+      "freq": 5099040
+    },
+    {
+      "value": "nagwn",
+      "target": "năng",
+      "reason": "editDistanceOutOfRange",
+      "freq": 2024592
+    },
+    {
+      "value": "dàn",
+      "target": "giàn",
+      "reason": "other",
+      "freq": 53607
+    },
+    {
+      "value": "dần",
+      "target": "dầm",
+      "reason": "other",
+      "freq": 12171
+    },
+    {
+      "value": "nhân",
+      "target": "dân",
+      "reason": "other",
+      "freq": 3990216
+    },
+    {
+      "value": "động",
+      "target": "độ",
+      "reason": "other",
+      "freq": 1578424
+    },
+    {
+      "value": "hay",
+      "target": "khay",
+      "reason": "other",
+      "freq": 6049
+    },
+    {
+      "value": "dan",
+      "target": "gian",
+      "reason": "other",
+      "freq": 1437206
+    },
+    {
+      "value": "chuyền",
+      "target": "truyền",
+      "reason": "other",
+      "freq": 1299930
+    },
+    {
+      "value": "tời",
+      "target": "trời",
+      "reason": "other",
+      "freq": 214944
+    },
+    {
+      "value": "của",
+      "target": "và",
+      "reason": "other",
+      "freq": 18552471
+    },
+    {
+      "value": "của",
+      "target": "có",
+      "reason": "other",
+      "freq": 11241577
+    },
+    {
+      "value": "Bnh",
+      "target": "Vinh",
+      "reason": "other",
+      "freq": 321839
+    },
+    {
+      "value": "trậm",
+      "target": "chậm",
+      "reason": "other",
+      "freq": 171939
+    },
+    {
+      "value": "iện",
+      "target": "biện",
+      "reason": "surfacePruned",
+      "freq": 417610
+    },
+    {
+      "value": "khung",
+      "target": "khuôn",
+      "reason": "other",
+      "freq": 146401
+    },
+    {
+      "value": "dành",
+      "target": "giành",
+      "reason": "other",
+      "freq": 194722
+    },
+    {
+      "value": "càng",
+      "target": "càn",
+      "reason": "surfacePruned",
+      "freq": 6503
+    },
+    {
+      "value": "nh",
+      "target": "tránh",
+      "reason": "editDistanceOutOfRange",
+      "freq": 291647
+    },
+    {
+      "value": "tò",
+      "target": "tòi",
+      "reason": "surfacePruned",
+      "freq": 9423
+    },
+    {
+      "value": "đ",
+      "target": "đây",
+      "reason": "other",
+      "freq": 1534290
+    },
+    {
+      "value": "đượng",
+      "target": "được",
+      "reason": "other",
+      "freq": 8379423
+    },
+    {
+      "value": "dân",
+      "target": "nhân",
+      "reason": "other",
+      "freq": 3991534
+    },
+    {
+      "value": "dân",
+      "target": "nhân",
+      "reason": "other",
+      "freq": 3991534
+    },
+    {
+      "value": "kệ",
+      "target": "đệ",
+      "reason": "surfacePruned",
+      "freq": 30164
+    },
+    {
+      "value": "iện",
+      "target": "biện",
+      "reason": "surfacePruned",
+      "freq": 417610
+    },
+    {
+      "value": "ược",
+      "target": "nhược",
+      "reason": "other",
+      "freq": 16086
+    },
+    {
+      "value": "só",
+      "target": "sóc",
+      "reason": "other",
+      "freq": 250236
+    },
+    {
+      "value": "chung",
+      "target": "trung",
+      "reason": "other",
+      "freq": 3885987
+    },
+    {
+      "value": "g",
+      "target": "lượng",
+      "reason": "editDistanceOutOfRange",
+      "freq": 2506898
+    },
+    {
+      "value": "n",
+      "target": "nguồn",
+      "reason": "editDistanceOutOfRange",
+      "freq": 1045516
+    },
+    {
+      "value": "thì",
+      "target": "",
+      "reason": "editDistanceOutOfRange",
+      "freq": 0
+    },
+    {
+      "value": "chương",
+      "target": "trương",
+      "reason": "other",
+      "freq": 518730
+    },
+    {
+      "value": "nổ",
+      "target": "lổ",
+      "reason": "surfacePruned",
+      "freq": 1308
+    },
+    {
+      "value": "em",
+      "target": "các",
+      "reason": "editDistanceOutOfRange",
+      "freq": 16139240
+    }
+  ]
+}

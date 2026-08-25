@@ -1,0 +1,6 @@
+﻿# Dictionary governance: excluded from the BUILT lexicon (accent-index &
+# spelling competition). Curated lexicon entries are unaffected.
+# Rationale: rare-surface real words whose presence turns legitimate
+# usage into a wrong-tone warning target; caught instead via same-key
+# sibling path when genuinely mistyped.
+quỳ

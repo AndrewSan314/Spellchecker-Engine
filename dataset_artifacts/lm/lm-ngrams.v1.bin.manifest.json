@@ -1,0 +1,14 @@
+{
+  "artifact": "lm-ngrams.v1.bin",
+  "version": 1,
+  "tokenTotal": 1325600394,
+  "counts": {
+    "U": 200000,
+    "B": 1000000,
+    "T": 2760041
+  },
+  "bytes": 75733459,
+  "sha256": "36d237ef8467fd02783d59daf7d09ba077a722dc931b12d08d8fcdc7c2de5ab4",
+  "sourceTsv": "src/data/lm-ngrams.tsv",
+  "sourceTsvSha256": "791f4525653489ef98dae1ed23e238ab4aac4af90df2f8a4378e09ae78560ce6"
+}

@@ -1,0 +1,207 @@
+{
+  "meta": {
+    "name": "agent2 PMD corpus — POSSIBLE_MISSING_DIACRITIC focus",
+    "author": "independent QA evaluator (agent2)",
+    "contract": "expect matches = same ruleId (+ same value, case-insensitive). clean:true rows must yield ZERO issues. forbid hits always count as FP. Extras on dirty rows ignored when allowExtra:true.",
+    "design": "15 easy/medium unaccented marketing/OTP/delivery/banking rows (ACCENTED), 6 isolated-ambiguous silent rows + 2 fully-accented clean controls, 5 mixed partially-accented rows, 2 NON_ACCENTED rows forbidding PMD. All expected corrections are common vocabulary present in src/data/lexicon.txt."
+  },
+  "rows": [
+    { "id": "L01", "text": "Kinh chao quy khach hang", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Kinh" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "chao" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "quy" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "khach" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "hang" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L02", "text": "Cam on ban da su dung dich vu cua chung toi", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Cam" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "on" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "ban" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "da" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "su" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "dung" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "dich" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "vu" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "cua" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "chung" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "toi" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L03", "text": "Vui long kiem tra va xac nhan thong tin", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "long" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "kiem" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "xac" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L04", "text": "Don hang cua ban da giao thanh cong", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Don" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "hang" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "cua" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "ban" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "da" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "thanh" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "cong" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L05", "text": "Uu dai dac biet hom nay giam den 50%", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Uu" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "dai" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "dac" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "biet" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "hom" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "giam" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "den" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L06", "text": "Gui tang ban qua tang sinh nhat", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Gui" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "tang" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "ban" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "qua" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "tang" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "nhat" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L07", "text": "Nap tien thanh cong, so du moi la 500000 VND", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Nap" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "tien" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "cong" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "so" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "du" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "moi" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "la" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L08", "text": "Xac nhan don hang so DH8823 trong hom nay", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Xac" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "nhan" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "don" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "hang" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "so" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "hom" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L09", "text": "Tai khoan cua ban sap het han, vui long nap tien", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Tai" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "khoan" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "cua" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "ban" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "sap" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "het" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "han" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "long" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "nap" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L10", "text": "Chuc ban mot ngay tot dep", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Chuc" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "ban" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "mot" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "ngay" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "tot" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "dep" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L11", "text": "Khuyen mai cuoi tuan mua 1 tang 1", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Khuyen" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "mai" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "cuoi" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "tuan" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L12", "text": "Lien he hotline 19001234 de nhan uu dai", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Lien" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "de" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "nhan" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "uu" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "dai" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L13", "text": "Thanh toan goi cuoc 3G toc do cao", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "toan" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "goi" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "cuoc" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "toc" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "do" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L14", "text": "Tran trong thong bao lich nghi Tet 2025", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Tran" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "bao" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "lich" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Tet" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "L15", "text": "Gio mo cua 8h-22h hang ngay", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Gio" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "mo" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "cua" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "hang" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "ngay" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+
+    { "id": "S01", "text": "long", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [], "forbid": [], "clean": true, "allowExtra": true },
+    { "id": "S02", "text": "ban", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [], "forbid": [], "clean": true, "allowExtra": true },
+    { "id": "S03", "text": "gia", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [], "forbid": [], "clean": true, "allowExtra": true },
+    { "id": "S04", "text": "dua", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [], "forbid": [], "clean": true, "allowExtra": true },
+    { "id": "S05", "text": "Ban.", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [], "forbid": [], "clean": true, "allowExtra": true },
+    { "id": "S06", "text": "mua", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [], "forbid": [], "clean": true, "allowExtra": true },
+    { "id": "C01", "text": "Kính chào quý khách hàng", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [], "forbid": [], "clean": true, "allowExtra": true },
+    { "id": "C02", "text": "Đơn hàng của bạn đã được giao thành công", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [], "forbid": [], "clean": true, "allowExtra": true },
+
+    { "id": "M01", "text": "Quý khach vui lòng kiem tra lai thong tin", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "khach" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "kiem" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "lai" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "M02", "text": "Quý khách vui lòng nhan qua tang tu Tendoo", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "nhan" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "qua" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "tang" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "tu" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "M03", "text": "Xe giao hàng sẽ đến sau mot phut nua, mong anh thong cam", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "mot" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "phut" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "thong" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "cam" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "M04", "text": "Vui lòng doi mat khau ngay hom sau", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "doi" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "mat" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "khau" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "hom" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+    { "id": "M05", "text": "Tendoo mart khai truong giam 30% tat ca san pham", "mode": "ACCENTED", "brand": "VT_TENDOO",
+      "expect": [
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "giam" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "tat" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "ca" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "san" },
+        { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "pham" }
+      ], "forbid": [], "clean": false, "allowExtra": true },
+
+    { "id": "N01", "text": "Kinh chao quy khach hang", "mode": "NON_ACCENTED", "brand": "VT_TENDOO",
+      "expect": [],
+      "forbid": [ { "ruleId": "POSSIBLE_MISSING_DIACRITIC" } ],
+      "clean": false, "allowExtra": true },
+    { "id": "N02", "text": "Vui long xac nhan don hang 8823", "mode": "NON_ACCENTED", "brand": "VT_TENDOO",
+      "expect": [],
+      "forbid": [ { "ruleId": "POSSIBLE_MISSING_DIACRITIC" } ],
+      "clean": false, "allowExtra": true }
+  ]
+}

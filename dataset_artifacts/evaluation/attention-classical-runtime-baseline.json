@@ -1,0 +1,59 @@
+{
+  "schema": "attention-classical-runtime-baseline-v2",
+  "createdAt": "2026-08-25T04:19:40.982Z",
+  "plan": "docs/plans/2026-08-25-tiny-attention-spelling-reranker-FIXED.md#task-0",
+  "devOpened": false,
+  "overrides": {
+    "realWordTypoMode": "ACTIVE",
+    "realWordTypoMinProbability": 0.95,
+    "realWordTypoMaxOriginalWindows": 1,
+    "wrongDiacriticMode": "OFF",
+    "wordBoundaryCorrectionMode": "SHADOW"
+  },
+  "hashes": {
+    "configDotMjs": "b6b98331c6fc4770a3de2e27587035c4a2e172ae0d104b9fb4891cb3b9abe573",
+    "engineDotMjs": "e59e8eaf92703175772c6038efa2db4fd870c8a4f071a6a4a1cc518284d6f69b",
+    "languageDotMjs": "e7f150f3d6d36c68a1778af14fb0cc0757cc13cd7be9775e57eb7cc2d3629e7d",
+    "linguisticRulesDotMjs": "5744c59fec0292cc6a2ae05845192a677aa236abe715fe5ac3e4205f25c271ea",
+    "recallRerankerDotMjs": "719e2000903f5849baa2be71fac7abff95e3359e73ca86773e4d41572a3e802b",
+    "spellingTuningJson": "e48871ae4ce3312a1331192286efb171739fca71d42756b604c78307a434e918",
+    "lmNgramsTsv": "791f4525653489ef98dae1ed23e238ab4aac4af90df2f8a4378e09ae78560ce6",
+    "lmManifestJson": "b96abc3010ad97ec3c97389c51e1a336a15ae67ce90f444fe89dc6b1cb62c0b3",
+    "recallRerankerModelJson": "583d3ae722539d6b758bba999e034eb7066735480472372be1953563816a0725",
+    "lexiconTxt": "d16aacc3815a72456788b209b8c113c6f68e36375bed13ff9855c7aab1c6f9ac"
+  },
+  "runtime": {
+    "sms160P50Ms": 1.51,
+    "sms160P95Ms": 3.28,
+    "coldStartMs": 4058.64,
+    "rssBytes": 914350080,
+    "rssDeltaSinceLoadBytes": 843440128
+  },
+  "attentionContributionMs": 0,
+  "environment": {
+    "node": "v24.13.0",
+    "platform": "win32 10.0.26200",
+    "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+    "warmupValidations": 5,
+    "runCount": 155
+  },
+  "inputs": [
+    "benchmark/corpus.json",
+    "benchmark/corpus-2.json"
+  ],
+  "historicalReference": {
+    "authoritative": false,
+    "source": "config/spelling-tuning.json v3 devMetrics (2026-08-25)",
+    "semanticPrecision": 0.6502,
+    "semanticRecall": 0.2717,
+    "semanticF05": 0.5086,
+    "incrementalLanePrecisionApprox": 0.806,
+    "sms160P95Ms": null
+  },
+  "notes": [
+    "Runtime-only baseline. No VSEC/Viwiki/held-out data was opened.",
+    "Historical quality numbers are informational references, not claims of this run.",
+    "sms160 percentiles reuse tools/profile_engine.mjs percentile() exactly (ceil(p/100*n)-1 over ascending-sorted per-call ms, 2dp).",
+    "coldStartMs = wall time of createDefaultEngine() including LM/lexicon/SymSpell/reranker loads, measured once after module import."
+  ]
+}

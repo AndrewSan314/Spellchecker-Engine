@@ -1,0 +1,158 @@
+{
+  "rowCount": 30,
+  "expectedCount": 110,
+  "caughtCount": 99,
+  "recall": 0.9,
+  "recallPct": 90,
+  "falsePositiveCount": 0,
+  "falsePositives": [],
+  "precision": 1,
+  "precisionPct": 100,
+  "offsetInvariantAll": true,
+  "missed": [
+    {
+      "row": "L05",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "giam"
+    },
+    {
+      "row": "L06",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "Gui"
+    },
+    {
+      "row": "L07",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "Nap"
+    },
+    {
+      "row": "L08",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "so"
+    },
+    {
+      "row": "L10",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "Chuc"
+    },
+    {
+      "row": "L10",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "ban"
+    },
+    {
+      "row": "L10",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "dep"
+    },
+    {
+      "row": "L11",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "mai"
+    },
+    {
+      "row": "L13",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "toan"
+    },
+    {
+      "row": "M02",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "tu"
+    },
+    {
+      "row": "M03",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "mot"
+    }
+  ],
+  "extrasCount": 10,
+  "extras": [
+    {
+      "row": "L03",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "va",
+      "suggestions": [
+        "và"
+      ]
+    },
+    {
+      "row": "L03",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "nhan",
+      "suggestions": [
+        "nhận"
+      ]
+    },
+    {
+      "row": "L03",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "thong",
+      "suggestions": [
+        "thông"
+      ]
+    },
+    {
+      "row": "L09",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "tien",
+      "suggestions": [
+        "tiền"
+      ]
+    },
+    {
+      "row": "L12",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "he",
+      "suggestions": [
+        "hệ"
+      ]
+    },
+    {
+      "row": "L14",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "trong",
+      "suggestions": [
+        "trọng"
+      ]
+    },
+    {
+      "row": "L14",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "thong",
+      "suggestions": [
+        "thông"
+      ]
+    },
+    {
+      "row": "L14",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "nghi",
+      "suggestions": [
+        "nghỉ"
+      ]
+    },
+    {
+      "row": "M01",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "thong",
+      "suggestions": [
+        "thông"
+      ]
+    },
+    {
+      "row": "M05",
+      "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+      "value": "truong",
+      "suggestions": [
+        "trương"
+      ]
+    }
+  ],
+  "unitTests": {
+    "core": "31 pass/0 fail",
+    "rules": "21 pass/0 fail"
+  },
+  "officialBenchmark": "recall=95.7% precision=100.0% perfect=95.5%",
+  "findingsSummary": "5 finding(s): ENGINE-ARCHITECTURE=1, ENGINE-GATES=1, POSITIVE-SIGNAL=1, PROCESS-NOTE=1, OBSERVATION-UNREPRODUCED=1"
+}

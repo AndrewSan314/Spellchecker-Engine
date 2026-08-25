@@ -1,0 +1,418 @@
+{
+  "createdAt": "2026-08-24T04:31:02.938Z",
+  "objective": "crossLane F0.5 on VSEC dev",
+  "declaredConstraints": {
+    "maxMdRecallDrop": 0.005,
+    "minCrossLanePrecision": 0.7105,
+    "maxSms160P95Ms": 15,
+    "note": "core/rule suites run as post-freeze acceptance gate"
+  },
+  "baseline": {
+    "tpAny": 187,
+    "fp": 69,
+    "labels": 1115,
+    "precision": 0.73046875,
+    "recall": 0.16771300448430493,
+    "f05": 0.4371201496026181,
+    "mdRecall": 0.9558823529411765,
+    "mdExpected": 1428,
+    "sms160P95": 3.07
+  },
+  "winner": {
+    "overrides": {},
+    "metrics": {
+      "tpAny": 187,
+      "fp": 69,
+      "labels": 1115,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "f05": 0.4371201496026181,
+      "mdRecall": 0.9558823529411765,
+      "mdExpected": 1428,
+      "sms160P95": 3.07
+    }
+  },
+  "trialsCount": 33,
+  "trials": [
+    {
+      "overrides": {
+        "spellingCheapTopK": 2
+      },
+      "ok": true,
+      "f05": 0.42633822832780677,
+      "precision": 0.7228915662650602,
+      "recall": 0.16143497757847533,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.75
+    },
+    {
+      "overrides": {
+        "spellingCheapTopK": 3
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.97
+    },
+    {
+      "overrides": {
+        "spellingCheapTopK": 4
+      },
+      "ok": true,
+      "f05": 0.4355971896955503,
+      "precision": 0.7294117647058823,
+      "recall": 0.16681614349775784,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.59
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.6
+      },
+      "ok": true,
+      "f05": 0.4363042463835744,
+      "precision": 0.7276264591439688,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.72
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.65
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.58
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.7
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.44
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.75
+      },
+      "ok": true,
+      "f05": 0.4355971896955503,
+      "precision": 0.7294117647058823,
+      "recall": 0.16681614349775784,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.58
+    },
+    {
+      "overrides": {
+        "spellingMinMargin": 0.08
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.61
+    },
+    {
+      "overrides": {
+        "spellingMinMargin": 0.12
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.38
+    },
+    {
+      "overrides": {
+        "spellingMinMargin": 0.15
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.64
+    },
+    {
+      "overrides": {
+        "spellingMinMargin": 0.2
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.33
+    },
+    {
+      "overrides": {
+        "originalPriorBonusSpelling": 0.5
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.67
+    },
+    {
+      "overrides": {
+        "originalPriorBonusSpelling": 0.8
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.47
+    },
+    {
+      "overrides": {
+        "originalPriorBonusSpelling": 1.1
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.79
+    },
+    {
+      "overrides": {
+        "typoGamma": 1
+      },
+      "ok": true,
+      "f05": 0.4355971896955503,
+      "precision": 0.7294117647058823,
+      "recall": 0.16681614349775784,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.83
+    },
+    {
+      "overrides": {
+        "typoGamma": 1.2
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.74
+    },
+    {
+      "overrides": {
+        "typoGamma": 1.6
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.81
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.6,
+        "spellingMinMargin": 0.08
+      },
+      "ok": true,
+      "f05": 0.4363042463835744,
+      "precision": 0.7276264591439688,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.48
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.6,
+        "spellingMinMargin": 0.12
+      },
+      "ok": true,
+      "f05": 0.4363042463835744,
+      "precision": 0.7276264591439688,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.7
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.6,
+        "spellingMinMargin": 0.15
+      },
+      "ok": true,
+      "f05": 0.4363042463835744,
+      "precision": 0.7276264591439688,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.71
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.6,
+        "spellingMinMargin": 0.2
+      },
+      "ok": true,
+      "f05": 0.4363042463835744,
+      "precision": 0.7276264591439688,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.48
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.65,
+        "spellingMinMargin": 0.08
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.33
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.65,
+        "spellingMinMargin": 0.12
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.64
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.65,
+        "spellingMinMargin": 0.15
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.66
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.65,
+        "spellingMinMargin": 0.2
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.56
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.7,
+        "spellingMinMargin": 0.08
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.89
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.7,
+        "spellingMinMargin": 0.12
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.65
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.7,
+        "spellingMinMargin": 0.15
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.45
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.7,
+        "spellingMinMargin": 0.2
+      },
+      "ok": true,
+      "f05": 0.4371201496026181,
+      "precision": 0.73046875,
+      "recall": 0.16771300448430493,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.6
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.75,
+        "spellingMinMargin": 0.08
+      },
+      "ok": true,
+      "f05": 0.4355971896955503,
+      "precision": 0.7294117647058823,
+      "recall": 0.16681614349775784,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 3.38
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.75,
+        "spellingMinMargin": 0.12
+      },
+      "ok": true,
+      "f05": 0.4355971896955503,
+      "precision": 0.7294117647058823,
+      "recall": 0.16681614349775784,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.8
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.75,
+        "spellingMinMargin": 0.15
+      },
+      "ok": true,
+      "f05": 0.4355971896955503,
+      "precision": 0.7294117647058823,
+      "recall": 0.16681614349775784,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.86
+    },
+    {
+      "overrides": {
+        "spellingMinConfidence": 0.75,
+        "spellingMinMargin": 0.2
+      },
+      "ok": true,
+      "f05": 0.4355971896955503,
+      "precision": 0.7294117647058823,
+      "recall": 0.16681614349775784,
+      "mdRecall": 0.9558823529411765,
+      "sms160P95": 2.99
+    }
+  ],
+  "node": "v24.13.0"
+}

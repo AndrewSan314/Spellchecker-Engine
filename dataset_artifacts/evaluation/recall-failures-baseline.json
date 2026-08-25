@@ -1,0 +1,1469 @@
+{
+  "split": "dev",
+  "node": "v24.13.0",
+  "rows": 934,
+  "expectedIssues": 1115,
+  "labels": 1115,
+  "relations": {
+    "UNACCENTED_SAME_KEY": 126,
+    "DIFFERENT_KEY_SINGLE_TOKEN": 346,
+    "ACCENTED_SAME_KEY": 612,
+    "IDENTITY": 3,
+    "SPLIT": 28
+  },
+  "relationStages": {
+    "UNACCENTED_SAME_KEY": {
+      "correct-other-lane": 119,
+      "prefilter": 7
+    },
+    "DIFFERENT_KEY_SINGLE_TOKEN": {
+      "prefilter": 264,
+      "correct": 37,
+      "unsupported-multi-token": 31,
+      "cheap-ranker-loss": 13,
+      "candidate-miss": 1
+    },
+    "ACCENTED_SAME_KEY": {
+      "prefilter": 578,
+      "cheap-ranker-loss": 3,
+      "correct": 31
+    },
+    "IDENTITY": {
+      "prefilter": 3
+    },
+    "SPLIT": {
+      "unsupported-multi-token": 28
+    }
+  },
+  "stages": {
+    "correct-other-lane": 119,
+    "prefilter": 852,
+    "cheap-ranker-loss": 16,
+    "correct": 68,
+    "unsupported-multi-token": 59,
+    "candidate-miss": 1
+  },
+  "prefilterReasons": {
+    "classified-DICTIONARY": 808,
+    "classified-UNACCENTED_VALID": 40,
+    "min-token-length": 3,
+    "capitalized-proper-noun": 1
+  },
+  "pmdDecisions": {
+    "not-in-pipeline-classified-DICTIONARY": 808,
+    "gate-declined": 38,
+    "pmd-emitted-other:ứng": 1,
+    "pmd-emitted-other:hồ": 1,
+    "pmd-emitted-other:quảng": 2,
+    "no-competing-surface": 3,
+    "pmd-emitted-other:quá": 1,
+    "pmd-emitted-other:dân": 1,
+    "pmd-emitted-other:này": 1,
+    "pmd-emitted-other:trạm": 1,
+    "pmd-emitted-other:tổng": 1,
+    "pmd-emitted-other:hành": 1,
+    "pmd-emitted-other:dọa": 1,
+    "pmd-emitted-other:nhà": 1,
+    "pmd-emitted-other:phí": 1,
+    "pmd-emitted-other:tỉnh": 1,
+    "pmd-emitted-other:dũng": 1,
+    "pmd-emitted-other:hàng": 1,
+    "pmd-emitted-other:lại": 1,
+    "pmd-emitted-other:đoòng": 1,
+    "pmd-emitted-other:có": 1,
+    "pmd-emitted-other:công": 1
+  },
+  "poolRanks": {
+    "wide": {
+      "rank4plus": 16
+    },
+    "cheap": {
+      "absent": 16
+    },
+    "expensive": {
+      "absent": 16
+    }
+  },
+  "examples": {
+    "byRelationStage": {
+      "DIFFERENT_KEY_SINGLE_TOKEN|prefilter": [
+        {
+          "id": "VSEC_DEV_00002",
+          "value": "đế",
+          "target": "đến",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00005",
+          "value": "Hà",
+          "target": "Hàn",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00006",
+          "value": "Các",
+          "target": "Cách",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00006",
+          "value": "bào",
+          "target": "bài",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00011",
+          "value": "lên",
+          "target": "nên",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00016",
+          "value": "đề",
+          "target": "đều",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00018",
+          "value": "đã",
+          "target": "đãi",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00027",
+          "value": "các",
+          "target": "cách",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00029",
+          "value": "cảu",
+          "target": "của",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00034",
+          "value": "đều",
+          "target": "điều",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00034",
+          "value": "vố",
+          "target": "với",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00040",
+          "value": "giữ",
+          "target": "giữa",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00041",
+          "value": "và",
+          "target": "vào",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00051",
+          "value": "bật",
+          "target": "bậc",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00053",
+          "value": "chữ",
+          "target": "chữa",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00055",
+          "value": "chính",
+          "target": "kiến",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00056",
+          "value": "suất",
+          "target": "xuất",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00058",
+          "value": "trương",
+          "target": "chương",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00059",
+          "value": "nên",
+          "target": "lên",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00062",
+          "value": "tị",
+          "target": "trị",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        }
+      ],
+      "ACCENTED_SAME_KEY|prefilter": [
+        {
+          "id": "VSEC_DEV_00003",
+          "value": "kiên",
+          "target": "kiến",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00004",
+          "value": "sỉnh",
+          "target": "sinh",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00007",
+          "value": "kêt",
+          "target": "kết",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00008",
+          "value": "đươc",
+          "target": "được",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00009",
+          "value": "mày",
+          "target": "máy",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00010",
+          "value": "mọt",
+          "target": "một",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00012",
+          "value": "nới",
+          "target": "nói",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00013",
+          "value": "Uỷ",
+          "target": "Ủy",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00014",
+          "value": "hiên",
+          "target": "hiện",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00020",
+          "value": "bô",
+          "target": "bộ",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00021",
+          "value": "đinh",
+          "target": "định",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00022",
+          "value": "phòng",
+          "target": "phỏng",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00023",
+          "value": "phái",
+          "target": "phải",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00024",
+          "value": "cở",
+          "target": "cơ",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00025",
+          "value": "lục",
+          "target": "lực",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00026",
+          "value": "thiếu",
+          "target": "thiểu",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00030",
+          "value": "khoẻ",
+          "target": "khỏe",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00031",
+          "value": "địch",
+          "target": "đích",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00032",
+          "value": "hê",
+          "target": "hệ",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00033",
+          "value": "điện",
+          "target": "diện",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        }
+      ],
+      "ACCENTED_SAME_KEY|cheap-ranker-loss": [
+        {
+          "id": "VSEC_DEV_00004",
+          "value": "điã",
+          "target": "đĩa",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "gia"
+        },
+        {
+          "id": "VSEC_DEV_00394",
+          "value": "nẵm",
+          "target": "nắm",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "nam"
+        },
+        {
+          "id": "VSEC_DEV_00653",
+          "value": "Qưở",
+          "target": "Quở",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "quy"
+        }
+      ],
+      "IDENTITY|prefilter": [
+        {
+          "id": "VSEC_DEV_00051",
+          "value": "cha",
+          "target": "cha",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00144",
+          "value": "dám",
+          "target": "dám",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00365",
+          "value": "luyện",
+          "target": "luyện",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        }
+      ],
+      "UNACCENTED_SAME_KEY|prefilter": [
+        {
+          "id": "VSEC_DEV_00065",
+          "value": "Hinh",
+          "target": "Hình",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00214",
+          "value": "Hinh",
+          "target": "Hình",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00366",
+          "value": "tram",
+          "target": "trăm",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:trạm",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00583",
+          "value": "tinh",
+          "target": "tịnh",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:tỉnh",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00627",
+          "value": "dung",
+          "target": "dùng",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:dũng",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00684",
+          "value": "hang",
+          "target": "hãng",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:hàng",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00696",
+          "value": "lai",
+          "target": "lái)",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:lại",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "DIFFERENT_KEY_SINGLE_TOKEN|cheap-ranker-loss": [
+        {
+          "id": "VSEC_DEV_00070",
+          "value": "niệt",
+          "target": "nhiệt",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "biết"
+        },
+        {
+          "id": "VSEC_DEV_00152",
+          "value": "tỉng",
+          "target": "tỉnh",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "tổng"
+        },
+        {
+          "id": "VSEC_DEV_00162",
+          "value": "quád",
+          "target": "quá",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "quan"
+        },
+        {
+          "id": "VSEC_DEV_00181",
+          "value": "năg",
+          "target": "năng",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "năm"
+        },
+        {
+          "id": "VSEC_DEV_00327",
+          "value": "híc",
+          "target": "hích",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "học"
+        },
+        {
+          "id": "VSEC_DEV_00354",
+          "value": "thữ",
+          "target": "thực",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "thư"
+        },
+        {
+          "id": "VSEC_DEV_00446",
+          "value": "tếng",
+          "target": "tiếng",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "tăng"
+        },
+        {
+          "id": "VSEC_DEV_00469",
+          "value": "liệ",
+          "target": "liệu",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "li"
+        },
+        {
+          "id": "VSEC_DEV_00520",
+          "value": "nghẽ",
+          "target": "nghẽn",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "nghề"
+        },
+        {
+          "id": "VSEC_DEV_00552",
+          "value": "đưaa",
+          "target": "đưa",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "no-competing-surface",
+          "classified": "UNKNOWN",
+          "best": "của"
+        },
+        {
+          "id": "VSEC_DEV_00639",
+          "value": "chươn",
+          "target": "chương",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "chuẩn"
+        },
+        {
+          "id": "VSEC_DEV_00772",
+          "value": "đáh",
+          "target": "đánh",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "đã"
+        },
+        {
+          "id": "VSEC_DEV_00877",
+          "value": "kện",
+          "target": "kiện",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "đến"
+        }
+      ],
+      "DIFFERENT_KEY_SINGLE_TOKEN|candidate-miss": [
+        {
+          "id": "VSEC_DEV_00156",
+          "value": "nagwn",
+          "target": "năng",
+          "stage": "candidate-miss",
+          "reason": "empty-pool",
+          "pmdDecision": "no-competing-surface",
+          "classified": "UNKNOWN",
+          "best": null
+        }
+      ]
+    },
+    "byPmdDecision": {
+      "not-in-pipeline-classified-DICTIONARY": [
+        {
+          "id": "VSEC_DEV_00002",
+          "value": "đế",
+          "target": "đến",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00003",
+          "value": "kiên",
+          "target": "kiến",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00004",
+          "value": "sỉnh",
+          "target": "sinh",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00005",
+          "value": "Hà",
+          "target": "Hàn",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00006",
+          "value": "Các",
+          "target": "Cách",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00006",
+          "value": "bào",
+          "target": "bài",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00007",
+          "value": "kêt",
+          "target": "kết",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00008",
+          "value": "đươc",
+          "target": "được",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00009",
+          "value": "mày",
+          "target": "máy",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00010",
+          "value": "mọt",
+          "target": "một",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00011",
+          "value": "lên",
+          "target": "nên",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00012",
+          "value": "nới",
+          "target": "nói",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00013",
+          "value": "Uỷ",
+          "target": "Ủy",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00014",
+          "value": "hiên",
+          "target": "hiện",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00016",
+          "value": "đề",
+          "target": "đều",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00018",
+          "value": "đã",
+          "target": "đãi",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00020",
+          "value": "bô",
+          "target": "bộ",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00021",
+          "value": "đinh",
+          "target": "định",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00022",
+          "value": "phòng",
+          "target": "phỏng",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00023",
+          "value": "phái",
+          "target": "phải",
+          "stage": "prefilter",
+          "reason": "classified-DICTIONARY",
+          "pmdDecision": "not-in-pipeline-classified-DICTIONARY",
+          "classified": "DICTIONARY",
+          "best": null
+        }
+      ],
+      "gate-declined": [
+        {
+          "id": "VSEC_DEV_00004",
+          "value": "điã",
+          "target": "đĩa",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "gia"
+        },
+        {
+          "id": "VSEC_DEV_00051",
+          "value": "cha",
+          "target": "cha",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00065",
+          "value": "Hinh",
+          "target": "Hình",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00070",
+          "value": "niệt",
+          "target": "nhiệt",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "biết"
+        },
+        {
+          "id": "VSEC_DEV_00074",
+          "value": "doang",
+          "target": "doanh",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00082",
+          "value": "đẩ",
+          "target": "đẩy",
+          "stage": "prefilter",
+          "reason": "min-token-length",
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00152",
+          "value": "tỉng",
+          "target": "tỉnh",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "tổng"
+        },
+        {
+          "id": "VSEC_DEV_00158",
+          "value": "xong",
+          "target": "cong",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00162",
+          "value": "quád",
+          "target": "quá",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "quan"
+        },
+        {
+          "id": "VSEC_DEV_00176",
+          "value": "ta",
+          "target": "tra",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00181",
+          "value": "năg",
+          "target": "năng",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "năm"
+        },
+        {
+          "id": "VSEC_DEV_00214",
+          "value": "Hinh",
+          "target": "Hình",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00250",
+          "value": "hi",
+          "target": "khi",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00252",
+          "value": "gia",
+          "target": "giai",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00256",
+          "value": "quan",
+          "target": "qua",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00313",
+          "value": "hay",
+          "target": "thay",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00321",
+          "value": "vay",
+          "target": "vai",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00322",
+          "value": "hay",
+          "target": "khay",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00327",
+          "value": "híc",
+          "target": "hích",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "gate-declined",
+          "classified": "UNKNOWN",
+          "best": "học"
+        },
+        {
+          "id": "VSEC_DEV_00346",
+          "value": "d",
+          "target": "để",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "gate-declined",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:ứng": [
+        {
+          "id": "VSEC_DEV_00074",
+          "value": "ung",
+          "target": "(cung",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:ứng",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:hồ": [
+        {
+          "id": "VSEC_DEV_00151",
+          "value": "ho",
+          "target": "cho",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:hồ",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:quảng": [
+        {
+          "id": "VSEC_DEV_00153",
+          "value": "quang",
+          "target": "quan",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:quảng",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00492",
+          "value": "quang",
+          "target": "quan",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:quảng",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "no-competing-surface": [
+        {
+          "id": "VSEC_DEV_00156",
+          "value": "nagwn",
+          "target": "năng",
+          "stage": "candidate-miss",
+          "reason": "empty-pool",
+          "pmdDecision": "no-competing-surface",
+          "classified": "UNKNOWN",
+          "best": null
+        },
+        {
+          "id": "VSEC_DEV_00552",
+          "value": "đưaa",
+          "target": "đưa",
+          "stage": "cheap-ranker-loss",
+          "reason": null,
+          "pmdDecision": "no-competing-surface",
+          "classified": "UNKNOWN",
+          "best": "của"
+        },
+        {
+          "id": "VSEC_DEV_00635",
+          "value": "Nguyêny",
+          "target": "Nguyên",
+          "stage": "prefilter",
+          "reason": "capitalized-proper-noun",
+          "pmdDecision": "no-competing-surface",
+          "classified": "UNKNOWN",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:quá": [
+        {
+          "id": "VSEC_DEV_00321",
+          "value": "qua",
+          "target": "quan",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:quá",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:dân": [
+        {
+          "id": "VSEC_DEV_00324",
+          "value": "dan",
+          "target": "gian",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:dân",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:này": [
+        {
+          "id": "VSEC_DEV_00343",
+          "value": "nay",
+          "target": "ngay",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:này",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:trạm": [
+        {
+          "id": "VSEC_DEV_00366",
+          "value": "tram",
+          "target": "trăm",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:trạm",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:tổng": [
+        {
+          "id": "VSEC_DEV_00471",
+          "value": "tong",
+          "target": "trong",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:tổng",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:hành": [
+        {
+          "id": "VSEC_DEV_00505",
+          "value": "hanh",
+          "target": "hạn",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:hành",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:dọa": [
+        {
+          "id": "VSEC_DEV_00515",
+          "value": "doa",
+          "target": "do",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:dọa",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:nhà": [
+        {
+          "id": "VSEC_DEV_00521",
+          "value": "nha",
+          "target": "nhau,",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:nhà",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:phí": [
+        {
+          "id": "VSEC_DEV_00576",
+          "value": "phi",
+          "target": "khi",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:phí",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:tỉnh": [
+        {
+          "id": "VSEC_DEV_00583",
+          "value": "tinh",
+          "target": "tịnh",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:tỉnh",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:dũng": [
+        {
+          "id": "VSEC_DEV_00627",
+          "value": "dung",
+          "target": "dùng",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:dũng",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:hàng": [
+        {
+          "id": "VSEC_DEV_00684",
+          "value": "hang",
+          "target": "hãng",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:hàng",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:lại": [
+        {
+          "id": "VSEC_DEV_00696",
+          "value": "lai",
+          "target": "lái)",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:lại",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:đoòng": [
+        {
+          "id": "VSEC_DEV_00729",
+          "value": "doong",
+          "target": "đông",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:đoòng",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:có": [
+        {
+          "id": "VSEC_DEV_00907",
+          "value": "co",
+          "target": "cho",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:có",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ],
+      "pmd-emitted-other:công": [
+        {
+          "id": "VSEC_DEV_00929",
+          "value": "cong",
+          "target": "con",
+          "stage": "prefilter",
+          "reason": "classified-UNACCENTED_VALID",
+          "pmdDecision": "pmd-emitted-other:công",
+          "classified": "UNACCENTED_VALID",
+          "best": null
+        }
+      ]
+    }
+  },
+  "hashes": {
+    "languageDotMjs": "e7f150f3d6d36c68a1778af14fb0cc0757cc13cd7be9775e57eb7cc2d3629e7d",
+    "linguisticRulesDotMjs": "81732334eed239cb8764688aaa30242f46ab96808cbfcde4a4cc7e60413ba54e",
+    "correctionTaxonomyDotMjs": "141f52bb2152ed086fddd5852394c8c0f830c4b9340b95eab08744e77e1474de",
+    "runSpellingEvalDotMjs": "12ad5fde190d7ba7a9d680a4b26aad4fe0e049a03449adc0ddf0a97cf149159c",
+    "configDotMjs": "1eb2cedfb8a8819b1b92951d309ee5d817f3e995628a5de7c3021043e4d0970e",
+    "lmArtifact": "791f4525653489ef98dae1ed23e238ab4aac4af90df2f8a4378e09ae78560ce6",
+    "lmBytes": 79874419
+  },
+  "configSnapshotKeys": {
+    "wrongToneEnabled": false,
+    "spellingCandidateKeys": 20,
+    "spellingSurfacesPerKey": 4,
+    "spellingCheapTopK": 3,
+    "spellingMinConfidence": 0.7,
+    "spellingMinMargin": 0.15,
+    "spellingMinFrequency": 1000
+  }
+}

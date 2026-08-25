@@ -1,0 +1,1908 @@
+{
+  "meta": {
+    "description": "VSEC-aligned Vietnamese spelling benchmark (mistyped & misspelled errors)",
+    "generatedCount": 100
+  },
+  "rows": [
+    {
+      "id": "VSEC_SIM_0001",
+      "category": "spelling-vsec",
+      "text": "Vietcombank thôgn báo: Giao dịch thanh toán qua thẻ Visa Debit thành công 2.500.000 VND tại POS/E-commerce vào lúc 22:00.",
+      "mode": "ACCENTED",
+      "groundTruth": "Vietcombank thông báo: Giao dịch thanh toán qua thẻ Visa Debit thành công 2.500.000 VND tại POS/E-commerce vào lúc 22:00.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thôgn",
+          "suggestion": "thông",
+          "span": [
+            12,
+            17
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0002",
+      "category": "spelling-vsec",
+      "text": "FE Credit: Quý khachs vừa nhận được 100.000.000 VND vào tài khoản thanh toán lúc 11:45 ngày 15/10/2026. Nội dung: Chuyển tiền nhanh 247.",
+      "mode": "ACCENTED",
+      "groundTruth": "FE Credit: Quý khách vừa nhận được 100.000.000 VND vào tài khoản thanh toán lúc 11:45 ngày 15/10/2026. Nội dung: Chuyển tiền nhanh 247.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            15,
+            21
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0003",
+      "category": "spelling-vsec",
+      "text": "SeABank: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. vuj lòng thanh toán trước 01/09/2026 để tránh phí phạt.",
+      "mode": "ACCENTED",
+      "groundTruth": "SeABank: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. Vui lòng thanh toán trước 01/09/2026 để tránh phí phạt.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vuj",
+          "suggestion": "vui",
+          "span": [
+            74,
+            77
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0004",
+      "category": "spelling-vsec",
+      "text": "AIA: Mã OTP kích hoạt ứng dụgn trên thiết bị mới là 166822. Nếu không phải bạn, gọi ngay 1900545415.",
+      "mode": "ACCENTED",
+      "groundTruth": "AIA: Mã OTP kích hoạt ứng dụng trên thiết bị mới là 166822. Nếu không phải bạn, gọi ngay 1900545415.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dụgn",
+          "suggestion": "dụng",
+          "span": [
+            26,
+            30
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0005",
+      "category": "spelling-vsec",
+      "text": "ShopeePay: Thiết bị của Quý khachs đã được kích hoạt xác thực sinh trắc học khuôn mặt thành công.",
+      "mode": "ACCENTED",
+      "groundTruth": "ShopeePay: Thiết bị của Quý khách đã được kích hoạt xác thực sinh trắc học khuôn mặt thành công.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            28,
+            34
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0006",
+      "category": "spelling-vsec",
+      "text": "OCB khuyến cáo: Cảnh giác với các cuộc gọi mạo danh công an, viện kiemr sát yêu cầu chuyển tiền xác minh.",
+      "mode": "ACCENTED",
+      "groundTruth": "OCB khuyến cáo: Cảnh giác với các cuộc gọi mạo danh công an, viện kiểm sát yêu cầu chuyển tiền xác minh.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "kiemr",
+          "suggestion": "kiểm",
+          "span": [
+            66,
+            71
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0007",
+      "category": "spelling-vsec",
+      "text": "Techcombank: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. vuj lòng thanh toán trước 15/09/2026 để tránh phí phạt.",
+      "mode": "ACCENTED",
+      "groundTruth": "Techcombank: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. Vui lòng thanh toán trước 15/09/2026 để tránh phí phạt.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vuj",
+          "suggestion": "vui",
+          "span": [
+            78,
+            81
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0008",
+      "category": "spelling-vsec",
+      "text": "Sacombank: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. vuj lòng thanh toán trước 05/09/2026 để tránh phí phạt.",
+      "mode": "ACCENTED",
+      "groundTruth": "Sacombank: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. Vui lòng thanh toán trước 05/09/2026 để tránh phí phạt.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vuj",
+          "suggestion": "vui",
+          "span": [
+            76,
+            79
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0009",
+      "category": "spelling-vsec",
+      "text": "HD SAISON CẢNH BÁO: Ngân hangf không bao giờ gửi tin nhắn yêu cầu bấm vào link để nhận tiền hay cập nhật thông tin.",
+      "mode": "ACCENTED",
+      "groundTruth": "HD SAISON CẢNH BÁO: Ngân hàng không bao giờ gửi tin nhắn yêu cầu bấm vào link để nhận tiền hay cập nhật thông tin.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            25,
+            30
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0010",
+      "category": "spelling-vsec",
+      "text": "Mirae Asset: Sao kê thẻ tín dụng kỳ tháng này của Quý khachs là 1.000.000 VND. Hạn thanh toán đến hết ngày 05/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "Mirae Asset: Sao kê thẻ tín dụng kỳ tháng này của Quý khách là 1.000.000 VND. Hạn thanh toán đến hết ngày 05/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            54,
+            60
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0011",
+      "category": "spelling-vsec",
+      "text": "ShopeePay: Tài khoản của Quý khachs đã tạm khóa do đăng nhập sai mật khẩu quá 5 lần. Vui lòng mở app để lấy lại mật khẩu.",
+      "mode": "ACCENTED",
+      "groundTruth": "ShopeePay: Tài khoản của Quý khách đã tạm khóa do đăng nhập sai mật khẩu quá 5 lần. Vui lòng mở app để lấy lại mật khẩu.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            29,
+            35
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0012",
+      "category": "spelling-vsec",
+      "text": "AIA: taif khoản chứng khoán đã khớp lệnh BÁN cổ phiếu. Tiền sẽ về tài khoản sau 2 ngày làm việc theo quy định.",
+      "mode": "ACCENTED",
+      "groundTruth": "AIA: Tài khoản chứng khoán đã khớp lệnh BÁN cổ phiếu. Tiền sẽ về tài khoản sau 2 ngày làm việc theo quy định.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taif",
+          "suggestion": "tài",
+          "span": [
+            5,
+            9
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0013",
+      "category": "spelling-vsec",
+      "text": "VIB: Gửi tiết kiệm trên ứng dụgn với lãi suất hấp dẫn lên tới 7.2%/năm, kỳ hạn linh hoạt từ 1 đến 36 tháng.",
+      "mode": "ACCENTED",
+      "groundTruth": "VIB: Gửi tiết kiệm trên ứng dụng với lãi suất hấp dẫn lên tới 7.2%/năm, kỳ hạn linh hoạt từ 1 đến 36 tháng.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dụgn",
+          "suggestion": "dụng",
+          "span": [
+            28,
+            32
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0014",
+      "category": "spelling-vsec",
+      "text": "Prudential: taif khoản 1027228306 biến động -1.000.000 VND lúc 14:50 ngày 15/10/2026. Số dư: 25.400.000 VND.",
+      "mode": "ACCENTED",
+      "groundTruth": "Prudential: Tài khoản 1027228306 biến động -1.000.000 VND lúc 14:50 ngày 15/10/2026. Số dư: 25.400.000 VND.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taif",
+          "suggestion": "tài",
+          "span": [
+            12,
+            16
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0015",
+      "category": "spelling-vsec",
+      "text": "ZaloPay: Mã xác thực Smart OTP cho diao dịch là 370794. Hiệu lực trong 2 phút.",
+      "mode": "ACCENTED",
+      "groundTruth": "ZaloPay: Mã xác thực Smart OTP cho giao dịch là 370794. Hiệu lực trong 2 phút.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            35,
+            39
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0016",
+      "category": "spelling-vsec",
+      "text": "HDBank: Hợp đồng bảor hiểm nhân thọ số HD859711 sắp đến kỳ đóng phí 15.000.000 VND vào ngày 15/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "HDBank: Hợp đồng bảo hiểm nhân thọ số HD859711 sắp đến kỳ đóng phí 15.000.000 VND vào ngày 15/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "bảor",
+          "suggestion": "bảo",
+          "span": [
+            17,
+            21
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0017",
+      "category": "spelling-vsec",
+      "text": "Sacombank: diao dịch rút tiền mặt tại cây ATM số tiền 5.000.000 VND thành công. Phí giao dịch 1.100 VND.",
+      "mode": "ACCENTED",
+      "groundTruth": "Sacombank: Giao dịch rút tiền mặt tại cây ATM số tiền 5.000.000 VND thành công. Phí giao dịch 1.100 VND.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            11,
+            15
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0018",
+      "category": "spelling-vsec",
+      "text": "VNDIRECT: Chuyển tiền nội bộ thành công số tiền 100.000.000 VND. Cảm ơn Quý khachs đã sử dụng dịch vụ Smart Banking.",
+      "mode": "ACCENTED",
+      "groundTruth": "VNDIRECT: Chuyển tiền nội bộ thành công số tiền 100.000.000 VND. Cảm ơn Quý khách đã sử dụng dịch vụ Smart Banking.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            76,
+            82
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0019",
+      "category": "spelling-vsec",
+      "text": "ShopeePay: Mã xác thực đổi mật khẩu là 198001. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hangf.",
+      "mode": "ACCENTED",
+      "groundTruth": "ShopeePay: Mã xác thực đổi mật khẩu là 198001. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hàng.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            107,
+            112
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0020",
+      "category": "spelling-vsec",
+      "text": "FE Credit nhắc nợ: Khoản vay tiêu dùng số tiền 20.000.000 VND của Quý khachs sẽ đến hạn thanh toán vào ngày 05/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "FE Credit nhắc nợ: Khoản vay tiêu dùng số tiền 20.000.000 VND của Quý khách sẽ đến hạn thanh toán vào ngày 05/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            70,
+            76
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0021",
+      "category": "spelling-vsec",
+      "text": "MBBank CẢNH BÁO: Ngân hangf không bao giờ gửi tin nhắn yêu cầu bấm vào link để nhận tiền hay cập nhật thông tin.",
+      "mode": "ACCENTED",
+      "groundTruth": "MBBank CẢNH BÁO: Ngân hàng không bao giờ gửi tin nhắn yêu cầu bấm vào link để nhận tiền hay cập nhật thông tin.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            22,
+            27
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0022",
+      "category": "spelling-vsec",
+      "text": "ACB: Sổ tiết kiệm online số STK26647 số tiền 2.500.000 VND đã đến hạn tất toasn ngày 25/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "ACB: Sổ tiết kiệm online số STK26647 số tiền 2.500.000 VND đã đến hạn tất toán ngày 25/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "toasn",
+          "suggestion": "toán",
+          "span": [
+            74,
+            79
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0023",
+      "category": "spelling-vsec",
+      "text": "Mirae Asset: taif khoản 1014111722 biến động -5.000.000 VND lúc 08:00 ngày 20/09/2026. Số dư: 25.400.000 VND.",
+      "mode": "ACCENTED",
+      "groundTruth": "Mirae Asset: Tài khoản 1014111722 biến động -5.000.000 VND lúc 08:00 ngày 20/09/2026. Số dư: 25.400.000 VND.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taif",
+          "suggestion": "tài",
+          "span": [
+            13,
+            17
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0024",
+      "category": "spelling-vsec",
+      "text": "AIA: taif khoản 1083033195 biến động -20.000.000 VND lúc 20:30 ngày 31/12/2026. Số dư: 25.400.000 VND.",
+      "mode": "ACCENTED",
+      "groundTruth": "AIA: Tài khoản 1083033195 biến động -20.000.000 VND lúc 20:30 ngày 31/12/2026. Số dư: 25.400.000 VND.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taif",
+          "suggestion": "tài",
+          "span": [
+            5,
+            9
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0025",
+      "category": "spelling-vsec",
+      "text": "HDBank: Tài khoản chứng khoán đã khớp lệnh MUA cổ phiếu. vuj lòng kiểm tra danh mục đầu tư trên phần mềm giao dịch.",
+      "mode": "ACCENTED",
+      "groundTruth": "HDBank: Tài khoản chứng khoán đã khớp lệnh MUA cổ phiếu. Vui lòng kiểm tra danh mục đầu tư trên phần mềm giao dịch.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vuj",
+          "suggestion": "vui",
+          "span": [
+            57,
+            60
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0026",
+      "category": "spelling-vsec",
+      "text": "VNPay: Mã xác thực Smart OTP cho diao dịch là 226194. Hiệu lực trong 2 phút.",
+      "mode": "ACCENTED",
+      "groundTruth": "VNPay: Mã xác thực Smart OTP cho giao dịch là 226194. Hiệu lực trong 2 phút.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            33,
+            37
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0027",
+      "category": "spelling-vsec",
+      "text": "VNPay: diao dịch rút tiền mặt tại cây ATM số tiền 20.000.000 VND thành công. Phí giao dịch 1.100 VND.",
+      "mode": "ACCENTED",
+      "groundTruth": "VNPay: Giao dịch rút tiền mặt tại cây ATM số tiền 20.000.000 VND thành công. Phí giao dịch 1.100 VND.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            7,
+            11
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0028",
+      "category": "spelling-vsec",
+      "text": "SHB: Quý khachs vừa nhận được 10.000.000 VND vào tài khoản thanh toán lúc 14:50 ngày 01/09/2026. Nội dung: Chuyển tiền nhanh 247.",
+      "mode": "ACCENTED",
+      "groundTruth": "SHB: Quý khách vừa nhận được 10.000.000 VND vào tài khoản thanh toán lúc 14:50 ngày 01/09/2026. Nội dung: Chuyển tiền nhanh 247.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            9,
+            15
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0029",
+      "category": "spelling-vsec",
+      "text": "VNPay: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. vuj lòng thanh toán trước 05/09/2026 để tránh phí phạt.",
+      "mode": "ACCENTED",
+      "groundTruth": "VNPay: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. Vui lòng thanh toán trước 05/09/2026 để tránh phí phạt.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vuj",
+          "suggestion": "vui",
+          "span": [
+            72,
+            75
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0030",
+      "category": "spelling-vsec",
+      "text": "BIDV: Mã xác thực đổi mật khẩu là 381850. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hangf.",
+      "mode": "ACCENTED",
+      "groundTruth": "BIDV: Mã xác thực đổi mật khẩu là 381850. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hàng.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            102,
+            107
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0031",
+      "category": "spelling-vsec",
+      "text": "AIA: Quý khachs có khoản trả góp hàng tháng 15.000.000 VND đến hạn ngày 25/09/2026. Vui lòng thanh toán đúng hạn để giữ lịch sử tín dụng tốt.",
+      "mode": "ACCENTED",
+      "groundTruth": "AIA: Quý khách có khoản trả góp hàng tháng 15.000.000 VND đến hạn ngày 25/09/2026. Vui lòng thanh toán đúng hạn để giữ lịch sử tín dụng tốt.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            9,
+            15
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0032",
+      "category": "spelling-vsec",
+      "text": "VPBank: Quý khachs đã đóng phí bảo hiểm định kỳ thành công số tiền 100.000 VND. Cảm ơn Quý khách đã luôn đồng hành.",
+      "mode": "ACCENTED",
+      "groundTruth": "VPBank: Quý khách đã đóng phí bảo hiểm định kỳ thành công số tiền 100.000 VND. Cảm ơn Quý khách đã luôn đồng hành.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            12,
+            18
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0033",
+      "category": "spelling-vsec",
+      "text": "Mirae Asset khuyến cáo: Cảnh giác với các cuộc gọi mạo danh công an, viện kiemr sát yêu cầu chuyển tiền xác minh.",
+      "mode": "ACCENTED",
+      "groundTruth": "Mirae Asset khuyến cáo: Cảnh giác với các cuộc gọi mạo danh công an, viện kiểm sát yêu cầu chuyển tiền xác minh.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "kiemr",
+          "suggestion": "kiểm",
+          "span": [
+            74,
+            79
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0034",
+      "category": "spelling-vsec",
+      "text": "Vietcombank: Mã OTP của bạn là 402570. Không chia sẻ mã OTP với bất kỳ ai để bảo vệ taif khoản.",
+      "mode": "ACCENTED",
+      "groundTruth": "Vietcombank: Mã OTP của bạn là 402570. Không chia sẻ mã OTP với bất kỳ ai để bảo vệ tài khoản.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taif",
+          "suggestion": "tài",
+          "span": [
+            84,
+            88
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0035",
+      "category": "spelling-vsec",
+      "text": "VPBank: diao dịch chuyển đổi trả góp 0% lãi suất kỳ hạn 12 tháng số tiền 200.000 VND đã được chấp thuận.",
+      "mode": "ACCENTED",
+      "groundTruth": "VPBank: Giao dịch chuyển đổi trả góp 0% lãi suất kỳ hạn 12 tháng số tiền 200.000 VND đã được chấp thuận.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            8,
+            12
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0036",
+      "category": "spelling-vsec",
+      "text": "Sacombank: Mã OTP của bạn là 707413. Không chia sẻ mã OTP với bất kỳ ai để bảo vệ taif khoản.",
+      "mode": "ACCENTED",
+      "groundTruth": "Sacombank: Mã OTP của bạn là 707413. Không chia sẻ mã OTP với bất kỳ ai để bảo vệ tài khoản.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taif",
+          "suggestion": "tài",
+          "span": [
+            82,
+            86
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0037",
+      "category": "spelling-vsec",
+      "text": "Bảo Việt Nhân Thọ: Tài khoản của Quý khachs được cộng 5.000.000 VND tiền thưởng giới thiệu bạn bè mở tài khoản thành công.",
+      "mode": "ACCENTED",
+      "groundTruth": "Bảo Việt Nhân Thọ: Tài khoản của Quý khách được cộng 5.000.000 VND tiền thưởng giới thiệu bạn bè mở tài khoản thành công.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            37,
+            43
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0038",
+      "category": "spelling-vsec",
+      "text": "FE Credit: Quý khachs đã đóng phí bảo hiểm định kỳ thành công số tiền 5.000.000 VND. Cảm ơn Quý khách đã luôn đồng hành.",
+      "mode": "ACCENTED",
+      "groundTruth": "FE Credit: Quý khách đã đóng phí bảo hiểm định kỳ thành công số tiền 5.000.000 VND. Cảm ơn Quý khách đã luôn đồng hành.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            15,
+            21
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0039",
+      "category": "spelling-vsec",
+      "text": "ACB: Thiết bị của Quý khachs đã được kích hoạt xác thực sinh trắc học khuôn mặt thành công.",
+      "mode": "ACCENTED",
+      "groundTruth": "ACB: Thiết bị của Quý khách đã được kích hoạt xác thực sinh trắc học khuôn mặt thành công.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            22,
+            28
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0040",
+      "category": "spelling-vsec",
+      "text": "SSI CẢNH BÁO: Ngân hangf không bao giờ gửi tin nhắn yêu cầu bấm vào link để nhận tiền hay cập nhật thông tin.",
+      "mode": "ACCENTED",
+      "groundTruth": "SSI CẢNH BÁO: Ngân hàng không bao giờ gửi tin nhắn yêu cầu bấm vào link để nhận tiền hay cập nhật thông tin.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            19,
+            24
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0041",
+      "category": "spelling-vsec",
+      "text": "VPS: Tài khoản của bạn đã được hoàn tiền 50.000.000 VND từ đơn hangf bị hủy vào lúc 18:00 ngày 15/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "VPS: Tài khoản của bạn đã được hoàn tiền 50.000.000 VND từ đơn hàng bị hủy vào lúc 18:00 ngày 15/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            63,
+            68
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0042",
+      "category": "spelling-vsec",
+      "text": "ShopeePay: Mã OTP kích hoạt ứng dụgn trên thiết bị mới là 701509. Nếu không phải bạn, gọi ngay 1900545415.",
+      "mode": "ACCENTED",
+      "groundTruth": "ShopeePay: Mã OTP kích hoạt ứng dụng trên thiết bị mới là 701509. Nếu không phải bạn, gọi ngay 1900545415.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dụgn",
+          "suggestion": "dụng",
+          "span": [
+            32,
+            36
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0043",
+      "category": "spelling-vsec",
+      "text": "ZaloPay nhắc nợ: Khoản vay tiêu dùng số tiền 20.000.000 VND của Quý khachs sẽ đến hạn thanh toán vào ngày 15/10/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "ZaloPay nhắc nợ: Khoản vay tiêu dùng số tiền 20.000.000 VND của Quý khách sẽ đến hạn thanh toán vào ngày 15/10/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            68,
+            74
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0044",
+      "category": "spelling-vsec",
+      "text": "Techcombank: diao dịch chuyển khoản 1.000.000 VND tới NGUYỄN VĂN A đã thành công. Mã giao dịch: GD957968.",
+      "mode": "ACCENTED",
+      "groundTruth": "Techcombank: Giao dịch chuyển khoản 1.000.000 VND tới NGUYỄN VĂN A đã thành công. Mã giao dịch: GD957968.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            13,
+            17
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0045",
+      "category": "spelling-vsec",
+      "text": "HD SAISON: Chuyển tiền nội bộ thành công số tiền 50.000 VND. Cảm ơn Quý khachs đã sử dụng dịch vụ Smart Banking.",
+      "mode": "ACCENTED",
+      "groundTruth": "HD SAISON: Chuyển tiền nội bộ thành công số tiền 50.000 VND. Cảm ơn Quý khách đã sử dụng dịch vụ Smart Banking.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            72,
+            78
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0046",
+      "category": "spelling-vsec",
+      "text": "ShopeePay: diao dịch chuyển khoản 1.000.000 VND tới NGUYỄN VĂN A đã thành công. Mã giao dịch: GD631944.",
+      "mode": "ACCENTED",
+      "groundTruth": "ShopeePay: Giao dịch chuyển khoản 1.000.000 VND tới NGUYỄN VĂN A đã thành công. Mã giao dịch: GD631944.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            11,
+            15
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0047",
+      "category": "spelling-vsec",
+      "text": "ZaloPay: diao dịch chuyển đổi trả góp 0% lãi suất kỳ hạn 12 tháng số tiền 20.000.000 VND đã được chấp thuận.",
+      "mode": "ACCENTED",
+      "groundTruth": "ZaloPay: Giao dịch chuyển đổi trả góp 0% lãi suất kỳ hạn 12 tháng số tiền 20.000.000 VND đã được chấp thuận.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            9,
+            13
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0048",
+      "category": "spelling-vsec",
+      "text": "TCBS: Tài khoản của Quý khachs đã tạm khóa do đăng nhập sai mật khẩu quá 5 lần. Vui lòng mở app để lấy lại mật khẩu.",
+      "mode": "ACCENTED",
+      "groundTruth": "TCBS: Tài khoản của Quý khách đã tạm khóa do đăng nhập sai mật khẩu quá 5 lần. Vui lòng mở app để lấy lại mật khẩu.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            24,
+            30
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0049",
+      "category": "spelling-vsec",
+      "text": "BIDV: Mã OTP của bạn là 807437. Không chia sẻ mã OTP với bất kỳ ai để bảo vệ taif khoản.",
+      "mode": "ACCENTED",
+      "groundTruth": "BIDV: Mã OTP của bạn là 807437. Không chia sẻ mã OTP với bất kỳ ai để bảo vệ tài khoản.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taif",
+          "suggestion": "tài",
+          "span": [
+            77,
+            81
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0050",
+      "category": "spelling-vsec",
+      "text": "OCB: diao dịch chuyển khoản 200.000 VND tới NGUYỄN VĂN A đã thành công. Mã giao dịch: GD873558.",
+      "mode": "ACCENTED",
+      "groundTruth": "OCB: Giao dịch chuyển khoản 200.000 VND tới NGUYỄN VĂN A đã thành công. Mã giao dịch: GD873558.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            5,
+            9
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0051",
+      "category": "spelling-vsec",
+      "text": "Home Credit: Chuyển tiền nội bộ thành công số tiền 15.000.000 VND. Cảm ơn Quý khachs đã sử dụng dịch vụ Smart Banking.",
+      "mode": "ACCENTED",
+      "groundTruth": "Home Credit: Chuyển tiền nội bộ thành công số tiền 15.000.000 VND. Cảm ơn Quý khách đã sử dụng dịch vụ Smart Banking.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            78,
+            84
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0052",
+      "category": "spelling-vsec",
+      "text": "ShopeePay: diao dịch chuyển khoản 15.000.000 VND tới NGUYỄN VĂN A đã thành công. Mã giao dịch: GD427369.",
+      "mode": "ACCENTED",
+      "groundTruth": "ShopeePay: Giao dịch chuyển khoản 15.000.000 VND tới NGUYỄN VĂN A đã thành công. Mã giao dịch: GD427369.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            11,
+            15
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0053",
+      "category": "spelling-vsec",
+      "text": "FE Credit: Thẻ tín dụng của Quý khachs sẽ hết hạn vào tháng tới. Ngân hàng sẽ phát hành thẻ mới miễn phí tới địa chỉ của bạn.",
+      "mode": "ACCENTED",
+      "groundTruth": "FE Credit: Thẻ tín dụng của Quý khách sẽ hết hạn vào tháng tới. Ngân hàng sẽ phát hành thẻ mới miễn phí tới địa chỉ của bạn.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            32,
+            38
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0054",
+      "category": "spelling-vsec",
+      "text": "Vietcombank nhắc nợ: Khoản vay tiêu dùng số tiền 100.000 VND của Quý khachs sẽ đến hạn thanh toán vào ngày 15/10/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "Vietcombank nhắc nợ: Khoản vay tiêu dùng số tiền 100.000 VND của Quý khách sẽ đến hạn thanh toán vào ngày 15/10/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            69,
+            75
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0055",
+      "category": "spelling-vsec",
+      "text": "AIA: Quý khachs đã đóng phí bảo hiểm định kỳ thành công số tiền 15.000.000 VND. Cảm ơn Quý khách đã luôn đồng hành.",
+      "mode": "ACCENTED",
+      "groundTruth": "AIA: Quý khách đã đóng phí bảo hiểm định kỳ thành công số tiền 15.000.000 VND. Cảm ơn Quý khách đã luôn đồng hành.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            9,
+            15
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0056",
+      "category": "spelling-vsec",
+      "text": "VPBank: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. vuj lòng thanh toán trước 30/09/2026 để tránh phí phạt.",
+      "mode": "ACCENTED",
+      "groundTruth": "VPBank: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. Vui lòng thanh toán trước 30/09/2026 để tránh phí phạt.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vuj",
+          "suggestion": "vui",
+          "span": [
+            73,
+            76
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0057",
+      "category": "spelling-vsec",
+      "text": "VIB: Tài khoản của bạn đã được hoàn tiền 500.000 VND từ đơn hangf bị hủy vào lúc 22:00 ngày 01/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "VIB: Tài khoản của bạn đã được hoàn tiền 500.000 VND từ đơn hàng bị hủy vào lúc 22:00 ngày 01/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            60,
+            65
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0058",
+      "category": "spelling-vsec",
+      "text": "Prudential: Mã xác thực đổi mật khẩu là 648344. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hangf.",
+      "mode": "ACCENTED",
+      "groundTruth": "Prudential: Mã xác thực đổi mật khẩu là 648344. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hàng.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            108,
+            113
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0059",
+      "category": "spelling-vsec",
+      "text": "ZaloPay: diao dịch chuyển đổi trả góp 0% lãi suất kỳ hạn 12 tháng số tiền 500.000 VND đã được chấp thuận.",
+      "mode": "ACCENTED",
+      "groundTruth": "ZaloPay: Giao dịch chuyển đổi trả góp 0% lãi suất kỳ hạn 12 tháng số tiền 500.000 VND đã được chấp thuận.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            9,
+            13
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0060",
+      "category": "spelling-vsec",
+      "text": "VPBank: Tài khoản chứng khoán đã khớp lệnh MUA cổ phiếu. vuj lòng kiểm tra danh mục đầu tư trên phần mềm giao dịch.",
+      "mode": "ACCENTED",
+      "groundTruth": "VPBank: Tài khoản chứng khoán đã khớp lệnh MUA cổ phiếu. Vui lòng kiểm tra danh mục đầu tư trên phần mềm giao dịch.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vuj",
+          "suggestion": "vui",
+          "span": [
+            57,
+            60
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0061",
+      "category": "spelling-vsec",
+      "text": "Mirae Asset: Sao kê thẻ tín dụng kỳ tháng này của Quý khachs là 10.000.000 VND. Hạn thanh toán đến hết ngày 20/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "Mirae Asset: Sao kê thẻ tín dụng kỳ tháng này của Quý khách là 10.000.000 VND. Hạn thanh toán đến hết ngày 20/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            54,
+            60
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0062",
+      "category": "spelling-vsec",
+      "text": "HDBank khuyến cáo: Cảnh giác với các cuộc gọi mạo danh công an, viện kiemr sát yêu cầu chuyển tiền xác minh.",
+      "mode": "ACCENTED",
+      "groundTruth": "HDBank khuyến cáo: Cảnh giác với các cuộc gọi mạo danh công an, viện kiểm sát yêu cầu chuyển tiền xác minh.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "kiemr",
+          "suggestion": "kiểm",
+          "span": [
+            69,
+            74
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0063",
+      "category": "spelling-vsec",
+      "text": "HD SAISON: Quý khachs có khoản trả góp hàng tháng 100.000.000 VND đến hạn ngày 25/09/2026. Vui lòng thanh toán đúng hạn để giữ lịch sử tín dụng tốt.",
+      "mode": "ACCENTED",
+      "groundTruth": "HD SAISON: Quý khách có khoản trả góp hàng tháng 100.000.000 VND đến hạn ngày 25/09/2026. Vui lòng thanh toán đúng hạn để giữ lịch sử tín dụng tốt.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            15,
+            21
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0064",
+      "category": "spelling-vsec",
+      "text": "Prudential: Chuyển tiền nội bộ thành công số tiền 2.500.000 VND. Cảm ơn Quý khachs đã sử dụng dịch vụ Smart Banking.",
+      "mode": "ACCENTED",
+      "groundTruth": "Prudential: Chuyển tiền nội bộ thành công số tiền 2.500.000 VND. Cảm ơn Quý khách đã sử dụng dịch vụ Smart Banking.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            76,
+            82
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0065",
+      "category": "spelling-vsec",
+      "text": "ShopeePay: Mã OTP kích hoạt ứng dụgn trên thiết bị mới là 318456. Nếu không phải bạn, gọi ngay 1900545415.",
+      "mode": "ACCENTED",
+      "groundTruth": "ShopeePay: Mã OTP kích hoạt ứng dụng trên thiết bị mới là 318456. Nếu không phải bạn, gọi ngay 1900545415.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dụgn",
+          "suggestion": "dụng",
+          "span": [
+            32,
+            36
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0066",
+      "category": "spelling-vsec",
+      "text": "Sacombank: Tài khoản của Quý khachs đã tạm khóa do đăng nhập sai mật khẩu quá 5 lần. Vui lòng mở app để lấy lại mật khẩu.",
+      "mode": "ACCENTED",
+      "groundTruth": "Sacombank: Tài khoản của Quý khách đã tạm khóa do đăng nhập sai mật khẩu quá 5 lần. Vui lòng mở app để lấy lại mật khẩu.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            29,
+            35
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0067",
+      "category": "spelling-vsec",
+      "text": "ZaloPay khuyến cáo: Cảnh giác với các cuộc gọi mạo danh công an, viện kiemr sát yêu cầu chuyển tiền xác minh.",
+      "mode": "ACCENTED",
+      "groundTruth": "ZaloPay khuyến cáo: Cảnh giác với các cuộc gọi mạo danh công an, viện kiểm sát yêu cầu chuyển tiền xác minh.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "kiemr",
+          "suggestion": "kiểm",
+          "span": [
+            70,
+            75
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0068",
+      "category": "spelling-vsec",
+      "text": "VIB CẢNH BÁO: Ngân hangf không bao giờ gửi tin nhắn yêu cầu bấm vào link để nhận tiền hay cập nhật thông tin.",
+      "mode": "ACCENTED",
+      "groundTruth": "VIB CẢNH BÁO: Ngân hàng không bao giờ gửi tin nhắn yêu cầu bấm vào link để nhận tiền hay cập nhật thông tin.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            19,
+            24
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0069",
+      "category": "spelling-vsec",
+      "text": "VNPay: Mã xác thực đổi mật khẩu là 135756. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hangf.",
+      "mode": "ACCENTED",
+      "groundTruth": "VNPay: Mã xác thực đổi mật khẩu là 135756. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hàng.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            103,
+            108
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0070",
+      "category": "spelling-vsec",
+      "text": "Techcombank: Chuyển tiền nội bộ thành công số tiền 100.000 VND. Cảm ơn Quý khachs đã sử dụng dịch vụ Smart Banking.",
+      "mode": "ACCENTED",
+      "groundTruth": "Techcombank: Chuyển tiền nội bộ thành công số tiền 100.000 VND. Cảm ơn Quý khách đã sử dụng dịch vụ Smart Banking.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            75,
+            81
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0071",
+      "category": "spelling-vsec",
+      "text": "Vietcombank: Quý khachs có khoản trả góp hàng tháng 50.000 VND đến hạn ngày 05/09/2026. Vui lòng thanh toán đúng hạn để giữ lịch sử tín dụng tốt.",
+      "mode": "ACCENTED",
+      "groundTruth": "Vietcombank: Quý khách có khoản trả góp hàng tháng 50.000 VND đến hạn ngày 05/09/2026. Vui lòng thanh toán đúng hạn để giữ lịch sử tín dụng tốt.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            17,
+            23
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0072",
+      "category": "spelling-vsec",
+      "text": "TCBS: Chuyển tiền nội bộ thành công số tiền 10.000.000 VND. Cảm ơn Quý khachs đã sử dụng dịch vụ Smart Banking.",
+      "mode": "ACCENTED",
+      "groundTruth": "TCBS: Chuyển tiền nội bộ thành công số tiền 10.000.000 VND. Cảm ơn Quý khách đã sử dụng dịch vụ Smart Banking.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            71,
+            77
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0073",
+      "category": "spelling-vsec",
+      "text": "HD SAISON: Mã xác thực Smart OTP cho diao dịch là 376737. Hiệu lực trong 2 phút.",
+      "mode": "ACCENTED",
+      "groundTruth": "HD SAISON: Mã xác thực Smart OTP cho giao dịch là 376737. Hiệu lực trong 2 phút.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diao",
+          "suggestion": "giao",
+          "span": [
+            37,
+            41
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0074",
+      "category": "spelling-vsec",
+      "text": "TPBank: Mã OTP của bạn là 631785. Không chia sẻ mã OTP với bất kỳ ai để bảo vệ taif khoản.",
+      "mode": "ACCENTED",
+      "groundTruth": "TPBank: Mã OTP của bạn là 631785. Không chia sẻ mã OTP với bất kỳ ai để bảo vệ tài khoản.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taif",
+          "suggestion": "tài",
+          "span": [
+            79,
+            83
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0075",
+      "category": "spelling-vsec",
+      "text": "Vietcombank: Tài khoản chứng khoán đã khớp lệnh MUA cổ phiếu. vuj lòng kiểm tra danh mục đầu tư trên phần mềm giao dịch.",
+      "mode": "ACCENTED",
+      "groundTruth": "Vietcombank: Tài khoản chứng khoán đã khớp lệnh MUA cổ phiếu. Vui lòng kiểm tra danh mục đầu tư trên phần mềm giao dịch.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vuj",
+          "suggestion": "vui",
+          "span": [
+            62,
+            65
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0076",
+      "category": "spelling-vsec",
+      "text": "BIDV thôgn báo: Giao dịch thanh toán qua thẻ Visa Debit thành công 200.000 VND tại POS/E-commerce vào lúc 20:30.",
+      "mode": "ACCENTED",
+      "groundTruth": "BIDV thông báo: Giao dịch thanh toán qua thẻ Visa Debit thành công 200.000 VND tại POS/E-commerce vào lúc 20:30.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thôgn",
+          "suggestion": "thông",
+          "span": [
+            5,
+            10
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0077",
+      "category": "spelling-vsec",
+      "text": "VNDIRECT: Tài khoản của Quý khachs được cộng 100.000 VND tiền thưởng giới thiệu bạn bè mở tài khoản thành công.",
+      "mode": "ACCENTED",
+      "groundTruth": "VNDIRECT: Tài khoản của Quý khách được cộng 100.000 VND tiền thưởng giới thiệu bạn bè mở tài khoản thành công.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            28,
+            34
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0078",
+      "category": "spelling-vsec",
+      "text": "BIDV: Chuyển tiền nội bộ thành công số tiền 20.000.000 VND. Cảm ơn Quý khachs đã sử dụng dịch vụ Smart Banking.",
+      "mode": "ACCENTED",
+      "groundTruth": "BIDV: Chuyển tiền nội bộ thành công số tiền 20.000.000 VND. Cảm ơn Quý khách đã sử dụng dịch vụ Smart Banking.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            71,
+            77
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0079",
+      "category": "spelling-vsec",
+      "text": "Mirae Asset: Tài khoản của Quý khachs được cộng 15.000.000 VND tiền thưởng giới thiệu bạn bè mở tài khoản thành công.",
+      "mode": "ACCENTED",
+      "groundTruth": "Mirae Asset: Tài khoản của Quý khách được cộng 15.000.000 VND tiền thưởng giới thiệu bạn bè mở tài khoản thành công.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            31,
+            37
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0080",
+      "category": "spelling-vsec",
+      "text": "SSI: Tài khoản của bạn đã được hoàn tiền 200.000 VND từ đơn hangf bị hủy vào lúc 09:15 ngày 25/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "SSI: Tài khoản của bạn đã được hoàn tiền 200.000 VND từ đơn hàng bị hủy vào lúc 09:15 ngày 25/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            60,
+            65
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0081",
+      "category": "spelling-vsec",
+      "text": "ShopeePay nhắc nợ: Khoản vay tiêu dùng số tiền 10.000.000 VND của Quý khachs sẽ đến hạn thanh toán vào ngày 15/10/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "ShopeePay nhắc nợ: Khoản vay tiêu dùng số tiền 10.000.000 VND của Quý khách sẽ đến hạn thanh toán vào ngày 15/10/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            70,
+            76
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0082",
+      "category": "spelling-vsec",
+      "text": "Bảo Việt Nhân Thọ: taif khoản 1011068537 biến động -10.000.000 VND lúc 23:59 ngày 25/09/2026. Số dư: 25.400.000 VND.",
+      "mode": "ACCENTED",
+      "groundTruth": "Bảo Việt Nhân Thọ: Tài khoản 1011068537 biến động -10.000.000 VND lúc 23:59 ngày 25/09/2026. Số dư: 25.400.000 VND.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taif",
+          "suggestion": "tài",
+          "span": [
+            19,
+            23
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0083",
+      "category": "spelling-vsec",
+      "text": "VNPay: Tài khoản của Quý khachs được cộng 1.000.000 VND tiền thưởng giới thiệu bạn bè mở tài khoản thành công.",
+      "mode": "ACCENTED",
+      "groundTruth": "VNPay: Tài khoản của Quý khách được cộng 1.000.000 VND tiền thưởng giới thiệu bạn bè mở tài khoản thành công.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            25,
+            31
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0084",
+      "category": "spelling-vsec",
+      "text": "MSB khuyến cáo: Cảnh giác với các cuộc gọi mạo danh công an, viện kiemr sát yêu cầu chuyển tiền xác minh.",
+      "mode": "ACCENTED",
+      "groundTruth": "MSB khuyến cáo: Cảnh giác với các cuộc gọi mạo danh công an, viện kiểm sát yêu cầu chuyển tiền xác minh.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "kiemr",
+          "suggestion": "kiểm",
+          "span": [
+            66,
+            71
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0085",
+      "category": "spelling-vsec",
+      "text": "TPBank: Tài khoản của bạn đã được hoàn tiền 50.000 VND từ đơn hangf bị hủy vào lúc 14:50 ngày 01/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "TPBank: Tài khoản của bạn đã được hoàn tiền 50.000 VND từ đơn hàng bị hủy vào lúc 14:50 ngày 01/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            62,
+            67
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0086",
+      "category": "spelling-vsec",
+      "text": "Home Credit thôgn báo: Giao dịch thanh toán qua thẻ Visa Debit thành công 20.000.000 VND tại POS/E-commerce vào lúc 14:50.",
+      "mode": "ACCENTED",
+      "groundTruth": "Home Credit thông báo: Giao dịch thanh toán qua thẻ Visa Debit thành công 20.000.000 VND tại POS/E-commerce vào lúc 14:50.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thôgn",
+          "suggestion": "thông",
+          "span": [
+            12,
+            17
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0087",
+      "category": "spelling-vsec",
+      "text": "HDBank: Hợp đồng bảor hiểm nhân thọ số HD378441 sắp đến kỳ đóng phí 15.000.000 VND vào ngày 10/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "HDBank: Hợp đồng bảo hiểm nhân thọ số HD378441 sắp đến kỳ đóng phí 15.000.000 VND vào ngày 10/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "bảor",
+          "suggestion": "bảo",
+          "span": [
+            17,
+            21
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0088",
+      "category": "spelling-vsec",
+      "text": "SHB: Chúc mừng Quý khachs đã được tăng hạn mức thẻ tín dụng lên 50.000 VND. Kiểm tra chi tiết trên ứng dụng di động.",
+      "mode": "ACCENTED",
+      "groundTruth": "SHB: Chúc mừng Quý khách đã được tăng hạn mức thẻ tín dụng lên 50.000 VND. Kiểm tra chi tiết trên ứng dụng di động.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            19,
+            25
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0089",
+      "category": "spelling-vsec",
+      "text": "Mirae Asset: taif khoản chứng khoán đã khớp lệnh BÁN cổ phiếu. Tiền sẽ về tài khoản sau 2 ngày làm việc theo quy định.",
+      "mode": "ACCENTED",
+      "groundTruth": "Mirae Asset: Tài khoản chứng khoán đã khớp lệnh BÁN cổ phiếu. Tiền sẽ về tài khoản sau 2 ngày làm việc theo quy định.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taif",
+          "suggestion": "tài",
+          "span": [
+            13,
+            17
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0090",
+      "category": "spelling-vsec",
+      "text": "SeABank: taif khoản chứng khoán đã khớp lệnh BÁN cổ phiếu. Tiền sẽ về tài khoản sau 2 ngày làm việc theo quy định.",
+      "mode": "ACCENTED",
+      "groundTruth": "SeABank: Tài khoản chứng khoán đã khớp lệnh BÁN cổ phiếu. Tiền sẽ về tài khoản sau 2 ngày làm việc theo quy định.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taif",
+          "suggestion": "tài",
+          "span": [
+            9,
+            13
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0091",
+      "category": "spelling-vsec",
+      "text": "VPBank: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. vuj lòng thanh toán trước 05/09/2026 để tránh phí phạt.",
+      "mode": "ACCENTED",
+      "groundTruth": "VPBank: Số tiền thanh toán tối thiểu thẻ tín dụng kỳ này là 500.000 VND. Vui lòng thanh toán trước 05/09/2026 để tránh phí phạt.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vuj",
+          "suggestion": "vui",
+          "span": [
+            73,
+            76
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0092",
+      "category": "spelling-vsec",
+      "text": "SeABank: Hợp đồng bảor hiểm nhân thọ số HD965375 sắp đến kỳ đóng phí 500.000 VND vào ngày 30/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "SeABank: Hợp đồng bảo hiểm nhân thọ số HD965375 sắp đến kỳ đóng phí 500.000 VND vào ngày 30/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "bảor",
+          "suggestion": "bảo",
+          "span": [
+            18,
+            22
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0093",
+      "category": "spelling-vsec",
+      "text": "VPS: Tài khoản chứng khoán đã khớp lệnh MUA cổ phiếu. vuj lòng kiểm tra danh mục đầu tư trên phần mềm giao dịch.",
+      "mode": "ACCENTED",
+      "groundTruth": "VPS: Tài khoản chứng khoán đã khớp lệnh MUA cổ phiếu. Vui lòng kiểm tra danh mục đầu tư trên phần mềm giao dịch.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vuj",
+          "suggestion": "vui",
+          "span": [
+            54,
+            57
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0094",
+      "category": "spelling-vsec",
+      "text": "ZaloPay: Mã xác thực đổi mật khẩu là 743556. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hangf.",
+      "mode": "ACCENTED",
+      "groundTruth": "ZaloPay: Mã xác thực đổi mật khẩu là 743556. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hàng.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            105,
+            110
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0095",
+      "category": "spelling-vsec",
+      "text": "ACB: Quý khachs có khoản trả góp hàng tháng 10.000.000 VND đến hạn ngày 20/09/2026. Vui lòng thanh toán đúng hạn để giữ lịch sử tín dụng tốt.",
+      "mode": "ACCENTED",
+      "groundTruth": "ACB: Quý khách có khoản trả góp hàng tháng 10.000.000 VND đến hạn ngày 20/09/2026. Vui lòng thanh toán đúng hạn để giữ lịch sử tín dụng tốt.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            9,
+            15
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0096",
+      "category": "spelling-vsec",
+      "text": "MoMo: Quý khachs đã đóng phí bảo hiểm định kỳ thành công số tiền 50.000.000 VND. Cảm ơn Quý khách đã luôn đồng hành.",
+      "mode": "ACCENTED",
+      "groundTruth": "MoMo: Quý khách đã đóng phí bảo hiểm định kỳ thành công số tiền 50.000.000 VND. Cảm ơn Quý khách đã luôn đồng hành.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            10,
+            16
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0097",
+      "category": "spelling-vsec",
+      "text": "HDBank: Mã xác thực đổi mật khẩu là 175333. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hangf.",
+      "mode": "ACCENTED",
+      "groundTruth": "HDBank: Mã xác thực đổi mật khẩu là 175333. Tuyệt đối không cung cấp cho bất kỳ ai kể cả nhân viên ngân hàng.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            104,
+            109
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0098",
+      "category": "spelling-vsec",
+      "text": "HD SAISON nhắc nợ: Khoản vay tiêu dùng số tiền 200.000 VND của Quý khachs sẽ đến hạn thanh toán vào ngày 10/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "HD SAISON nhắc nợ: Khoản vay tiêu dùng số tiền 200.000 VND của Quý khách sẽ đến hạn thanh toán vào ngày 10/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            67,
+            73
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0099",
+      "category": "spelling-vsec",
+      "text": "VNDIRECT: Tài khoản của Quý khachs được cộng 100.000.000 VND tiền thưởng giới thiệu bạn bè mở tài khoản thành công.",
+      "mode": "ACCENTED",
+      "groundTruth": "VNDIRECT: Tài khoản của Quý khách được cộng 100.000.000 VND tiền thưởng giới thiệu bạn bè mở tài khoản thành công.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "span": [
+            28,
+            34
+          ]
+        }
+      ],
+      "allowExtra": true
+    },
+    {
+      "id": "VSEC_SIM_0100",
+      "category": "spelling-vsec",
+      "text": "ZaloPay: Tài khoản của bạn đã được hoàn tiền 200.000 VND từ đơn hangf bị hủy vào lúc 23:59 ngày 25/09/2026.",
+      "mode": "ACCENTED",
+      "groundTruth": "ZaloPay: Tài khoản của bạn đã được hoàn tiền 200.000 VND từ đơn hàng bị hủy vào lúc 23:59 ngày 25/09/2026.",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hangf",
+          "suggestion": "hàng",
+          "span": [
+            64,
+            69
+          ]
+        }
+      ],
+      "allowExtra": true
+    }
+  ]
+}

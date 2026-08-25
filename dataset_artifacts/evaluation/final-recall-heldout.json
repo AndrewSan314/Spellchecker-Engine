@@ -1,0 +1,694 @@
+{
+  "split": "test",
+  "final": true,
+  "node": "v24.13.0",
+  "rows": 934,
+  "expectedIssues": 1121,
+  "hashes": {
+    "languageDotMjs": "e7f150f3d6d36c68a1778af14fb0cc0757cc13cd7be9775e57eb7cc2d3629e7d",
+    "linguisticRulesDotMjs": "5744c59fec0292cc6a2ae05845192a677aa236abe715fe5ac3e4205f25c271ea",
+    "configDotMjs": "b93e046079f9b26e0f05ad655946e818a8ddf9367a3757264a7aea0bc2e91646",
+    "lmArtifact": "791f4525653489ef98dae1ed23e238ab4aac4af90df2f8a4378e09ae78560ce6",
+    "lmBytes": 79874419
+  },
+  "configSnapshotKeys": {
+    "wrongDiacriticMode": "OFF",
+    "wrongDiacriticModeOverride": null,
+    "realWordTypoMode": "OFF",
+    "realWordTypoModeOverride": null,
+    "spellingCandidateKeys": 20,
+    "spellingSurfacesPerKey": 4,
+    "spellingCheapTopK": 3,
+    "spellingMinConfidence": 0.7,
+    "spellingMinMargin": 0.15,
+    "spellingMinFrequency": 1000,
+    "typoAlpha": 1,
+    "typoBeta": 0.3,
+    "typoGamma": 1.2,
+    "originalPriorBonusSpelling": 0.8
+  },
+  "metrics": {
+    "labels": 1121,
+    "views": {
+      "strictRuleId": {
+        "tpWithSuggestion": 62,
+        "fp": 6,
+        "precision": 0.9118,
+        "recall": 0.0553,
+        "f05": 0.2225
+      },
+      "semanticLinguistic": {
+        "tpWithSuggestion": 185,
+        "fp": 101,
+        "precision": 0.6469,
+        "recall": 0.165,
+        "f05": 0.4084
+      },
+      "valueOnlyDiagnostic": {
+        "tpValueOnly": 218,
+        "fp": 67,
+        "precision": 0.7649,
+        "recall": 0.1945,
+        "diagnosticOnly": true
+      }
+    },
+    "strict": {
+      "tpWithSuggestion": 62,
+      "fp": 6,
+      "precision": 0.9118,
+      "recall": 0.0553,
+      "f05": 0.2225
+    },
+    "crossLane": {
+      "tpWithSuggestion": 185,
+      "tpValueOnly": 218,
+      "fp": 67,
+      "precision": 0.6469,
+      "recall": 0.165,
+      "f05": 0.4084,
+      "precisionValueOnly": 0.7649
+    }
+  },
+  "stages": {
+    "correct": 62,
+    "correct-other-lane": 123,
+    "prefilter": 855,
+    "candidate-miss": 9,
+    "cheap-ranker-loss": 14,
+    "trigram-ranker-loss": 0,
+    "gate-rejected": 4,
+    "wrong-suggestion": 1,
+    "suppressed-downstream": 0,
+    "unsupported-multi-token": 52,
+    "label-token-not-found": 1
+  },
+  "relations": {
+    "ACCENTED_SAME_KEY": 615,
+    "UNACCENTED_SAME_KEY": 131,
+    "DIFFERENT_KEY_SINGLE_TOKEN": 352,
+    "SPLIT": 20,
+    "IDENTITY": 3
+  },
+  "relationStages": {
+    "ACCENTED_SAME_KEY": {
+      "prefilter": 586,
+      "cheap-ranker-loss": 2,
+      "correct": 22,
+      "gate-rejected": 3,
+      "candidate-miss": 1,
+      "wrong-suggestion": 1
+    },
+    "UNACCENTED_SAME_KEY": {
+      "correct-other-lane": 123,
+      "prefilter": 8
+    },
+    "DIFFERENT_KEY_SINGLE_TOKEN": {
+      "prefilter": 258,
+      "unsupported-multi-token": 32,
+      "correct": 40,
+      "candidate-miss": 8,
+      "cheap-ranker-loss": 12,
+      "label-token-not-found": 1,
+      "gate-rejected": 1
+    },
+    "SPLIT": {
+      "unsupported-multi-token": 20
+    },
+    "IDENTITY": {
+      "prefilter": 3
+    }
+  },
+  "prefilterReasons": {
+    "classified-DICTIONARY": 801,
+    "classified-UNACCENTED_VALID": 45,
+    "min-token-length": 7,
+    "capitalized-proper-noun": 2
+  },
+  "shadowWrongDiacritic": {
+    "mode": "OFF",
+    "decisions": 0,
+    "wouldEmit": 0,
+    "tp": 0,
+    "fp": 0,
+    "checkFailures": {},
+    "reachableNoPmdLine": 0
+  },
+  "shadowRealWordTypo": {
+    "mode": "OFF",
+    "decisions": 0,
+    "wouldEmit": 0,
+    "tp": 0,
+    "fp": 0,
+    "checkFailures": {},
+    "reachableNoPmdLine": 0
+  },
+  "shadowWordBoundary": {
+    "mode": "SHADOW",
+    "decisions": 111,
+    "wouldEmit": 0,
+    "tp": 0,
+    "fp": 0
+  },
+  "examples": [
+    {
+      "id": "VSEC_TEST_00001",
+      "value": "nghiêp",
+      "target": "nghiệp",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00003",
+      "value": "đạo",
+      "target": "đào",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00004",
+      "value": "cõ",
+      "target": "có",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00005",
+      "value": "đông",
+      "target": "đồng",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00006",
+      "value": "của",
+      "target": "cửa",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00006",
+      "value": "ra",
+      "target": "gia",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00007",
+      "value": "phẩn",
+      "target": "phải",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00008",
+      "value": "khoá",
+      "target": "khóa",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00009",
+      "value": "tỉnh",
+      "target": "tình",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00010",
+      "value": "dược",
+      "target": "được",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00011",
+      "value": "đụng",
+      "target": "dụng",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00012",
+      "value": "lạnh",
+      "target": "lãnh",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00013",
+      "value": "doạn",
+      "target": "đoạn",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00014",
+      "value": "trành",
+      "target": "tránh",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00015",
+      "value": "dùng",
+      "target": "dung",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00016",
+      "value": "nhưng",
+      "target": "những",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00017",
+      "value": "điểu",
+      "target": "điều",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00018",
+      "value": "giải",
+      "target": "giả",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00019",
+      "value": "thên",
+      "target": "thêm",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00020",
+      "value": "đối",
+      "target": "đổi",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00021",
+      "value": "bới",
+      "target": "bởi",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00022",
+      "value": "mau",
+      "target": "mua",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00023",
+      "value": "trư",
+      "target": "trữ",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00024",
+      "value": "hành",
+      "target": "thành",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00025",
+      "value": "dựng",
+      "target": "dụng",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00026",
+      "value": "Nhưng",
+      "target": "Những",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00027",
+      "value": "đặt",
+      "target": "đặc",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00027",
+      "value": "bặt",
+      "target": "bật",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00027",
+      "value": "toạ",
+      "target": "tạo",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00028",
+      "value": "đạo",
+      "target": "đào",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00031",
+      "value": "qùa",
+      "target": "quà",
+      "stage": "cheap-ranker-loss",
+      "best": "của",
+      "gates": {},
+      "conf": 0.81
+    },
+    {
+      "id": "VSEC_TEST_00032",
+      "value": "kiêm",
+      "target": "kiểm",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00033",
+      "value": "thoả",
+      "target": "thỏa",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00034",
+      "value": "tình",
+      "target": "tinh",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00035",
+      "value": "thuât",
+      "target": "thuật,",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00036",
+      "value": "nhãn",
+      "target": "nhân",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00037",
+      "value": "mâu",
+      "target": "mẫu",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00039",
+      "value": "khoá",
+      "target": "khóa",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00039",
+      "value": "gía",
+      "target": "giá",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00040",
+      "value": "đông",
+      "target": "động",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00041",
+      "value": "sông",
+      "target": "sống",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00042",
+      "value": "đươc",
+      "target": "được",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00042",
+      "value": "đia",
+      "target": "địa",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00043",
+      "value": "Trấn",
+      "target": "Trần",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00044",
+      "value": "nghiệm",
+      "target": "nhiệm",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00045",
+      "value": "chúc",
+      "target": "chức",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00046",
+      "value": "tào",
+      "target": "tạo,",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00047",
+      "value": "nghiêp",
+      "target": "nghiệp",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00048",
+      "value": "vảo",
+      "target": "bảo",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00049",
+      "value": "hản",
+      "target": "hẳn",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00051",
+      "value": "dựng",
+      "target": "dụng",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00052",
+      "value": "điếm",
+      "target": "điểm",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00053",
+      "value": "răng",
+      "target": "rằng",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00054",
+      "value": "đo",
+      "target": "đô",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00055",
+      "value": "têu",
+      "target": "tiêu",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00056",
+      "value": "đổi",
+      "target": "đối",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00057",
+      "value": "nà",
+      "target": "này",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00058",
+      "value": "triền",
+      "target": "triển",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00059",
+      "value": "nếu",
+      "target": "nêu",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    },
+    {
+      "id": "VSEC_TEST_00061",
+      "value": "hồ",
+      "target": "hồi",
+      "stage": "prefilter",
+      "best": null,
+      "gates": null,
+      "conf": null
+    }
+  ]
+}

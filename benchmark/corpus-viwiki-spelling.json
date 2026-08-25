@@ -1,0 +1,4105 @@
+{
+  "meta": {
+    "description": "Viwiki-Spelling external/OOD spelling benchmark; never used for training or dev",
+    "source": "heraclex12/Viwiki-spelling (CC BY 4.0)",
+    "split": "external-test",
+    "documentCount": 107,
+    "sourceMistakes": 1520,
+    "skippedMistakes": 298,
+    "groupedRows": 1094,
+    "extractedCases": 165,
+    "rowLimit": 150,
+    "fullyLabeledRuleIds": [
+      "POSSIBLE_SPELLING_ERROR"
+    ],
+    "generatedFromCorpusTrain": false,
+    "cleanTrainingArtifact": null
+  },
+  "rows": [
+    {
+      "id": "VIWIKI_EXT_0001",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Việc phát giác, Minh Hoàng địng bắt Canh chết, nhưng vì có công chữa khỏi bệnh cho Dụ Tông nên được tha.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "địng",
+          "suggestion": "định",
+          "suggestions": [
+            "định"
+          ],
+          "span": [
+            27,
+            31
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0002",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Vào đầu năm này, hạn hát, sâu cắn lúa, thiên tai xảy ra khiến nhiều người chết đói.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hát",
+          "suggestion": "hán",
+          "suggestions": [
+            "hán"
+          ],
+          "span": [
+            21,
+            24
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0003",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Ngô Bệ tiếp tục đem quân tụ họp ở núi Yên Phụ, dựng cờ lớn ở trên núi, tiếm sưng vị hiệu, yết bảng nói cứu giúp dân nghèo.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "sưng",
+          "suggestion": "xưng",
+          "suggestions": [
+            "xưng"
+          ],
+          "span": [
+            76,
+            80
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0004",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Sử cũ chép rằng, có người đã xàm tấu với ông rằng Thái úy Cung Tĩnh vương Trần Nguyên Trác đã yểm bùa hại ông, Hoàng đế chút nữa là sát hại Nguyên Trác, nhưng Hiến Từ Hoàng thái hậu đã can ngăn.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "xàm",
+          "suggestion": "sàm",
+          "suggestions": [
+            "sàm"
+          ],
+          "span": [
+            29,
+            32
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0005",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Có hơn 4.900 loại khoáng vật đã được biết đến, trong đố có hơn 4.660 loại được Hiệp hội Khoáng vật học quốc tế công nhận.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đố",
+          "suggestion": "đó",
+          "suggestions": [
+            "đó"
+          ],
+          "span": [
+            53,
+            55
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0006",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Các loại khoáng vật được phân việt bởi nhiều tính chất vật lý và hóa học.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "việt",
+          "suggestion": "biệt",
+          "suggestions": [
+            "biệt"
+          ],
+          "span": [
+            30,
+            34
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0007",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Một khoáng vật có thể được nhận biết bằng một vài tính chất vật lý, mọt vài tính chất đó cũng đủ để nhận biết một cách tổng thể mà không gây hiểu nhầm.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "mọt",
+          "suggestion": "một",
+          "suggestions": [
+            "một"
+          ],
+          "span": [
+            68,
+            71
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0008",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Trong tụ nhiên, thức ăn của trăn hoàng gia chủ yếu là các loài thú nhỏ, tỉ như chuột lông mềm châu Phi (\"Mastomys natalensis\"), chuột chù hay chuột vằn.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tụ",
+          "suggestion": "tự",
+          "suggestions": [
+            "tự"
+          ],
+          "span": [
+            6,
+            8
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0009",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Kích cỡ của con mồi phải bằng hoặc lớn hơn một chút so với chiều rộng của phần to nhất của thân trăng.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "trăng",
+          "suggestion": "trăn",
+          "suggestions": [
+            "trăn"
+          ],
+          "span": [
+            96,
+            101
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0010",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Một số nguyên nhân gây biếng ăn khác có thể do xúc kích (\"stress\") do bị ôm, cầm nắm quá nhiều, hay do nhiệt độ quá cao, quá thấp, hay do không gian quá chật chội.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ôm",
+          "suggestion": "ốm",
+          "suggestions": [
+            "ốm"
+          ],
+          "span": [
+            73,
+            75
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0011",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Trong điều kiện nuôi nhốt, trăn hoàng gia thường được cung cấp một lượng thức ăn đa dạng từ các loại chuột cho đến thịt gà, tuy nhiên nguồn thức ăn giầu dinh dưỡng nhất và cũng ổn định nhất là chuột cống.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "giầu",
+          "suggestion": "giàu",
+          "suggestions": [
+            "giàu"
+          ],
+          "span": [
+            148,
+            152
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0012",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Ngoài tuổi tác, cân nặng cũng là một trong những yếu tố xác định mức độ trưởng thành sinh dục: con đực sẽ bắt đầu sinh sản khi đạt được cân nặng 600 gam, nhưng trong điều kiện nuôi nhốt thì con số này dôi lên đến 800 gam (1,7 lb).",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dôi",
+          "suggestion": "dội",
+          "suggestions": [
+            "dội"
+          ],
+          "span": [
+            201,
+            204
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0013",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Cha mẹ chỉ đảm nhiệm việc ấp và canh chừng trứng, còn khi trứng đã nở thì trănm cha mẹ bỏ đi để cho con cái tự kiếm sống.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "trănm",
+          "suggestion": "trăn",
+          "suggestions": [
+            "trăn"
+          ],
+          "span": [
+            74,
+            79
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0014",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "trốn, vì vậy nên nuôi trăn non trong những cái bồn nhỏ chừng hay .",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hay",
+          "suggestion": "này",
+          "suggestions": [
+            "này"
+          ],
+          "span": [
+            61,
+            64
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0015",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Vào năm 101, ông thân chinh điều động binh mã phạt Vương quốc Dacia để chống nhau với vua Decebalus, đánh tan nát quân Dacia trong trận đánh khốc liệt taị Tapae lần thứ hai vào năm 102, và hoàn toàn chinh phục nước Dacia vào năm 106.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "taị",
+          "suggestion": "tại",
+          "suggestions": [
+            "tại"
+          ],
+          "span": [
+            151,
+            154
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0016",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Nhân dân yêu mến Hoàng đế Traianus đến mức Viện Nguyên lão La Mã phải vinh danh ông là \"optimus\", nghĩ là \"xuất sắc hơn cả\".",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "nghĩ",
+          "suggestion": "nghĩa",
+          "suggestions": [
+            "nghĩa"
+          ],
+          "span": [
+            98,
+            102
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0017",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Ông cũng vời các nhà hiền triết về triều để góp phần dựng nước.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cũng",
+          "suggestion": "cùng",
+          "suggestions": [
+            "cùng"
+          ],
+          "span": [
+            4,
+            8
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vời",
+          "suggestion": "với",
+          "suggestions": [
+            "với"
+          ],
+          "span": [
+            9,
+            12
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0018",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Julianus Nhà hiền triết - vị Hoàng đế Đa thần giáo cuối cùng Đế quốc La Mã, có viết rằng khi Traianus đang \"lên cơm han trai\" thần Zeus phải cẩn thận với chàng Ganymedes tuyệt đẹp của thần.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cơm",
+          "suggestion": "cơn",
+          "suggestions": [
+            "cơn"
+          ],
+          "span": [
+            112,
+            115
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "han",
+          "suggestion": "hám",
+          "suggestions": [
+            "hám"
+          ],
+          "span": [
+            116,
+            119
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0019",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Vị Hoàng đế truyền lệnh cho Apollodorus người xứ Damascus thiết kế và gầy dựng nên một cây cầu lớn bắc qua sông Danube, sau đó ông lại thân chinh đốc suất binh mã phạt quân Dacia và chiếm lĩnh được một phần của Vương quốc Dacia vào năm 106.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "gầy",
+          "suggestion": "gây",
+          "suggestions": [
+            "gây"
+          ],
+          "span": [
+            70,
+            73
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "suất",
+          "suggestion": "xuất",
+          "suggestions": [
+            "xuất"
+          ],
+          "span": [
+            150,
+            154
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0020",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Sau chiến thắng, Hoàng đế Traianus cũng lệnh cho gầy dựng một thành phố mới là Colonia Ulpia Traiana Augusta Dacica Sarmizegetusa, trên một địa điểm khác so với cố đô của người Dacia, mặc dù có cùng tên gọi đầy đủ là Sarmizegetusa.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "gầy",
+          "suggestion": "gây",
+          "suggestions": [
+            "gây"
+          ],
+          "span": [
+            49,
+            52
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0021",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Với chiến thắng của ông, mở ra gần 200 năm đô hộ của người La Mã ờ vùng România.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ờ",
+          "suggestion": "ở",
+          "suggestions": [
+            "ở"
+          ],
+          "span": [
+            65,
+            66
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0022",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Theo Cassius Dio, sở dĩ có chuyện ấy là do Traianus không có con đồng thời lúc ông phải lăn xả ngoài xa trường thì Hoàng hậu yêu Hadrianus.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "xa",
+          "suggestion": "sa",
+          "suggestions": [
+            "sa"
+          ],
+          "span": [
+            101,
+            103
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0023",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Ông là vị Hoàng đế có tài dụng binh như thần, không bao giờ ngưng nghỉ chiến đấu và có lòng vô cùng dũng cảm theo lối triết học Khắc Kỷ.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ngưng",
+          "suggestion": "ngừng",
+          "suggestions": [
+            "ngừng"
+          ],
+          "span": [
+            60,
+            65
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0024",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Những công trình đồ sộ mà ông bỏ công gầy dựng sẽ còn làm ấn tượng hậu thế.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "gầy",
+          "suggestion": "gây",
+          "suggestions": [
+            "gây"
+          ],
+          "span": [
+            38,
+            41
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0025",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Từ ngày 23 tháng 1 năm 1871, Chính phủ của Trochu bắt đầu đàm phán với Phổ lại cung điện Versailles.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "lại",
+          "suggestion": "tại",
+          "suggestions": [
+            "tại"
+          ],
+          "span": [
+            75,
+            78
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0026",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Đến ngày 28/1, Chính phủ Pháp ký hiệp định đình chiến, chấp nhận các điều hiện của phía Phổ.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hiện",
+          "suggestion": "kiện",
+          "suggestions": [
+            "kiện"
+          ],
+          "span": [
+            74,
+            78
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0027",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Đúng như dự đinh, Quốc hội mới được thành lập vào đầu tháng 2 với 750 nghị viên.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đinh",
+          "suggestion": "định",
+          "suggestions": [
+            "định"
+          ],
+          "span": [
+            12,
+            16
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0028",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Trong cuộc chiến, nhiều binh lính quân chính phủ đã nghiên về phía quân vệ quốc, viên tướng chỉ huy bị bắn chết tại chỗ.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "nghiên",
+          "suggestion": "nghiêng",
+          "suggestions": [
+            "nghiêng"
+          ],
+          "span": [
+            52,
+            58
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0029",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Công xã Paris thất bại có nhiều nguyên nhân, các khách quan và chủ quan.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "các",
+          "suggestion": "cả",
+          "suggestions": [
+            "cả"
+          ],
+          "span": [
+            45,
+            48
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0030",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Ônh được giáo dục về luật và triết học, và phục vụ như là factotum cho hai gia đình quý tộc lớn người Đức, Leibniz đã đóng một vai trò quan trọng trong chính trị của châu Âu và các vấn đề ngoại giao trong thời đại của ông.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Ônh",
+          "suggestion": "Ông",
+          "suggestions": [
+            "Ông"
+          ],
+          "span": [
+            0,
+            3
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0031",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Sau đó ông từ chối một ví trí giảng dạy tại Altdorf, và trải quãng đời còn lại phục vụ cho hai gia đình quý tộc lớn ở Đức.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ví",
+          "suggestion": "vị",
+          "suggestions": [
+            "vị"
+          ],
+          "span": [
+            23,
+            25
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0032",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Đặc biệt là Leibniz đã làm quen với nhà vật lý và toán học người Hà Lan là Christiaan Huygens, lúc đó khả nổi ở Paris.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khả",
+          "suggestion": "khá",
+          "suggestions": [
+            "khá"
+          ],
+          "span": [
+            102,
+            105
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0033",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Thư viện được lưu trữ tốt ở địa điểm Frenchay được gọi là Thư viện Bolland, đặt tên theo Tiến sỹ Robert Bolland, giám đốc thứ nhất của Trường Bách khoa Bristol từ năm 1969 đến năm 1974.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "sỹ",
+          "suggestion": "sĩ",
+          "suggestions": [
+            "sĩ"
+          ],
+          "span": [
+            94,
+            96
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0034",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Cùng với việc gạn lọc làm dể hiểu Luật Hướng đạo của tổ chức, Hiến chương của Tổ chức Phong trào Hướng đạo Thế giới nói như sau:",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dể",
+          "suggestion": "để",
+          "suggestions": [
+            "để"
+          ],
+          "span": [
+            26,
+            28
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0035",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Để cho thích hợp với nhiều tín ngưởng khác nhau trong Hướng đạo, \"Thượng đế\" có thể ám chỉ đến một năng lực cao siêu, và không nhất thiết hạn chế để chỉ Thượng đế của các tôn giáo tâm linh.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ngưởng",
+          "suggestion": "ngưỡng",
+          "suggestions": [
+            "ngưỡng"
+          ],
+          "span": [
+            31,
+            37
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0036",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Hai trong các quốc gia này vẫn còn xử dụng lời hứa thay thế (Hà Lan và Cộng hòa Séc) mà các quốc gia kia đã bỏ hẳn.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "xử",
+          "suggestion": "sử",
+          "suggestions": [
+            "sử"
+          ],
+          "span": [
+            35,
+            37
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0037",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Tổ chức Phong trào Hướng đạo Thế giới đã nêu rỏ năm 1932 rằng không có sự ngoại trừ nào được quyết định và bột lộ mong muốn rằng vài quốc gia còn lại sẽ ngưng xử dụng bất cứ lời hứa nào thiếu nói đến đến \"bổn phận đối với Thượng đế\".",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "rỏ",
+          "suggestion": "rõ",
+          "suggestions": [
+            "rõ",
+            "ra"
+          ],
+          "span": [
+            45,
+            47
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "bột",
+          "suggestion": "bộc",
+          "suggestions": [
+            "bộc"
+          ],
+          "span": [
+            107,
+            110
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "xử",
+          "suggestion": "sử",
+          "suggestions": [
+            "sử"
+          ],
+          "span": [
+            159,
+            161
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0038",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Ngoài ra huyện cũng đang hình thành khu công nghiệp Tân Thành B, ưu tiên cho sản xuất thức ăn gia súc và sản xúât công nghiệp.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "xúât",
+          "suggestion": "xuất",
+          "suggestions": [
+            "xuất"
+          ],
+          "span": [
+            109,
+            113
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0039",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Rastignas là một sinh viên nghèo ngán ngẫm cuộc sống nghèo khổ, mong muốn được gia nhập vào xã hội của giới thượng lưu.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ngẫm",
+          "suggestion": "ngẩm",
+          "suggestions": [
+            "ngẩm"
+          ],
+          "span": [
+            38,
+            42
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0040",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Khi ở tại quán trọ của mụ Vauqer, Rastignac đã nhiều lần nhì thấy hành động quái lạ của lão Goriot: Có một hôm, anh nhìn thấy trong đêm khuya lão dùng sức vo tròn bộ đồ bạc, có cái cốc uống nước(trên nắp có in hình đôi chim cu_kỷ vật của vợ lão).",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "nhì",
+          "suggestion": "nhìn",
+          "suggestions": [
+            "nhìn"
+          ],
+          "span": [
+            57,
+            60
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0041",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Cuối cùng, Rastignac cũng hiểu ra mối quan hệ cha con giữa lão Goriot với Anastasievà Delphine, nên anh đã kể lại chuyện giữa anh và Delphine cho lão biết.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Anastasievà",
+          "suggestion": "Anastasie và",
+          "suggestions": [
+            "Anastasie và"
+          ],
+          "span": [
+            74,
+            85
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0042",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Đúng thời gian đó, hết cô chị rồi lại cô em đến vòi vĩnh lão đủ thứ, kể lễ, than khóc với lão về chuyện lục đục trong gia đình họ.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "lễ",
+          "suggestion": "lể",
+          "suggestions": [
+            "lể"
+          ],
+          "span": [
+            72,
+            74
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0043",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Công việc thiết kế bắt đầu những năm 1960 khi viện nghiên cứu NII-24 được ra lệnh chế tạo một loại vũ khí có thể chống lại tầu ngầm nguyên tử.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tầu",
+          "suggestion": "tàu",
+          "suggestions": [
+            "tàu"
+          ],
+          "span": [
+            123,
+            126
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0044",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Ngày 29-11-1977 hệ thống chống tầu ngầm dùng ngư lôi Shkval VA-111 được chấp nhận sử dụng trong Hải Quân.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tầu",
+          "suggestion": "tàu",
+          "suggestions": [
+            "tàu"
+          ],
+          "span": [
+            31,
+            34
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0045",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Shkval được thiết kế để chống ngư lôi phóng từ tầu ngầm hạt nhân đối phương còn chưa bị phát hiện, diệt các mục tiêu chạy nhanh đang tới gần.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tầu",
+          "suggestion": "tàu",
+          "suggestions": [
+            "tàu"
+          ],
+          "span": [
+            47,
+            50
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0046",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Shkval cho phép những tầu ngầm, tầu chiến ồn ào tự vệ và diệt đối phương khi đối đầu với những tầu ngầm hiện đại chạy êm.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tầu",
+          "suggestion": "tàu",
+          "suggestions": [
+            "tàu"
+          ],
+          "span": [
+            22,
+            25
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tầu",
+          "suggestion": "tàu",
+          "suggestions": [
+            "tàu"
+          ],
+          "span": [
+            32,
+            35
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tầu",
+          "suggestion": "tàu",
+          "suggestions": [
+            "tàu"
+          ],
+          "span": [
+            95,
+            98
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0047",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Tốc độ cao của Shkval đạt được nhờ ứng dụng hiện tượng siêu khoang – ngư lôi chuyển động trong một bong bóng khí khổng lồ, làm giảm đáng kể lực ma sát và cho phép ngư lôi chuyển động ở tốc độc cực cao.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "độc",
+          "suggestion": "độ",
+          "suggestions": [
+            "độ"
+          ],
+          "span": [
+            189,
+            192
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0048",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Hồ Chí Minh được thành lập ngày 26/10/1994 theo Quyết định số 616/TTg của Thủ tướng Chính phủ trên cơ sở Trường Dân lập Ngoai ngữ và Tin học Sài Gòn được thành lập từ năm 1992.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Ngoai",
+          "suggestion": "ngoại",
+          "suggestions": [
+            "ngoại"
+          ],
+          "span": [
+            120,
+            125
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0049",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Bùi Thị Thanh Trúc Ủy viên",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Trúc",
+          "suggestion": "Chúc",
+          "suggestions": [
+            "Chúc"
+          ],
+          "span": [
+            14,
+            18
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0050",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Các phiên bản tầm xa là A340-500 và A340-600 đựoc trang bị động cơ Rolls-Royce Trent 500.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đựoc",
+          "suggestion": "được",
+          "suggestions": [
+            "được"
+          ],
+          "span": [
+            45,
+            49
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0051",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "A340E-500HGW có thể đạt tầm bay 18.000 km (9.720 NM) - với động cơ Trent 1500 .",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "NM",
+          "suggestion": "km",
+          "suggestions": [
+            "km"
+          ],
+          "span": [
+            49,
+            51
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0052",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Tuy nhiên, vì những vấn đề sản xuất đối với A380 và những thách thức bên trong khác, chương A340E hiện đang dừng lại.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "chương",
+          "suggestion": "chương trình",
+          "suggestions": [
+            "chương trình"
+          ],
+          "span": [
+            85,
+            91
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0053",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Hãng Emirates Airline đã trở thành khách hàng đầu tiên của -600HGW khi họ kỹ hợp đồng mua 18 chiếc tại Triển lãm hàng không Paris 2003; nhưng họ đã hoãn lại đơn đặt hàng vô thời hạn và sau đó hủy bỏ hợp đồng.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "kỹ",
+          "suggestion": "ký",
+          "suggestions": [
+            "ký"
+          ],
+          "span": [
+            74,
+            76
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0054",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Đối thử trực tiếp của A340-600HGW từ Boeing là loại 777-300ER.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thử",
+          "suggestion": "thủ",
+          "suggestions": [
+            "thủ"
+          ],
+          "span": [
+            4,
+            7
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0055",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Chiếc A340-500 có khả năng bay không nghỉ từ London đến Perth, Úc, mặc dù chuyến bay về cần đổ lại lấy nhiên liệu do gió chặn đầu.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đổ",
+          "suggestion": "đỗ",
+          "suggestions": [
+            "đỗ"
+          ],
+          "span": [
+            92,
+            94
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0056",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "KAI và Lockheed Martin hiện thời đang theo đổi một chương trình tiếp thị chung cho các phiên bản của T-50 trên toàn cầu.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đổi",
+          "suggestion": "đuổi",
+          "suggestions": [
+            "đuổi"
+          ],
+          "span": [
+            43,
+            46
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0057",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Giá thành của một chiếc T-50 Golden Eagle dao động từ 25 đến 30 triệu USD, TA-50 không đơn thuần là một chuếc máy bay huấn luyện mà nó còn được đánh giá như một chiến đấu cơ đích thực.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "chuếc",
+          "suggestion": "chiếc",
+          "suggestions": [
+            "chiếc"
+          ],
+          "span": [
+            104,
+            109
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0058",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Loại chiến đấu cơ này đạt tốc độ tới đa lên đến gấp rưỡi vận tốc âm thanh (khoảng 1,800 km/giờ) và có tầm bay đến 1,800 km.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tới",
+          "suggestion": "tối",
+          "suggestions": [
+            "tối"
+          ],
+          "span": [
+            33,
+            36
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0059",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Những vũ khí không đối đất bao gồm tên lửa AGM-65 Maverick, bệ phóng rocket LAU-68, bom chùm CBU-58 và Mk-20, và bom thường Mk-82, Mk-83, và Mk-84.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "LAU",
+          "suggestion": "gau",
+          "suggestions": [
+            "gau",
+            "lau"
+          ],
+          "span": [
+            76,
+            79
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0060",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Nitrolycerin là một chất lỏng không mầu, nhớt, tạo thành từ phản ứng nitơrát hóa glyxêrin, rất dễ nổ.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "mầu",
+          "suggestion": "màu",
+          "suggestions": [
+            "màu"
+          ],
+          "span": [
+            36,
+            39
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0061",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Nó cũng được dùng trong ngành dược, làm thuốc dãn mạch, hạ huyết áp.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dãn",
+          "suggestion": "giãn",
+          "suggestions": [
+            "giãn"
+          ],
+          "span": [
+            46,
+            49
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0062",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Điểm này gợi ý cho người ta tìm cách đặt nitrôglyxêrin vào trạng thái ổn định bằng cách trộn thêm 10-30% ethanol, acetone, hoặc dinitrotoluene, ổn định như các chất nổ mạnh hiện dại.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dại",
+          "suggestion": "đại",
+          "suggestions": [
+            "đại"
+          ],
+          "span": [
+            178,
+            181
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0063",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Việc làm giản nhậy yêu cầu các chất phải rất sạch, nếu không chất nổ khó điểm hỏa, khó khăn khi ứng dụng thực tế.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "giản",
+          "suggestion": "giảm",
+          "suggestions": [
+            "giảm",
+            "giả"
+          ],
+          "span": [
+            9,
+            13
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0064",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Nitrôglyxêrin có thể dốt cháy như nhiên liệu, nhưng nguy hiểm.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dốt",
+          "suggestion": "đốt",
+          "suggestions": [
+            "đốt"
+          ],
+          "span": [
+            21,
+            24
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0065",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Đầu tiên trộn hai axít trước, rồi làm lạnh đến 10°C, đặt hỗn hợp trong có nước đá đang tan rồi trộn glycerin từ từ vào.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "có",
+          "suggestion": "cốc",
+          "suggestions": [
+            "cốc",
+            "ca"
+          ],
+          "span": [
+            71,
+            73
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0066",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Một cách nữa để điều chế nitrôglyxêrin là trộn nó với axít sunfuric trước, hỗn hợp nóng lên và dược làm lạnh trước, đến đây thì có thể đổ nhanh axít nitrich vào.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dược",
+          "suggestion": "được",
+          "suggestions": [
+            "được"
+          ],
+          "span": [
+            95,
+            99
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0067",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Cũng có thẻ trộn thêm glycerin thật chậm vào.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thẻ",
+          "suggestion": "thể",
+          "suggestions": [
+            "thể"
+          ],
+          "span": [
+            8,
+            11
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0068",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Glycerin trộn vào chậm hơn, lò phả ứng được làm mát nước hoặc một số lò bằng glycerin 22°C còn lại, thấp hơn nhiều nhiệt độ mà phản ứng este hóa xảy ra quá chậm so với cần thiết.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "phả",
+          "suggestion": "phản",
+          "suggestions": [
+            "phản"
+          ],
+          "span": [
+            31,
+            34
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0069",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Buồng nitrat hóa thường làm bằng sắt hay chì, chịu áp ao và nhiệt.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ao",
+          "suggestion": "cao",
+          "suggestions": [
+            "cao"
+          ],
+          "span": [
+            54,
+            56
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0070",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Đáy buồng nitrat hóa có một cửa an toàn, ống nối đi qua một bể lớn chưa nước rất lạnh, hỗn hợp phản ứng (còn gọi là liều nạp như thuốc nổ cho vào súng), đi qua đây ngăn ngừa nổ, giảm tốc độ phản ứng.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "chưa",
+          "suggestion": "chứa",
+          "suggestions": [
+            "chứa"
+          ],
+          "span": [
+            67,
+            71
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0071",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Hiệu quả nitrôglyxêrin được tạo ra bởi một cơ chế chưa được biết rõ, thuốc này tạo thành oxide nitric NO, chất này là chất làm dãn mạch máu tự nhiên.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dãn",
+          "suggestion": "giãn",
+          "suggestions": [
+            "giãn"
+          ],
+          "span": [
+            127,
+            130
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0072",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Dùng lại nitrôglyxêrin các triệu chứng có thể dừng.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Dùng",
+          "suggestion": "dừng",
+          "suggestions": [
+            "dừng"
+          ],
+          "span": [
+            0,
+            4
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0073",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Hiện tượng xảy ra do các công nhân thường xuyên tiếp xúc nitrôglyxêrin trong công việc, qua cuối tuần họ gặp hội chứng dừng thuốc, nó giảm khi tiếp xúc với thuốc ngày làm việc tiếp theo.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dừng",
+          "suggestion": "dùng",
+          "suggestions": [
+            "dùng"
+          ],
+          "span": [
+            119,
+            123
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0074",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Glycerin thêm vào hỗn hợp trong một lò phản ứng hóa học, được thiết kế chuyên dùng có các phản ứng nitrat hóa.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "có",
+          "suggestion": "cho",
+          "suggestions": [
+            "cho"
+          ],
+          "span": [
+            83,
+            85
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0075",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Câu lạc bộ được vận hành dưới dạng công ty tránh nhiệm hữu hạn cổ phần từ 1991, và khả năng bị giành quyền kiểm soát là rất cao.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tránh",
+          "suggestion": "trách",
+          "suggestions": [
+            "trách"
+          ],
+          "span": [
+            43,
+            48
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0076",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Để chào mừng chiến thắng trở lại giải hạng nhất, Mangnall đã ký hợp đồng với Billy Meredith từ đối thủ kình định cùng thành phố Manchester City.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "định",
+          "suggestion": "địch",
+          "suggestions": [
+            "địch"
+          ],
+          "span": [
+            108,
+            112
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0077",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Còn được đặt biệt danh là Phù thuỷ Xứ Uên, Meredith đã từng dính vào một vụ sì-căng-đan bán độ tại Manchester City và bị đưa ra bán đấu giá cùng với 17 cầu thủ khác.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Uên",
+          "suggestion": "Wales",
+          "suggestions": [
+            "Wales"
+          ],
+          "span": [
+            38,
+            41
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "sì",
+          "suggestion": "xì",
+          "suggestions": [
+            "xì"
+          ],
+          "span": [
+            76,
+            78
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0078",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Sự tấn công đó đã phá hủy toàn bộ khán đài chính, phòng thay đồ của cầu thủ và những phòng chuyên dùng..",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dùng",
+          "suggestion": "dụng",
+          "suggestions": [
+            "dụng"
+          ],
+          "span": [
+            98,
+            102
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0079",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Không phải các tài năng đều là những cầu thủ do United đào tạo nhưng các huấn luyện viên của Man Utd tỏ ra hài lòng với những sự lựa chọn đúng đắn của họ:£30,000 với Tommy Tylor,một tiền đạo từ Barnsley.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Tylor",
+          "suggestion": "taylor",
+          "suggestions": [
+            "taylor"
+          ],
+          "span": [
+            172,
+            177
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0080",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Một trận đấu đã cô đọng lại đượcmột đội hình Babes mới, xuất sắc của Bushy nhiều nhất đó là trận gặp Arsenal trên sân Highbury 1/2/1958.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đượcmột",
+          "suggestion": "được một",
+          "suggestions": [
+            "được một"
+          ],
+          "span": [
+            28,
+            35
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0081",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Trước 63,578 khán giả MU đã đánh bại \"những khẩu thần công\" với tỷ số 5-4 từ những bàn thắng của Ewards, Taylor(2),Bobby Charlton và Denis Viollet.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Ewards",
+          "suggestion": "edwards",
+          "suggestions": [
+            "edwards"
+          ],
+          "span": [
+            97,
+            103
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0082",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Họ đã bị thua trước Bolton Wanderers, 12 tháng sau khi để thua Aston Villa cũng trong trận trung kết.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "trung",
+          "suggestion": "chung",
+          "suggestions": [
+            "chung"
+          ],
+          "span": [
+            91,
+            96
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0083",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Kết thúc chuỗi trận nghèo nàn về bàn thắng đó là chiến thằng đậm đà 4-0 trước Wigan trên sân nhà vào ngày 6 tháng 10 năm 2007.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thằng",
+          "suggestion": "thắng",
+          "suggestions": [
+            "thắng"
+          ],
+          "span": [
+            55,
+            60
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0084",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Tuy vậy MU đã giành chiến thắng 1-0 trước Birmingham City và tiếp tục bán đuổi Arsenal với 2 điểm ít hơn.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "bán",
+          "suggestion": "bám",
+          "suggestions": [
+            "bám"
+          ],
+          "span": [
+            70,
+            73
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0085",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Kết quả MU đã giành ngôi vô địch PL với 87 điểm (HS: 80-22), Chel 85 điểm(65-26) khi để Bolton cầm hòa 1-1",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Chel",
+          "suggestion": "chelsea",
+          "suggestions": [
+            "chelsea"
+          ],
+          "span": [
+            61,
+            65
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0086",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Sau đó Chelsea cũng thất thủ 2-1 trước Tottenham Hotspur và MU chỉ còn kém Chelsea 1 điểm và chức vô địch cũng chỉ được định đoạt trong vòng đấu cuồi cùng của mùa giải.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cuồi",
+          "suggestion": "cuối",
+          "suggestions": [
+            "cuối"
+          ],
+          "span": [
+            145,
+            149
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0087",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Cuối cùng, MU không thể làm nên lịch sử với 4 lần đăng quang liên tiếp, vì Chelsea đã có chến thắng dễ dàng 8-0 trước Wigan Athletic ở vòng đấu cuối, vòng 38.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "chến",
+          "suggestion": "chiến",
+          "suggestions": [
+            "chiến"
+          ],
+          "span": [
+            89,
+            93
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0088",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Họ đã chính thức vượt mặt Liverpool để trở thành \"CLB bóng đá giàu thành tính nhất nước Anh\" cho đến hiện tại.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tính",
+          "suggestion": "tích",
+          "suggestions": [
+            "tích"
+          ],
+          "span": [
+            73,
+            77
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0089",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Ở phía Tây của Old Trafford có gốc khán đài \" Stretford End \"- là nơi kết thúc khán đài và có truyền thống hỗ trợ mạnh mẽ nhất của câu lạc bộ.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "gốc",
+          "suggestion": "góc",
+          "suggestions": [
+            "góc"
+          ],
+          "span": [
+            31,
+            34
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0090",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Vào lúc bắt đầu mù giải 2010-11, công ty tái bảo hiểm Mỹ Aon trở thành nhà tài trợ chính của câu lạc bộ trong một hợp đồng 4 năm với trị giá khoảng 80 triệu bảng Anh.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "mù",
+          "suggestion": "mùa",
+          "suggestions": [
+            "mùa"
+          ],
+          "span": [
+            16,
+            18
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0091",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Những trận đấu Manchester United - Liverpool FC đã bắt đầu trong suốt thập niên 60 khi 2 CLB này nằm trong số những CLB mạnh nhất nước Anh thời bấy giờ.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Những",
+          "suggestion": "Nhưng",
+          "suggestions": [
+            "Nhưng"
+          ],
+          "span": [
+            0,
+            5
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0092",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Lần đầu tiên xuất hiện thể loại 10 ky (trước đây chỉ có 9 ky), đã có các tiêu chuẩn về ky, đườn băng, bóng và luật chơi thống nhất.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đườn",
+          "suggestion": "đường",
+          "suggestions": [
+            "đường"
+          ],
+          "span": [
+            91,
+            95
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0093",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Vạch đầu tiên là vạch ngang cấm không được chạm khi ném bong, tiếp theo là 7 mũi tên được chia ra các khoang cách khác nhau để giúp người chơi căn cho chuẩn.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "bong",
+          "suggestion": "bóng",
+          "suggestions": [
+            "bóng"
+          ],
+          "span": [
+            56,
+            60
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0094",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Bóng bowling được làm từ vật liệu cứng (hầu như là làm từ plastic), có cân nặng và mầu khác nhau.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "mầu",
+          "suggestion": "màu",
+          "suggestions": [
+            "màu"
+          ],
+          "span": [
+            83,
+            86
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0095",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Trước khi chơi nên chọn bóng đúng cân nặng và các lỗ vừa với ngón tay để không bị chặt quá hoặc rộng quá.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "chặt",
+          "suggestion": "chật",
+          "suggestions": [
+            "chật"
+          ],
+          "span": [
+            82,
+            86
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0096",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "1.Frame Strike: ngoài 10 điểm bạn có được do đánh ngã 10 Pin trong lần ném đầu tiên của frame này, bạn sẻ được hưởng quyền cộng tất cả số Pin ngã từ 2 cú ném tiếp theo vào frame này (tối đa 1 frame là 30 điểm)",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "sẻ",
+          "suggestion": "sẽ",
+          "suggestions": [
+            "sẽ"
+          ],
+          "span": [
+            103,
+            105
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0097",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Frame Open: Sau 2 lần ném mà vẩn chưa ngã hết số Pin thì điểm ở frame này sẻ tương đương với số Pin bạn ném ngã sau 2 lần ném, và quyền duy nhất bạn được hưởng là ném banh ở frame kế tiếp (nếu trong game đó bạn vẩn còn frame chưa thực hiện)",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vẩn",
+          "suggestion": "vẫn",
+          "suggestions": [
+            "vẫn"
+          ],
+          "span": [
+            29,
+            32
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "sẻ",
+          "suggestion": "sẽ",
+          "suggestions": [
+            "sẽ"
+          ],
+          "span": [
+            74,
+            76
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vẩn",
+          "suggestion": "vẫn",
+          "suggestions": [
+            "vẫn"
+          ],
+          "span": [
+            211,
+            214
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0098",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Đến frame thứ 10 thì cách tính điểm củng như trên",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "củng",
+          "suggestion": "cũng",
+          "suggestions": [
+            "cũng"
+          ],
+          "span": [
+            36,
+            40
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0099",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Đĩa đơn thứ ba của album, \"We Ride\" không lập lại được thành công từ đĩa đơn đầu tiên nhưng đĩa đơn thứ 4, \"Break It Off\" hợp tác cùng Sean Paul, đã nhảy từ vị trí 52 lên vị trí 10 rồi thậm chí đạt đến vị trí số 9.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "lập",
+          "suggestion": "lặp",
+          "suggestions": [
+            "lặp"
+          ],
+          "span": [
+            42,
+            45
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0100",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Vào tháng 12 năm 2008, Margeaux Watson tạp chí \"Entertainment Weekly\" viết một bài báo với tự đề \"Rihanna: Diva of the year\", mà ông gọi là sự thành công đột phá của Rihanna trong năm 2008.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tự",
+          "suggestion": "tựa",
+          "suggestions": [
+            "tựa"
+          ],
+          "span": [
+            91,
+            93
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0101",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Với lời bào chữa của Brown, anh ta đã nhận 5 năm quản chế và buộc phải ở cách xa Rihanna 45 met, trừ khi tại các sự kiện quần chúng, thì sẽ giảm xuống là 9 met.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "met",
+          "suggestion": "mét",
+          "suggestions": [
+            "mét"
+          ],
+          "span": [
+            92,
+            95
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "met",
+          "suggestion": "mét",
+          "suggestions": [
+            "mét"
+          ],
+          "span": [
+            156,
+            159
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0102",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Cô được xưng danh là \"Nữ ca sĩ quốc tế của năm\" tại lễ trao giải NRJ Music Awards năm 2010.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "xưng",
+          "suggestion": "xướng",
+          "suggestions": [
+            "xướng",
+            "xứng"
+          ],
+          "span": [
+            8,
+            12
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0103",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Để tiếp tục đẩy mạnh album của mình, cô bắt tay vào tour diễntoàn cầu, Last Girl on Earth Tour.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "diễntoàn",
+          "suggestion": "diễn toàn",
+          "suggestions": [
+            "diễn toàn"
+          ],
+          "span": [
+            57,
+            65
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0104",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Một bài hát mang tên \"American Oxygen\" ra mắt trên Tidal vào ngaỳ 5 tháng 4 năm 2015.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ngaỳ",
+          "suggestion": "ngày",
+          "suggestions": [
+            "ngày"
+          ],
+          "span": [
+            61,
+            65
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0105",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Sự xác nhận theo sau những đồn đoán truyền thông dai dẳng trong suốt năm 2012 liên quan đến cuộc hội ngộ của cặp đôi này.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thông",
+          "suggestion": "thống",
+          "suggestions": [
+            "thống"
+          ],
+          "span": [
+            43,
+            48
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0106",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Loại này cắm thẳng vào cạc âm thanh mà không cần mạch khuyếch đại (trừ dạng tai nghe không dây có mạch phát và khuếch đại trực tiếp), chúng có thể được gắn thêm biến trở để điều chỉnh âm lượng phù hợp với âm lượng muốn nghe.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cạc",
+          "suggestion": "các",
+          "suggestions": [
+            "các"
+          ],
+          "span": [
+            23,
+            26
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khuyếch",
+          "suggestion": "khuếch",
+          "suggestions": [
+            "khuếch"
+          ],
+          "span": [
+            54,
+            61
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0107",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Nếu hệ thống loa máy tính chỉ gồm hai loa (2.0) thì cách bố trí rất đơn giản: Chỉ việc đặt hai loa hai bên màn hình máy tính, đối diện người sử dụng máy tính và chú ý đến loa phải, trải theo đúng quy định.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "trải",
+          "suggestion": "trái",
+          "suggestions": [
+            "trái"
+          ],
+          "span": [
+            181,
+            185
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0108",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Thông thường các cạc âm thanh đều có các phần mềm kèm theo cho phép kiểm tra vị trí theo cách trực quan: Phát tiếng riêng từng loa một và thể hiện trên màn hình để người sử dụng có thể kiểm tra vị trí của chúng.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cạc",
+          "suggestion": "các",
+          "suggestions": [
+            "các"
+          ],
+          "span": [
+            17,
+            20
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0109",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Tướng Tây Sơn là Trương Văn Đa liền đem quân thủy từ Gia Định tiến xuống Long Hồ (Vĩnh Long) để cản ngăn.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cản",
+          "suggestion": "can",
+          "suggestions": [
+            "can"
+          ],
+          "span": [
+            96,
+            99
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0110",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Sau này, \"Quốc Triều Chánh Biên Toát Yếu\" cho biết khi ấy \"Ngài nghĩ quân Xiêm tàn bạo quá, dân ta đều thán oán, muốn lui quân về.\"",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thán",
+          "suggestion": "than",
+          "suggestions": [
+            "than"
+          ],
+          "span": [
+            103,
+            107
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0111",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Vì thế, mặc dù bị chính Chiêu Tăng xui đi trước, vị chúa này vẫn cố tìm cách đi sau cùng một số bề tôi thân tín như Trần Phúc Giai, Nguyễn Văn Bình, Lê Văn Duyệt...",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "xui",
+          "suggestion": "xúi",
+          "suggestions": [
+            "xúi"
+          ],
+          "span": [
+            35,
+            38
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0112",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Như vậy, quân chủ lực tinh nhuệ của Tân Sơn bị giam chân ở phía Nam.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Tân",
+          "suggestion": "tây",
+          "suggestions": [
+            "tây"
+          ],
+          "span": [
+            36,
+            39
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0113",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Bên cạnh đó, nhân dân còn đóng góp người, lương thực, thực phẩm và các vật dụng cần thiết khác...để hổ trợ.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hổ",
+          "suggestion": "hỗ",
+          "suggestions": [
+            "hỗ"
+          ],
+          "span": [
+            100,
+            102
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0114",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Và ở Nihon Josei cô cũng trờ thành bạn thân của mangaka Meijiro Hanako và tiểu thuyết gia Hikawa Reiko.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "trờ",
+          "suggestion": "trở",
+          "suggestions": [
+            "trở"
+          ],
+          "span": [
+            25,
+            28
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0115",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Một điều đáng nói là, vì tình yêu cho manga mà hiện này, Takahashi vẫn độc thân dù \"công chúa manga\" đã bước qua cái tuổi ngũ tuần.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "này",
+          "suggestion": "nay",
+          "suggestions": [
+            "nay"
+          ],
+          "span": [
+            52,
+            55
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0116",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Và, các mối quan hệ tình cảm, nhất là tình yêu cũng là một nét chủ đạo trong các tác phẩm cùa Takahashi Rumiko.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cùa",
+          "suggestion": "của",
+          "suggestions": [
+            "của"
+          ],
+          "span": [
+            90,
+            93
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0117",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Tromg một cuộc phỏng vấn, Takahashi cho biết văn hóa và chuyện kể dân gian là một mô-típ chủ đạo, là một nền tảng trong các sáng tác của mình, \"thật là dễ dàng khi kết bện lại với nhau những câu chuyện kể mà mọi người đều biết\".",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Tromg",
+          "suggestion": "trong",
+          "suggestions": [
+            "trong"
+          ],
+          "span": [
+            0,
+            5
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "bện",
+          "suggestion": "bạn",
+          "suggestions": [
+            "bạn"
+          ],
+          "span": [
+            168,
+            171
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0118",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Manga và anime của Takahashi Rumiko không chỉ thành công ở Nhật Bản mà còn thành công ở các nước khác, không chỉ ớ phương Đông mà cả ở Hoa Kỳ, các nước phương Tây và các nước châu Mỹ Latinh.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ớ",
+          "suggestion": "ở",
+          "suggestions": [
+            "ở"
+          ],
+          "span": [
+            113,
+            114
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0119",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Một điều đặc biệt là mặc dù trong các manga của Takahashi có chứa rất nhiều chi tiết văn hoá truyền thống Nhật Bản xa la với văn hoá Âu Mỹ, nhưng điều này không hề ảnh hưởng đến số hit của các tác phẩm của Takahashi.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "la",
+          "suggestion": "lạ",
+          "suggestions": [
+            "lạ"
+          ],
+          "span": [
+            118,
+            120
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0120",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Tôi thường cố gắng làm xong sớm công việc, và tôi đã dành được một khoản thời gian kha khá cho bản thân mình...\".",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dành",
+          "suggestion": "giành",
+          "suggestions": [
+            "giành"
+          ],
+          "span": [
+            53,
+            57
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0121",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Tôi không hề mong đợi sẽ thay đổi được thế giới.\" Và câu trả lời của trang \"Anime Academy\" là: \"Xin lỗi Rumiko nhưng đã quá muộn! Bà đã làm được điều đó mất rồi !\"",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Bà",
+          "suggestion": "Ba",
+          "suggestions": [
+            "Ba"
+          ],
+          "span": [
+            130,
+            132
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0122",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Các tác phẩm của ông, như Anh em nhà Karamazov hay Tội ác và hình phạt đã khai thác tâm lí con người trong bối cảnh chính trị, xã hội và tinh thần của xã hội Nga thế kỷ 19.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "lí",
+          "suggestion": "lý",
+          "suggestions": [
+            "lý"
+          ],
+          "span": [
+            88,
+            90
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0123",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Ông Mikhail quyết đinh gửi các con trai của mình tới Học viện Kỹ thuật Quân sự ở Saint Peterburg.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đinh",
+          "suggestion": "định",
+          "suggestions": [
+            "định"
+          ],
+          "span": [
+            18,
+            22
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0124",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Vài người lập luận rằng những tính cách của người cha đã ảnh hưỏng lớn tới nhân vật Fyodor Pavlov Karamazov trong \"Anh em Karamazov\", nhưng những ý kiến này chịu nhiều chỉ trích.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hưỏng",
+          "suggestion": "hưởng",
+          "suggestions": [
+            "hưởng"
+          ],
+          "span": [
+            61,
+            66
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0125",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Trải nghiệm bản thân đã trở thành cơ sơ cho việc mô tả cơn động kinh của các nhân vật như Hoàng thân Myshkin(tiếng Việt thường phiên âm là Mưskin) trong tiểu thuyết Thằng ngốc hay Smerdyakov trong \"Anh em nhà Karamazov\".",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "sơ",
+          "suggestion": "sở",
+          "suggestions": [
+            "sở"
+          ],
+          "span": [
+            37,
+            39
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0126",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Theo chuyện kể, biên tập viên của tờ bào, nhà thơ Nikolai Nekrasov đi vào văn phòng của nhà phê bình Vissarion Belinsky và nói: \"Một Gogol mới hiện\".",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "bào",
+          "suggestion": "báo",
+          "suggestions": [
+            "báo"
+          ],
+          "span": [
+            37,
+            40
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0127",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Cuốn tiểu thuyết được xuất bản thành sách những năm sau đó đã khiến Dostoevsky sơm nổi tiếng ở tuổi 24.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "sơm",
+          "suggestion": "sớm",
+          "suggestions": [
+            "sớm"
+          ],
+          "span": [
+            79,
+            82
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0128",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Năm 1847, Dostoevsky tham gia vào nhóm Petrashevsky, một diễn đàn do Mikhail Vasilevich Petrashevsky - một người chịu ảnh hường của Fourier khởi xướng.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hường",
+          "suggestion": "hưởng",
+          "suggestions": [
+            "hưởng"
+          ],
+          "span": [
+            122,
+            127
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0129",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Như phần lớn các diễn đàn của giời trí thức ở Peterburg bấy giờ, đó là một tập hợp phức tạp của trí thức, sinh viên, viên chức...",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "giời",
+          "suggestion": "giới",
+          "suggestions": [
+            "giới"
+          ],
+          "span": [
+            30,
+            34
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0130",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "chủ yếu thảo luận văn học và nhất là triết học phương Tây, cũng như một loạt câc vấn đề xã hội khác.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "câc",
+          "suggestion": "các",
+          "suggestions": [
+            "các"
+          ],
+          "span": [
+            77,
+            80
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0131",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Từ đây Dostoevsky đứng trên thái độ phê phán hơn với triết học châu Âu đường thời, đồng thời có thái độ khắc nghiệt với với các trào lưu hư vô và xã hội chủ nghĩa.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đường",
+          "suggestion": "đương",
+          "suggestions": [
+            "đương"
+          ],
+          "span": [
+            71,
+            76
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0132",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Đó là Anna Grigorievna Snitkina, một cô gái rất trẻ, mới 20 tuổi.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "mới",
+          "suggestion": "mời",
+          "suggestions": [
+            "mời"
+          ],
+          "span": [
+            53,
+            56
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0133",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Còn phải kể thêm rằng máy bay ném bom tàng hình B-2 của Mỹ có cỏ ngoài sử dụng vật liệu kiểu tổ ong làm lớp vải lót để giảm thiểu tối đa khả năng phạn xạ của sóng radar.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cỏ",
+          "suggestion": "vỏ",
+          "suggestions": [
+            "vỏ"
+          ],
+          "span": [
+            62,
+            64
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "phạn",
+          "suggestion": "phản",
+          "suggestions": [
+            "phản"
+          ],
+          "span": [
+            146,
+            150
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0134",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Để thu được hiệu quả cao nhất, người ta cờn sơn ngoài chiếc máy bay một lớp sơn tàng hình bằng bột mịn niken, coban hoặc kim loại-kim loại đã bị oxy hóa.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cờn",
+          "suggestion": "còn",
+          "suggestions": [
+            "còn"
+          ],
+          "span": [
+            40,
+            43
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0135",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Để giải quyết vấn đề này, người ta có thể dùng thiết bị hút âm hoặc thiết kế loại động cơ có âm thanh rất nhỏ.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "âm",
+          "suggestion": "ẩm",
+          "suggestions": [
+            "ẩm"
+          ],
+          "span": [
+            60,
+            62
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0136",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Sự sản xuất và vận hành mẫu chiến đấu cơ tàng hình này có thể gây động lực cho đối thủ trong quyết định của họ về việc tiến hành chạy đua vũ trang với mục đính tạo ra những máy bay tương tự.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đính",
+          "suggestion": "đích",
+          "suggestions": [
+            "đích"
+          ],
+          "span": [
+            155,
+            159
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0137",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Chương trình Chiến lược phòng ngự kế hoạch (\"Chiến tranh giữa các vì sao\") của Hoa Kỳ thực hiện năm 1980 cũng để đạt mục đính tương tự nhằm chống lại Liên Xô.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đính",
+          "suggestion": "đích",
+          "suggestions": [
+            "đích"
+          ],
+          "span": [
+            121,
+            125
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0138",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Tuy vậy, điều này rất khó có thể xảy ra nhờ vào các thiếc kế chống tác động của các thiết bị điện tử được tiến hành bởi Không quân Hoa Kỳ.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thiếc",
+          "suggestion": "thiết",
+          "suggestions": [
+            "thiết"
+          ],
+          "span": [
+            52,
+            57
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0139",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Đối với các oanh tạc cơ (bán tàng hình) thể hệ thứ 4 và thứ 5, vũ khí không đối đất được mang chủ yếu trên các khoang chứa vũ khí bên ngoài, chấp nhận nguy cơ bị phát hiện cao hơn.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thể",
+          "suggestion": "thế",
+          "suggestions": [
+            "thế"
+          ],
+          "span": [
+            40,
+            43
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0140",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Máy bay tàng hình vẫn có thể được thấy bởi mắt thường, khiến quá trình triển khai của nó phụ thuộc nào thời tiết và thời điểm trong ngày.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "nào",
+          "suggestion": "vào",
+          "suggestions": [
+            "vào"
+          ],
+          "span": [
+            99,
+            102
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0141",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Một hệ thống có thể sử dụng các tín hiệu từ cả sóng TV băng tần thấp và sóng radio FM (các giải tần thấp này có thể gây ra sự cộng hưởng mặt cắt ra đa) hoặc điện thoại di động.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "giải",
+          "suggestion": "dải",
+          "suggestions": [
+            "dải"
+          ],
+          "span": [
+            91,
+            95
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0142",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Hệ thống OLS-35 trang bị trên Su-35 được tuyên bố có thể phát hiệu tín hiệu hồng ngoại phát ra từ máy bay địch ở cự ly tới 90 km, trong khi những hệ thống mạnh hơn vẫn đang được phát triển liên tục.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hiệu",
+          "suggestion": "hiện",
+          "suggestions": [
+            "hiện"
+          ],
+          "span": [
+            62,
+            66
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0143",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Để có thể tàng hình với tia hồng ngoại, người ta có trí miệng nhận và thoát khí của động cơ máy bay ở phần đỉnh và tại lỗ thoát khí lại lắp đặt máy thải khí và thiết bị hút nhiệt để thải nguồn nhiệt ở miệng động cơ.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "có",
+          "suggestion": "bố",
+          "suggestions": [
+            "bố"
+          ],
+          "span": [
+            49,
+            51
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0144",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Dù chiếc B-2 Spirit có thể năng thả quân khí tiếp tế lên bất kì một dặm vuông nào trên bề mặt địa cầu trong vòng 12 giờ, về phương diện vận hành, nó trở nên bất tiện bởi hai nhân tố: giá cả thay thế quá cao (khoảng 2 tỷ USD/chiếc).",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "năng",
+          "suggestion": "nâng",
+          "suggestions": [
+            "nâng"
+          ],
+          "span": [
+            27,
+            31
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0145",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Nếu một quốc gia có hơn một hội Hướng đạo thì các hội thành lập một liên hội để dể điều hợp và chọn đại diện quốc tế chung.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dể",
+          "suggestion": "dễ",
+          "suggestions": [
+            "dễ"
+          ],
+          "span": [
+            80,
+            82
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0146",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Tại Hội nghị Hướng đạo Thế giới, những nỗ lực họp tác cơ bản đã được đồng thuận và một kế hoạch họp tác hỗ tương được phê chuẩn.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "họp",
+          "suggestion": "hợp",
+          "suggestions": [
+            "hợp"
+          ],
+          "span": [
+            46,
+            49
+          ]
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "họp",
+          "suggestion": "hợp",
+          "suggestions": [
+            "hợp"
+          ],
+          "span": [
+            96,
+            99
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0147",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Giải Sói Đồng (\"Bronze Wolf\") là một giải thưởng đặt biệt duy nhất của Tổ chức Phong trào Hướng đạo Thế giới và được Ủy ban Hướng đạo Thế giới trao tặng cho những đóng góp hiếm có vì Hướng đạo Thế giới.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đặt",
+          "suggestion": "đặc",
+          "suggestions": [
+            "đặc"
+          ],
+          "span": [
+            49,
+            52
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0148",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Hoa bách hợp là một biểu tượng xưa, lúc ban đầu được Baden-Powell dùng cho các trinh sát hiện dịch trong quân đội Anh và sau đó được thiết kế lại và đem xử dụng cho Hướng đạo.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "xử",
+          "suggestion": "sử",
+          "suggestions": [
+            "sử"
+          ],
+          "span": [
+            153,
+            155
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0149",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Cũng có đăng ký trực tiếp đến Văn phòng Hướng đạo Thế giới là 900 thành viên của Hội Nam Hướng đạo Vùng Kinh đào Panama, cũng như 84 Hướng đạo sinh của Cộng đồng Than Thép châu Âu, tiền thân của Liên hiệp châu Âu.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đào",
+          "suggestion": "đạo",
+          "suggestions": [
+            "đạo"
+          ],
+          "span": [
+            109,
+            112
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    },
+    {
+      "id": "VIWIKI_EXT_0150",
+      "category": "spelling-viwiki-external",
+      "source": "Viwiki-Spelling",
+      "split": "external-test",
+      "text": "Sự giúp đỡ này đã có góp phần không nhỏ trong việc giúp đỡ những hoàn cảnh khó khăn và còn được cộng đồng quốc tế bất ngờ và khán phục.",
+      "mode": "ACCENTED",
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khán",
+          "suggestion": "thán",
+          "suggestions": [
+            "thán"
+          ],
+          "span": [
+            125,
+            129
+          ]
+        }
+      ],
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_SPELLING_ERROR"
+      ],
+      "allowExtra": false
+    }
+  ]
+}

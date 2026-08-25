@@ -1,0 +1,79 @@
+{
+  "agent": "agent1 (deterministic rules QA)",
+  "date": "2026-02-14",
+  "scope": "whitespace, punctuation, unicode, message-mode, abbreviation rules of sms-validation-demo",
+  "sourceModified": false,
+  "labelCorrections": [
+    {
+      "row": "D09",
+      "what": "Initial draft planted MISSING_WHITESPACE_AFTER_PUNCTUATION on the last char of a '!!!' run ('...online!!!So luong').",
+      "whyCorrected": "By design (comment in src/rules/punctuation-rules.mjs lines 78-80) a repeated-punct run never emits MISSING_WHITESPACE_AFTER_PUNCTUATION - not even at its final char; REPEATED_PUNCTUATION owns the whole run. This is engine-documented behavior, not a bug.",
+      "resolution": "Rewrote row to 'San sale online!!!Chot don ngay!Nhan qua' so the '!!!' run covers REPEATED_PUNCTUATION and a separate single '!Nhan' covers MISSING_WHITESPACE_AFTER_PUNCTUATION. Both expects caught."
+    },
+    {
+      "row": "D06",
+      "what": "Double space directly before '.' overlaps MULTIPLE_WHITESPACE and WHITESPACE_BEFORE_PUNCTUATION spans exactly.",
+      "whyCorrected": "Engine conflict resolver (plan §25) keeps only the highest-priority/most-specific issue per identical span: WHITESPACE_BEFORE_PUNCTUATION (tiebreak 3) beats MULTIPLE_WHITESPACE (tiebreak 0). Labeled WHITESPACE_BEFORE_PUNCTUATION only.",
+      "resolution": "Label adjusted pre-scoring during probe phase; recorded as observation OBS-2a."
+    },
+    {
+      "row": "D23",
+      "what": "Leading U+00A0: LEADING_WHITESPACE (/^\\s+/ matches NBSP) and NON_BREAKING_SPACE share span [0,1).",
+      "whyCorrected": "Same-span conflict resolution keeps NON_BREAKING_SPACE (priority 550 > 400). Only one issue is emitted.",
+      "resolution": "Labeled NON_BREAKING_SPACE only; recorded as observation OBS-2b."
+    },
+    {
+      "row": "D25",
+      "what": "Leading U+FEFF: JS \\s includes U+FEFF, so LEADING_WHITESPACE and ZERO_WIDTH_CHARACTER share span [0,1).",
+      "whyCorrected": "ZERO_WIDTH_CHARACTER (priority 1000) wins the same-span conflict; no separate LEADING_WHITESPACE is emitted.",
+      "resolution": "Labeled ZERO_WIDTH_CHARACTER only; recorded as observation OBS-2c."
+    }
+  ],
+  "engineFindings": [
+    {
+      "id": "OBS-1",
+      "severity": "question-for-product",
+      "title": "Mid-text TAB produces zero issues anywhere in the rule set",
+      "repro": "Ma don hang\tDH123456   (tab between 'hang' and 'DH123456', NON_ACCENTED)",
+      "expected": "Arguably MULTIPLE_WHITESPACE for repeated/invisible whitespace in the body (or an INVALID_CHARACTER signal).",
+      "actual": "No issue at all. MULTIPLE_WHITESPACE regex is ` {2,}` (ASCII spaces only, plan §11.4) and \\t is in CONTROL_ALLOWED for INVALID_CHARACTER.",
+      "assessment": "Spec-conformant today (§11.4 literally says ` {2,}`), but tabs survive the linter invisibly. Corpus row D05 locks this behavior as clean:true until product decides."
+    },
+    {
+      "id": "OBS-2",
+      "severity": "info-by-design",
+      "title": "Same-span conflict resolution hides generic whitespace hints behind more specific rules",
+      "repros": [
+        "D06 'Gia chi con 1000  .' -> only WHITESPACE_BEFORE_PUNCTUATION; MULTIPLE_WHITESPACE swallowed",
+        "D23 '\\u00A0Xin chao cac ban' -> only NON_BREAKING_SPACE; LEADING_WHITESPACE swallowed",
+        "D25 '\\uFEFFKhuyen mai cuoi tuan' -> only ZERO_WIDTH_CHARACTER; LEADING_WHITESPACE swallowed"
+      ],
+      "expected-vs-actual": "Each span still yields exactly one actionable warning, so nothing is silently missed by severity, but a user typing NBSP/BOM at position 0 never sees a 'leading whitespace' hint. Consistent with plan §25 (specific > generic); demo UI copy could mention it."
+    },
+    {
+      "id": "OBS-3",
+      "severity": "info-by-design",
+      "title": "Repeated-punct runs suppress MISSING_WHITESPACE_AFTER_PUNCTUATION at run boundaries",
+      "repro": "'...online!!!Chot' emits REPEATED_PUNCTUATION('!!!') only; no missing-space warning after the run.",
+      "expected-vs-actual": "Matches the in-code comment (punctuation-rules.mjs lines 78-80): the run is owned by REPEATED_PUNCTUATION. Single-punct glue ('ngay!Nhan') still warns correctly."
+    }
+  ],
+  "verifiedGood": [
+    "Protected ranges fully suppress punctuation/whitespace/linguistic rules inside: https://a.vn/x?id=10 (URL incl. query), tendoo.com (bare domain), 10.000d / 1,5% (money+decimal), 12/10/2026 + 08:30 (date/time), DH123456 / OTP123 (codes), {{otp_code}} (placeholder) - rows D15-D21 all clean:true PASS.",
+    "Invariant honored: ZERO_WIDTH_CHARACTER fires even inside a protected URL (D24 'https://a.vn/x\\u200Bid=10').",
+    "Ellipsis contract: exactly '...' allowed (D27 clean), '....' warns (D11). Initialism A.B.C needs no spaces while ',quy' style comma glue warns (D15 vs D07).",
+    "Abbreviation scoping exact: KH/KM/SDT fire under VT_TENDOO only (D29 vs D30); whole-token trap 'KHACH' does NOT match KH (D31 clean); CT/TT/KM/DV covered (D32).",
+    "NON_ACCENTED mode: accented token grouped per word as ERROR ('quý' in D26); legitimate unaccented Vietnamese produces no false accent/diacritic errors (D27).",
+    "Offset invariant text.substring(start,end)===value held for 38/38 issues across all 32 rows.",
+    "Clean-row discipline: 12/12 clean rows produced zero issues, i.e. no false positives from whitespace/punct/unicode/mode/abbreviation or the linguistic layer on curated lexicon-safe text."
+  ],
+  "metricsSnapshot": {
+    "rows": 32,
+    "expectedErrors": 29,
+    "caught": 29,
+    "missed": 0,
+    "falsePositives": 0,
+    "recall": 1.0,
+    "precision": 1.0
+  }
+}

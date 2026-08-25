@@ -1,0 +1,117 @@
+{
+  "meta": {
+    "evaluator": "agent3 red-team QA",
+    "scope": "adversarial precision attack on SmsValidationEngine (createDefaultEngine defaults)",
+    "engineUntouched": true,
+    "corpus": "agent-eval/agent3/my-corpus.json",
+    "run": "agent-eval/agent3/run.mjs -> result.json"
+  },
+  "headline": {
+    "cleanRows": 24,
+    "falsePositives": 4,
+    "falsePositiveRows": ["C05", "C08", "C14", "C24"],
+    "distinctRootCauses": 3,
+    "dirtyRecallPct": 100.0,
+    "precisionProxyPct": 71.4
+  },
+  "findings": [
+    {
+      "id": "FP-1",
+      "rowId": "C05",
+      "severityOfFinding": "HIGH",
+      "offendingRuleId": "POSSIBLE_SPELLING_ERROR",
+      "span": { "start": 19, "end": 22, "value": "Pro" },
+      "confidenceShownToUser": 0.95,
+      "message": "Từ \"Pro\" có thể là lỗi chính tả (gợi ý: \"trở\").",
+      "reproText": "Mua ngay iPhone 15 Pro Max giá tốt tại Tendoo Store, bảo hành chính hãng 12 tháng, freeship mọi đơn hàng!",
+      "whyGenuinelyClean": "\"iPhone 15 Pro Max\" is Apple's official product-line naming attached to a whitelisted brand term (iPhone). No whitespace/punctuation/accent issue exists anywhere in the row.",
+      "rootCause": "SymSpell deletion index matches short OOV loanword 'pro' to frequent lexicon key 'trở' at edit distance 1 (maxEditDistanceFor(3)=1). Context-anchor gate passes (neighbour 'iPhone' resolves via whitelist->accent candidates). LM context score for 'trở' beats the 0.8 original-prior, so softmax p=0.95 clears both gates (0.85/0.20). Note the arbitrary asymmetry: 'Max' survives (no dist<=1 lexicon twin) while 'Pro' dies.",
+      "userImpact": "A demo would tell a user their flagship-product sentence has a 95%-confident typo. Damages trust in the warning panel.",
+      "suggestedDirection": "Protect tokens adjacent to whitelisted brand terms / mixed-case CamelCase tokens ('Pro','Max') from the spelling rule, or require dist>=1 collisions against verbs to clear a higher margin when the original token starts uppercase mid-sentence."
+    },
+    {
+      "id": "FP-2",
+      "rowId": "C08",
+      "severityOfFinding": "HIGH",
+      "offendingRuleId": "POSSIBLE_MISSING_DIACRITIC",
+      "span": { "start": 37, "end": 41, "value": "ngay" },
+      "confidenceShownToUser": 0.82,
+      "message": "Từ \"ngay\" có thể đang thiếu dấu (gợi ý: \"ngày\").",
+      "reproText": "Giảm đến 70% toàn bộ sản phẩm... Mua ngay tại cskh@tendoo.vn hoặc link facebook.com/tendoo.vn! Số lượng có hạn.",
+      "whyGenuinelyClean": "'Mua ngay tại …' is the standard marketing imperative 'buy now at'. 'ngay' (immediately) is itself a lexicon entry (freq 190000) and is correctly unaccented here; 'ngày' would be wrong.",
+      "rootCause": "Because 'ngay' has an accented sibling 'ngày', classifyToken routes it to UNACCENTED_VALID instead of DICTIONARY, feeding it into the contextual beam. The interpolated bigram model prefers 'ngày' between 'mua' and resolved-neighbour 'tại', clearing conf 0.7 / margin 0.2 despite the original-prior bonus. Same trigger fires in C24 ('Đặt đơn ngay tại https://…').",
+      "userImpact": "One of the most common phrases in Vietnamese SMS commerce ('mua ngay') gets a missing-diacritic warning whenever followed by 'tại'. High-frequency phrase => high real-world exposure.",
+      "corroboration": "Official benchmark's own failed rows are the mirror image (missed PMD on function words 'tai/tu/den'): the contextual ranker systematically mishandles function-word contexts.",
+      "suggestedDirection": "Raise evidence bar when the original form is itself dictionary-valid with high frequency (DICTIONARY-vs-UNACCENTED_VALID distinction currently collapses for 'ngay'), or add a stopword/function-word guardlist ('ngay','tu','den','tai') exempt from auto-warning."
+    },
+    {
+      "id": "FP-3",
+      "rowId": "C14",
+      "severityOfFinding": "MEDIUM",
+      "offendingRuleId": "POSSIBLE_MISSING_DIACRITIC",
+      "span": { "start": 29, "end": 32, "value": "Hoa" },
+      "confidenceShownToUser": 0.77,
+      "message": "Từ \"Hoa\" có thể đang thiếu dấu (gợi ý: \"hóa\").",
+      "reproText": "Chúc mừng sinh nhật Trần Thị Hoa! Nhận ngay voucher 200.000đ dành cho bạn tại tendoo.vn/sinh-nhat. Happy birthday 🎂",
+      "whyGenuinelyClean": "'Trần Thị Hoa' is a correctly-spelled Vietnamese female personal name; 'Hoa' is its canonical form. Birthday greeting content is otherwise flawless (emoji allowed per policy, URL protected, whitelist terms used).",
+      "rootCause": "Proper nouns are not a protected span class (only URL/email/phone/date/time/money/code/placeholder are). Capitalized-but-not-ALLCAPS tokens skip nothing: 'Hoa' enters the accent-candidate pipeline and the n-gram prefers 'hóa' after resolved 'thị'.",
+      "userImpact": "Addressing a customer by name is the core personalization use case of marketing SMS; flagging the recipient's own name is the most reputationally damaging FP class for this product.",
+      "corroboration": "Benchmark 'names-guards' category passes (fp=0) only because its 10 rows happen not to include an ambiguous given name at clause-final position.",
+      "suggestedDirection": "Treat TitleCase tokens following surname-pattern neighbours (Trần/Thị/Văn/Nguyễn…) as name-like and suppress PMD, or gate clause-final capitalized tokens behind higher confidence."
+    },
+    {
+      "id": "FP-4",
+      "rowId": "C24",
+      "severityOfFinding": "HIGH",
+      "offendingRuleId": "POSSIBLE_MISSING_DIACRITIC",
+      "span": { "start": 95, "end": 99, "value": "ngay" },
+      "confidenceShownToUser": 0.82,
+      "message": "Từ \"ngay\" có thể đang thiếu dấu (gợi ý: \"ngày\").",
+      "reproText": "[Tendoo] Chỉ còn 3 giờ! Giảm đến 50% toàn bộ iPhone, Samsung; freeship đơn từ 99.000đ. Đặt đơn ngay tại https://m.tendoo.vn/deal?utm=ny&id=8888 hoặc gọi 0987 654 321. Hẹn gặp lại!",
+      "whyGenuinelyClean": "Same root cause as FP-2 ('Đặt đơn ngay tại …'); row additionally stacks bracket tag, semicolon list, mobile-subdomain URL with UTM params and spaced phone number — all handled correctly, isolating 'ngay' as the sole defect.",
+      "rootCause": "See FP-2.",
+      "userImpact": "Duplicate instance proving the pattern is systematic, not a one-off lexical accident."
+    }
+  ],
+  "debatableObservations": [
+    {
+      "id": "OBS-1",
+      "topic": "lowercase dotted initialisms",
+      "reproText": "gặp nhau tại a.b.c của quán",
+      "observed": "MISSING_WHITESPACE_AFTER_PUNCTUATION x2 on the dots of 'a.b.c'",
+      "whyDebatable": "isInitialismNeighbourhood requires [A-Z] neighbours (punctuation-rules.mjs line 65), so lowercase initials warn. Documented behaviour promises exemption for 'A.B.C' (uppercase); lowercase initials are rare in VN marketing SMS, so excluded from the clean corpus. Not counted as an FP.",
+      "countedInFps": false
+    },
+    {
+      "id": "OBS-2",
+      "topic": "bare domains with newer gTLDs",
+      "reproText": "Mua ngay tại shop.hanghieu.sale hoặc tendoo.store!",
+      "observed": "MISSING_WHITESPACE_AFTER_PUNCTUATION on every dot inside '.sale'/'.store' bare domains (KNOWN_TLDS allow-list in protected-ranges.mjs)",
+      "whyDebatable": "Documented behaviour guarantees protection for 'bare domains like tendoo.vn'; .shop/.store/.sale/.online are real gTLDs common in e-commerce, but the engine's design comment shows the narrow TLD list is deliberate (avoid swallowing A.B.C). Marked allowExtra-equivalent (kept out of corpus); flagged for product follow-up.",
+      "countedInFps": false
+    },
+    {
+      "id": "OBS-3",
+      "topic": "'ngay' pattern generality",
+      "reproText": "Ưu đãi hết hạn vào 23:59....Đăng nhập ngay!",
+      "observed": "On DIRTY rows D05/D08 the engine additionally emits PMD on correct 'ngay!' at clause end (conf 0.73). Extras are ignored there by contract (allowExtra:true), so not counted, but confirms the FP-2 pattern extends beyond 'ngay tại'.",
+      "countedInFps": false
+    },
+    {
+      "id": "OBS-4",
+      "topic": "attacks that FAILED (engine held) — credit where due",
+      "heldAttacks": [
+        "correct 'do nhập sai mã PIN' (dist-1 twin 'cho' freq 890k) stayed silent",
+        "NON_ACCENTED 'san sang', 'Xem ngay', 'thao tac', 'thay doi', 'chuyen tiep', 'Hen gap lai' all stayed silent",
+        "'qua app' legit-unaccented stayed silent (beam kept original)",
+        "'35.000đ/hộp' near-twin 'hợp' stayed silent",
+        "OOV brands MoMo/ZaloPay/Vietcombank/Viettel Money stayed silent",
+        "'TP. Hồ Chí Minh' OOV place word 'Hồ' stayed silent",
+        "emoji 🎉🎂 never flagged (policy ALLOW respected)",
+        "tab \\t mid-text not INVALID_CHARACTER (allowed control)",
+        "'....' vs '...' ellipsis boundary correct; '!!!' caught",
+        "A.B.C uppercase initialism exempt; placeholders {{}}/${}/{}, DH-codes, dates 30/04 & 12/10 vs decimals 0,5/5,5/12.12 all protected without bleed"
+      ]
+    }
+  ]
+}

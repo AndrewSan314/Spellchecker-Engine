@@ -1,0 +1,165 @@
+{
+  "node": "v24.13.0",
+  "gcExposed": true,
+  "loadMs": 4334.159,
+  "rssAfterLoadMb": 1113,
+  "rssDeltaLoadMb": 1056,
+  "lmDiagnostics": {
+    "counts": {
+      "U": 200000,
+      "B": 1000000,
+      "T": 2760041
+    },
+    "headerTokens": 1325600394,
+    "sha256": "791f4525653489ef98dae1ed23e238ab4aac4af90df2f8a4378e09ae78560ce6",
+    "backend": "tsv",
+    "artifactPath": "F:\\AI\\Tendoo Marketing\\sms-validation-demo\\src\\data\\lm-ngrams.tsv",
+    "bytes": 79874419,
+    "loadMs": 3378
+  },
+  "rowCount": 1439,
+  "runMs": 2601.2176,
+  "steadyRssMb": 905,
+  "rssDeltaRunMb": 4,
+  "latency": {
+    "p50": 1.64,
+    "p95": 4.09,
+    "p99": 6.04,
+    "mean": 1.8,
+    "sms160P95": 3.94
+  },
+  "byLengthBucket": {
+    "0-80": {
+      "n": 370,
+      "p50": 0.58,
+      "p95": 2.43
+    },
+    "81-160": {
+      "n": 715,
+      "p50": 1.59,
+      "p95": 4.28
+    },
+    "161-300": {
+      "n": 354,
+      "p50": 2.59,
+      "p95": 4.46
+    },
+    "301+": {
+      "n": 0,
+      "p50": null,
+      "p95": null
+    }
+  },
+  "byCategory": {
+    "clean-deterministic": {
+      "n": 10,
+      "p50": 0.06,
+      "p95": 0.23
+    },
+    "whitespace": {
+      "n": 21,
+      "p50": 0.14,
+      "p95": 1.36
+    },
+    "punctuation": {
+      "n": 24,
+      "p50": 0.06,
+      "p95": 0.8
+    },
+    "unicode": {
+      "n": 9,
+      "p50": 0.07,
+      "p95": 0.29
+    },
+    "message-mode": {
+      "n": 10,
+      "p50": 0.05,
+      "p95": 0.06
+    },
+    "abbreviation": {
+      "n": 8,
+      "p50": 0.09,
+      "p95": 1.39
+    },
+    "missing-diacritic": {
+      "n": 231,
+      "p50": 1.79,
+      "p95": 5.11
+    },
+    "spelling-typo": {
+      "n": 9,
+      "p50": 4.31,
+      "p95": 7.63
+    },
+    "names-guards": {
+      "n": 10,
+      "p50": 0.04,
+      "p95": 0.46
+    },
+    "mixed-accent": {
+      "n": 5,
+      "p50": 0.6,
+      "p95": 1.02
+    },
+    "spelling-viwiki-external": {
+      "n": 150,
+      "p50": 1.66,
+      "p95": 3.65
+    },
+    "spelling-vsec": {
+      "n": 934,
+      "p50": 1.73,
+      "p95": 3.77
+    },
+    "protected-clean": {
+      "n": 12,
+      "p50": 0.02,
+      "p95": 0.09
+    },
+    "precision-guard": {
+      "n": 4,
+      "p50": 0.01,
+      "p95": 0.43
+    },
+    "spelling": {
+      "n": 2,
+      "p50": 2.05,
+      "p95": 4.35
+    }
+  },
+  "counters": {
+    "resolveInContext": {
+      "calls": 29416,
+      "ms": 964
+    },
+    "pTri": {
+      "calls": 308295,
+      "ms": 630
+    },
+    "_pBiRaw": {
+      "calls": 1117388,
+      "ms": 646
+    },
+    "scoreCandidateOverSurfaces": {
+      "calls": 47113,
+      "ms": 403
+    },
+    "centeredEvidence": {
+      "calls": 43265,
+      "ms": 157
+    },
+    "jointPairProb": {
+      "calls": 62861,
+      "ms": 43
+    }
+  },
+  "bigramLookups": {
+    "lookups": 2204525,
+    "hits": 758902
+  },
+  "trigramLookups": {
+    "lookups": 614225,
+    "hits": 91838
+  },
+  "heapMb": 648
+}

@@ -1,0 +1,671 @@
+{
+  "meta": {
+    "generatedBy": "agent-eval/agent3/run.mjs",
+    "enginePromise": "precision-first, low false-positive rate",
+    "offsetPrefixUsed": "123 "
+  },
+  "summary": {
+    "totalRows": 32,
+    "cleanRows": 24,
+    "dirtyRows": 8,
+    "falsePositiveCount": 5,
+    "cleanRowsWithFp": [
+      "C02",
+      "C11",
+      "C14",
+      "C17"
+    ],
+    "plantedExpectations": 10,
+    "plantedMatched": 10,
+    "plantedMissed": 0,
+    "dirtyRecallPct": 100,
+    "precisionProxyPct": 66.67,
+    "offsetInvariancePass": true,
+    "offsetInvarianceFailures": 0
+  },
+  "falsePositives": [
+    {
+      "rowId": "C02",
+      "kind": "unexpected-issue-on-clean-row",
+      "ruleId": "POSSIBLE_SPELLING_ERROR",
+      "severity": "WARNING",
+      "start": 70,
+      "end": 73,
+      "value": "lúc",
+      "message": "Từ \"lúc\" có thể là lỗi chính tả (gợi ý: \"sức\").",
+      "suggestions": [
+        "sức",
+        "tức",
+        "lực"
+      ],
+      "confidence": 0.99
+    },
+    {
+      "rowId": "C11",
+      "kind": "unexpected-issue-on-clean-row",
+      "ruleId": "POSSIBLE_SPELLING_ERROR",
+      "severity": "WARNING",
+      "start": 19,
+      "end": 22,
+      "value": "mến",
+      "message": "Từ \"mến\" có thể là lỗi chính tả (gợi ý: \"mẹ\").",
+      "suggestions": [
+        "mẹ",
+        "nên",
+        "đến"
+      ],
+      "confidence": 1
+    },
+    {
+      "rowId": "C14",
+      "kind": "unexpected-issue-on-clean-row",
+      "ruleId": "POSSIBLE_SPELLING_ERROR",
+      "severity": "WARNING",
+      "start": 70,
+      "end": 73,
+      "value": "bạn",
+      "message": "Từ \"bạn\" có thể là lỗi chính tả (gợi ý: \"dân\").",
+      "suggestions": [
+        "dân",
+        "ăn",
+        "ban"
+      ],
+      "confidence": 1
+    },
+    {
+      "rowId": "C17",
+      "kind": "unexpected-issue-on-clean-row",
+      "ruleId": "POSSIBLE_SPELLING_ERROR",
+      "severity": "WARNING",
+      "start": 32,
+      "end": 35,
+      "value": "cửa",
+      "message": "Từ \"cửa\" có thể là lỗi chính tả (gợi ý: \"của\").",
+      "suggestions": [
+        "của",
+        "cầu",
+        "cá"
+      ],
+      "confidence": 1
+    },
+    {
+      "rowId": "C17",
+      "kind": "unexpected-issue-on-clean-row",
+      "ruleId": "POSSIBLE_SPELLING_ERROR",
+      "severity": "WARNING",
+      "start": 51,
+      "end": 54,
+      "value": "mỗi",
+      "message": "Từ \"mỗi\" có thể là lỗi chính tả (gợi ý: \"một\").",
+      "suggestions": [
+        "một",
+        "hội",
+        "với"
+      ],
+      "confidence": 0.99
+    }
+  ],
+  "plantResults": [
+    {
+      "rowId": "D01",
+      "expect": {
+        "ruleId": "MULTIPLE_WHITESPACE",
+        "value": "  "
+      },
+      "matched": true
+    },
+    {
+      "rowId": "D02",
+      "expect": {
+        "ruleId": "REPEATED_PUNCTUATION",
+        "value": "!!!"
+      },
+      "matched": true
+    },
+    {
+      "rowId": "D03",
+      "expect": {
+        "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+        "value": "."
+      },
+      "matched": true
+    },
+    {
+      "rowId": "D04",
+      "expect": {
+        "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+        "value": "!"
+      },
+      "matched": true
+    },
+    {
+      "rowId": "D04",
+      "expect": {
+        "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+        "value": "dat"
+      },
+      "matched": true
+    },
+    {
+      "rowId": "D05",
+      "expect": {
+        "ruleId": "POSSIBLE_SPELLING_ERROR",
+        "value": "hàngf"
+      },
+      "matched": true
+    },
+    {
+      "rowId": "D05",
+      "expect": {
+        "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+        "value": ","
+      },
+      "matched": true
+    },
+    {
+      "rowId": "D06",
+      "expect": {
+        "ruleId": "NON_BREAKING_SPACE",
+        "value": " "
+      },
+      "matched": true
+    },
+    {
+      "rowId": "D07",
+      "expect": {
+        "ruleId": "ABBREVIATION_DETECTED",
+        "value": "KH"
+      },
+      "matched": true
+    },
+    {
+      "rowId": "D08",
+      "expect": {
+        "ruleId": "REPEATED_PUNCTUATION",
+        "value": "...."
+      },
+      "matched": true
+    }
+  ],
+  "offsetFailures": [],
+  "rows": [
+    {
+      "id": "C01",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C02",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 1,
+      "issues": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "severity": "WARNING",
+          "start": 70,
+          "end": 73,
+          "value": "lúc",
+          "message": "Từ \"lúc\" có thể là lỗi chính tả (gợi ý: \"sức\").",
+          "suggestions": [
+            "sức",
+            "tức",
+            "lực"
+          ],
+          "confidence": 0.99
+        }
+      ]
+    },
+    {
+      "id": "C03",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C04",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C05",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C06",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C07",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C08",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C09",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C10",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C11",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 1,
+      "issues": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "severity": "WARNING",
+          "start": 19,
+          "end": 22,
+          "value": "mến",
+          "message": "Từ \"mến\" có thể là lỗi chính tả (gợi ý: \"mẹ\").",
+          "suggestions": [
+            "mẹ",
+            "nên",
+            "đến"
+          ],
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "C12",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C13",
+      "mode": "NON_ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C14",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 1,
+      "issues": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "severity": "WARNING",
+          "start": 70,
+          "end": 73,
+          "value": "bạn",
+          "message": "Từ \"bạn\" có thể là lỗi chính tả (gợi ý: \"dân\").",
+          "suggestions": [
+            "dân",
+            "ăn",
+            "ban"
+          ],
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "C15",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C16",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C17",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 2,
+      "issues": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "severity": "WARNING",
+          "start": 32,
+          "end": 35,
+          "value": "cửa",
+          "message": "Từ \"cửa\" có thể là lỗi chính tả (gợi ý: \"của\").",
+          "suggestions": [
+            "của",
+            "cầu",
+            "cá"
+          ],
+          "confidence": 1
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "severity": "WARNING",
+          "start": 51,
+          "end": 54,
+          "value": "mỗi",
+          "message": "Từ \"mỗi\" có thể là lỗi chính tả (gợi ý: \"một\").",
+          "suggestions": [
+            "một",
+            "hội",
+            "với"
+          ],
+          "confidence": 0.99
+        }
+      ]
+    },
+    {
+      "id": "C18",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C19",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C20",
+      "mode": "NON_ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C21",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C22",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C23",
+      "mode": "NON_ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "C24",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": true,
+      "issueCount": 0,
+      "issues": []
+    },
+    {
+      "id": "D01",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "issueCount": 1,
+      "issues": [
+        {
+          "ruleId": "MULTIPLE_WHITESPACE",
+          "severity": "WARNING",
+          "start": 33,
+          "end": 35,
+          "value": "  ",
+          "message": "Phát hiện nhiều khoảng trắng liên tiếp.",
+          "suggestions": [
+            " "
+          ],
+          "confidence": null
+        }
+      ]
+    },
+    {
+      "id": "D02",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": false,
+      "issueCount": 1,
+      "issues": [
+        {
+          "ruleId": "REPEATED_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 17,
+          "end": 20,
+          "value": "!!!",
+          "message": "Phát hiện dấu \"!\" lặp lại 3 lần liên tiếp.",
+          "suggestions": [],
+          "confidence": null
+        }
+      ]
+    },
+    {
+      "id": "D03",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": false,
+      "issueCount": 1,
+      "issues": [
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 6,
+          "end": 7,
+          "value": ".",
+          "message": "Thiếu khoảng trắng sau dấu \".\".",
+          "suggestions": [
+            ". "
+          ],
+          "confidence": null
+        }
+      ]
+    },
+    {
+      "id": "D04",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": false,
+      "issueCount": 3,
+      "issues": [
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 21,
+          "end": 22,
+          "value": "!",
+          "message": "Thiếu khoảng trắng sau dấu \"!\".",
+          "suggestions": [
+            "! "
+          ],
+          "confidence": null
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 32,
+          "end": 35,
+          "value": "dat",
+          "message": "Từ \"dat\" có thể đang thiếu dấu (gợi ý: \"đặt\").",
+          "suggestions": [
+            "đặt"
+          ],
+          "confidence": 1
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 41,
+          "end": 45,
+          "value": "ngay",
+          "message": "Từ \"ngay\" có thể đang thiếu dấu (gợi ý: \"ngày\").",
+          "suggestions": [
+            "ngày"
+          ],
+          "confidence": 1
+        }
+      ]
+    },
+    {
+      "id": "D05",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": false,
+      "issueCount": 2,
+      "issues": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "severity": "WARNING",
+          "start": 4,
+          "end": 9,
+          "value": "hàngf",
+          "message": "Từ \"hàngf\" có thể là lỗi chính tả (gợi ý: \"hàng\").",
+          "suggestions": [
+            "hàng",
+            "hằng",
+            "hạng"
+          ],
+          "confidence": 1
+        },
+        {
+          "ruleId": "MISSING_WHITESPACE_AFTER_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 35,
+          "end": 36,
+          "value": ",",
+          "message": "Thiếu khoảng trắng sau dấu \",\".",
+          "suggestions": [
+            ", "
+          ],
+          "confidence": null
+        }
+      ]
+    },
+    {
+      "id": "D06",
+      "mode": "ACCENTED",
+      "brand": "ABC_BANK",
+      "clean": false,
+      "issueCount": 1,
+      "issues": [
+        {
+          "ruleId": "NON_BREAKING_SPACE",
+          "severity": "WARNING",
+          "start": 17,
+          "end": 18,
+          "value": " ",
+          "message": "Phát hiện ký tự khoảng trắng không ngắt (U+00A0).",
+          "suggestions": [
+            " "
+          ],
+          "confidence": null
+        }
+      ]
+    },
+    {
+      "id": "D07",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": false,
+      "issueCount": 1,
+      "issues": [
+        {
+          "ruleId": "ABBREVIATION_DETECTED",
+          "severity": "WARNING",
+          "start": 27,
+          "end": 29,
+          "value": "KH",
+          "message": "Phát hiện từ viết tắt \"KH\", nên viết đầy đủ trong SMS thương hiệu.",
+          "suggestions": [],
+          "confidence": null
+        }
+      ]
+    },
+    {
+      "id": "D08",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "clean": false,
+      "issueCount": 2,
+      "issues": [
+        {
+          "ruleId": "REPEATED_PUNCTUATION",
+          "severity": "WARNING",
+          "start": 24,
+          "end": 28,
+          "value": "....",
+          "message": "Phát hiện dấu \".\" lặp lại 4 lần liên tiếp.",
+          "suggestions": [],
+          "confidence": null
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "severity": "WARNING",
+          "start": 38,
+          "end": 42,
+          "value": "ngay",
+          "message": "Từ \"ngay\" có thể đang thiếu dấu (gợi ý: \"ngày\").",
+          "suggestions": [
+            "ngày"
+          ],
+          "confidence": 0.98
+        }
+      ]
+    }
+  ]
+}

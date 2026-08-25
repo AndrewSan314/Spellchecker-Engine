@@ -1,0 +1,1801 @@
+{
+  "version": "attention-tokenizer-v1",
+  "description": "Golden parity fixtures for the shared attention tokenizer (Task 2). JS builds document units from ValidationDocument; both implementations must produce byte-identical vectors. 'expected' blocks are materialized by the JavaScript reference implementation and consumed verbatim by Python.",
+  "specialIds": {
+    "PAD": 0,
+    "UNK": 1,
+    "BOS": 2,
+    "EOS": 3,
+    "TARGET": 4,
+    "PROTECTED": 5,
+    "PUNCT": 6,
+    "MASK": 7
+  },
+  "markerIds": {
+    "NONE": 0,
+    "TARGET": 1,
+    "PROTECTED": 2,
+    "PUNCT": 3
+  },
+  "vocabSample": {
+    "đặt": 8,
+    "hàng": 9,
+    "thành": 10,
+    "công": 11,
+    "nhé": 12,
+    "chào": 13,
+    "bạn": 14,
+    "đơn": 15,
+    "đã": 16,
+    "gửi": 17,
+    "hotline": 18,
+    "hoặc": 19,
+    "truy": 20,
+    "cập": 21,
+    "để": 22,
+    "nhận": 23,
+    "mã": 24,
+    "ngày": 25,
+    "mai": 26,
+    "sớm": 27,
+    "ơn": 28,
+    "tôi": 29,
+    "là": 30,
+    "cảm": 31
+  },
+  "cases": [
+    {
+      "name": "short_sms_uses_all_tokens",
+      "text": "Đặt hàng thành công nhé!",
+      "targetWordIndex": 2,
+      "structural": {
+        "unitCount": 6,
+        "selectedCount": 6,
+        "targetWordIndexInUnits": 2,
+        "lastUnitMarker": "PUNCT",
+        "wordVocabIds": [
+          8,
+          9,
+          10,
+          11,
+          12
+        ]
+      },
+      "expected": {
+        "ids": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          6
+        ],
+        "markers": [
+          0,
+          0,
+          1,
+          0,
+          0,
+          3
+        ],
+        "charHashes": [
+          [
+            1070,
+            2977,
+            2478
+          ],
+          [
+            2004,
+            1128,
+            866,
+            2510,
+            925,
+            1291
+          ],
+          [
+            1681,
+            2004,
+            1128,
+            2075,
+            1922,
+            2510,
+            3072,
+            2180,
+            82
+          ],
+          [
+            3285,
+            3924,
+            866,
+            2657,
+            3401,
+            1906
+          ],
+          [
+            2075,
+            3279,
+            371
+          ],
+          []
+        ],
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "selectedIndices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "targetPosition": 2
+      },
+      "units": [
+        {
+          "kind": "word",
+          "surface": "Đặt",
+          "start": 0,
+          "end": 3
+        },
+        {
+          "kind": "word",
+          "surface": "hàng",
+          "start": 4,
+          "end": 8
+        },
+        {
+          "kind": "word",
+          "surface": "thành",
+          "start": 9,
+          "end": 14
+        },
+        {
+          "kind": "word",
+          "surface": "công",
+          "start": 15,
+          "end": 19
+        },
+        {
+          "kind": "word",
+          "surface": "nhé",
+          "start": 20,
+          "end": 23
+        },
+        {
+          "kind": "punct",
+          "surface": "!",
+          "start": 23,
+          "end": 24
+        }
+      ]
+    },
+    {
+      "name": "forty_tokens_truncate_to_32_keep_first_four_and_target",
+      "text": "aa ab ac ad ae af ag ah ai aj ak al am an ao ap aq ar as at au av aw ax ay az ba bb bc bd be bf bg bh bi bj bk bl bm bn",
+      "targetWordIndex": 20,
+      "structural": {
+        "unitCount": 40,
+        "selectedCount": 32,
+        "firstFourRetained": true,
+        "targetRetained": true,
+        "ascendingSelected": true,
+        "targetPosition": 18
+      },
+      "expected": {
+        "ids": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "markers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "charHashes": [
+          [
+            1079
+          ],
+          [
+            1482
+          ],
+          [
+            1885
+          ],
+          [
+            3160
+          ],
+          [
+            273
+          ],
+          [
+            1548
+          ],
+          [
+            1951
+          ],
+          [
+            2354
+          ],
+          [
+            2757
+          ],
+          [
+            4032
+          ],
+          [
+            339
+          ],
+          [
+            742
+          ],
+          [
+            1145
+          ],
+          [
+            3028
+          ],
+          [
+            3431
+          ],
+          [
+            3834
+          ],
+          [
+            141
+          ],
+          [
+            1416
+          ],
+          [
+            1819
+          ],
+          [
+            2222
+          ],
+          [
+            2625
+          ],
+          [
+            3900
+          ],
+          [
+            207
+          ],
+          [
+            610
+          ],
+          [
+            1740
+          ],
+          [
+            2949
+          ],
+          [
+            2546
+          ],
+          [
+            531
+          ],
+          [
+            128
+          ],
+          [
+            1337
+          ],
+          [
+            934
+          ],
+          [
+            1271
+          ]
+        ],
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "selectedIndices": [
+          0,
+          1,
+          2,
+          3,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33
+        ],
+        "targetPosition": 18
+      },
+      "units": [
+        {
+          "kind": "word",
+          "surface": "aa",
+          "start": 0,
+          "end": 2
+        },
+        {
+          "kind": "word",
+          "surface": "ab",
+          "start": 3,
+          "end": 5
+        },
+        {
+          "kind": "word",
+          "surface": "ac",
+          "start": 6,
+          "end": 8
+        },
+        {
+          "kind": "word",
+          "surface": "ad",
+          "start": 9,
+          "end": 11
+        },
+        {
+          "kind": "word",
+          "surface": "ae",
+          "start": 12,
+          "end": 14
+        },
+        {
+          "kind": "word",
+          "surface": "af",
+          "start": 15,
+          "end": 17
+        },
+        {
+          "kind": "word",
+          "surface": "ag",
+          "start": 18,
+          "end": 20
+        },
+        {
+          "kind": "word",
+          "surface": "ah",
+          "start": 21,
+          "end": 23
+        },
+        {
+          "kind": "word",
+          "surface": "ai",
+          "start": 24,
+          "end": 26
+        },
+        {
+          "kind": "word",
+          "surface": "aj",
+          "start": 27,
+          "end": 29
+        },
+        {
+          "kind": "word",
+          "surface": "ak",
+          "start": 30,
+          "end": 32
+        },
+        {
+          "kind": "word",
+          "surface": "al",
+          "start": 33,
+          "end": 35
+        },
+        {
+          "kind": "word",
+          "surface": "am",
+          "start": 36,
+          "end": 38
+        },
+        {
+          "kind": "word",
+          "surface": "an",
+          "start": 39,
+          "end": 41
+        },
+        {
+          "kind": "word",
+          "surface": "ao",
+          "start": 42,
+          "end": 44
+        },
+        {
+          "kind": "word",
+          "surface": "ap",
+          "start": 45,
+          "end": 47
+        },
+        {
+          "kind": "word",
+          "surface": "aq",
+          "start": 48,
+          "end": 50
+        },
+        {
+          "kind": "word",
+          "surface": "ar",
+          "start": 51,
+          "end": 53
+        },
+        {
+          "kind": "word",
+          "surface": "as",
+          "start": 54,
+          "end": 56
+        },
+        {
+          "kind": "word",
+          "surface": "at",
+          "start": 57,
+          "end": 59
+        },
+        {
+          "kind": "word",
+          "surface": "au",
+          "start": 60,
+          "end": 62
+        },
+        {
+          "kind": "word",
+          "surface": "av",
+          "start": 63,
+          "end": 65
+        },
+        {
+          "kind": "word",
+          "surface": "aw",
+          "start": 66,
+          "end": 68
+        },
+        {
+          "kind": "word",
+          "surface": "ax",
+          "start": 69,
+          "end": 71
+        },
+        {
+          "kind": "word",
+          "surface": "ay",
+          "start": 72,
+          "end": 74
+        },
+        {
+          "kind": "word",
+          "surface": "az",
+          "start": 75,
+          "end": 77
+        },
+        {
+          "kind": "word",
+          "surface": "ba",
+          "start": 78,
+          "end": 80
+        },
+        {
+          "kind": "word",
+          "surface": "bb",
+          "start": 81,
+          "end": 83
+        },
+        {
+          "kind": "word",
+          "surface": "bc",
+          "start": 84,
+          "end": 86
+        },
+        {
+          "kind": "word",
+          "surface": "bd",
+          "start": 87,
+          "end": 89
+        },
+        {
+          "kind": "word",
+          "surface": "be",
+          "start": 90,
+          "end": 92
+        },
+        {
+          "kind": "word",
+          "surface": "bf",
+          "start": 93,
+          "end": 95
+        },
+        {
+          "kind": "word",
+          "surface": "bg",
+          "start": 96,
+          "end": 98
+        },
+        {
+          "kind": "word",
+          "surface": "bh",
+          "start": 99,
+          "end": 101
+        },
+        {
+          "kind": "word",
+          "surface": "bi",
+          "start": 102,
+          "end": 104
+        },
+        {
+          "kind": "word",
+          "surface": "bj",
+          "start": 105,
+          "end": 107
+        },
+        {
+          "kind": "word",
+          "surface": "bk",
+          "start": 108,
+          "end": 110
+        },
+        {
+          "kind": "word",
+          "surface": "bl",
+          "start": 111,
+          "end": 113
+        },
+        {
+          "kind": "word",
+          "surface": "bm",
+          "start": 114,
+          "end": 116
+        },
+        {
+          "kind": "word",
+          "surface": "bn",
+          "start": 117,
+          "end": 119
+        }
+      ]
+    },
+    {
+      "name": "target_near_end_nearest_fill_is_deterministic",
+      "text": "aa ab ac ad ae af ag ah ai aj ak al am an ao ap aq ar as at au av aw ax ay az ba bb bc bd be bf bg bh bi bj bk bl bm bn",
+      "targetWordIndex": 35,
+      "structural": {
+        "unitCount": 40,
+        "selectedCount": 32,
+        "firstFourRetained": true,
+        "targetRetained": true,
+        "targetPosition": 27
+      },
+      "expected": {
+        "ids": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "markers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "charHashes": [
+          [
+            1079
+          ],
+          [
+            1482
+          ],
+          [
+            1885
+          ],
+          [
+            3160
+          ],
+          [
+            339
+          ],
+          [
+            742
+          ],
+          [
+            1145
+          ],
+          [
+            3028
+          ],
+          [
+            3431
+          ],
+          [
+            3834
+          ],
+          [
+            141
+          ],
+          [
+            1416
+          ],
+          [
+            1819
+          ],
+          [
+            2222
+          ],
+          [
+            2625
+          ],
+          [
+            3900
+          ],
+          [
+            207
+          ],
+          [
+            610
+          ],
+          [
+            1740
+          ],
+          [
+            2949
+          ],
+          [
+            2546
+          ],
+          [
+            531
+          ],
+          [
+            128
+          ],
+          [
+            1337
+          ],
+          [
+            934
+          ],
+          [
+            1271
+          ],
+          [
+            868
+          ],
+          [
+            2077
+          ],
+          [
+            1674
+          ],
+          [
+            3755
+          ],
+          [
+            3352
+          ],
+          [
+            465
+          ]
+        ],
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "selectedIndices": [
+          0,
+          1,
+          2,
+          3,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39
+        ],
+        "targetPosition": 27
+      },
+      "units": [
+        {
+          "kind": "word",
+          "surface": "aa",
+          "start": 0,
+          "end": 2
+        },
+        {
+          "kind": "word",
+          "surface": "ab",
+          "start": 3,
+          "end": 5
+        },
+        {
+          "kind": "word",
+          "surface": "ac",
+          "start": 6,
+          "end": 8
+        },
+        {
+          "kind": "word",
+          "surface": "ad",
+          "start": 9,
+          "end": 11
+        },
+        {
+          "kind": "word",
+          "surface": "ae",
+          "start": 12,
+          "end": 14
+        },
+        {
+          "kind": "word",
+          "surface": "af",
+          "start": 15,
+          "end": 17
+        },
+        {
+          "kind": "word",
+          "surface": "ag",
+          "start": 18,
+          "end": 20
+        },
+        {
+          "kind": "word",
+          "surface": "ah",
+          "start": 21,
+          "end": 23
+        },
+        {
+          "kind": "word",
+          "surface": "ai",
+          "start": 24,
+          "end": 26
+        },
+        {
+          "kind": "word",
+          "surface": "aj",
+          "start": 27,
+          "end": 29
+        },
+        {
+          "kind": "word",
+          "surface": "ak",
+          "start": 30,
+          "end": 32
+        },
+        {
+          "kind": "word",
+          "surface": "al",
+          "start": 33,
+          "end": 35
+        },
+        {
+          "kind": "word",
+          "surface": "am",
+          "start": 36,
+          "end": 38
+        },
+        {
+          "kind": "word",
+          "surface": "an",
+          "start": 39,
+          "end": 41
+        },
+        {
+          "kind": "word",
+          "surface": "ao",
+          "start": 42,
+          "end": 44
+        },
+        {
+          "kind": "word",
+          "surface": "ap",
+          "start": 45,
+          "end": 47
+        },
+        {
+          "kind": "word",
+          "surface": "aq",
+          "start": 48,
+          "end": 50
+        },
+        {
+          "kind": "word",
+          "surface": "ar",
+          "start": 51,
+          "end": 53
+        },
+        {
+          "kind": "word",
+          "surface": "as",
+          "start": 54,
+          "end": 56
+        },
+        {
+          "kind": "word",
+          "surface": "at",
+          "start": 57,
+          "end": 59
+        },
+        {
+          "kind": "word",
+          "surface": "au",
+          "start": 60,
+          "end": 62
+        },
+        {
+          "kind": "word",
+          "surface": "av",
+          "start": 63,
+          "end": 65
+        },
+        {
+          "kind": "word",
+          "surface": "aw",
+          "start": 66,
+          "end": 68
+        },
+        {
+          "kind": "word",
+          "surface": "ax",
+          "start": 69,
+          "end": 71
+        },
+        {
+          "kind": "word",
+          "surface": "ay",
+          "start": 72,
+          "end": 74
+        },
+        {
+          "kind": "word",
+          "surface": "az",
+          "start": 75,
+          "end": 77
+        },
+        {
+          "kind": "word",
+          "surface": "ba",
+          "start": 78,
+          "end": 80
+        },
+        {
+          "kind": "word",
+          "surface": "bb",
+          "start": 81,
+          "end": 83
+        },
+        {
+          "kind": "word",
+          "surface": "bc",
+          "start": 84,
+          "end": 86
+        },
+        {
+          "kind": "word",
+          "surface": "bd",
+          "start": 87,
+          "end": 89
+        },
+        {
+          "kind": "word",
+          "surface": "be",
+          "start": 90,
+          "end": 92
+        },
+        {
+          "kind": "word",
+          "surface": "bf",
+          "start": 93,
+          "end": 95
+        },
+        {
+          "kind": "word",
+          "surface": "bg",
+          "start": 96,
+          "end": 98
+        },
+        {
+          "kind": "word",
+          "surface": "bh",
+          "start": 99,
+          "end": 101
+        },
+        {
+          "kind": "word",
+          "surface": "bi",
+          "start": 102,
+          "end": 104
+        },
+        {
+          "kind": "word",
+          "surface": "bj",
+          "start": 105,
+          "end": 107
+        },
+        {
+          "kind": "word",
+          "surface": "bk",
+          "start": 108,
+          "end": 110
+        },
+        {
+          "kind": "word",
+          "surface": "bl",
+          "start": 111,
+          "end": 113
+        },
+        {
+          "kind": "word",
+          "surface": "bm",
+          "start": 114,
+          "end": 116
+        },
+        {
+          "kind": "word",
+          "surface": "bn",
+          "start": 117,
+          "end": 119
+        }
+      ]
+    },
+    {
+      "name": "punctuation_markers_present",
+      "text": "Chào bạn!, đơn đã gửi...",
+      "targetWordIndex": 4,
+      "structural": {
+        "punctMarkerSlotsAtLeast": 2
+      },
+      "expected": {
+        "ids": [
+          13,
+          14,
+          6,
+          15,
+          16,
+          17,
+          6
+        ],
+        "markers": [
+          0,
+          0,
+          3,
+          0,
+          1,
+          0,
+          3
+        ],
+        "charHashes": [
+          [
+            3918,
+            2004,
+            1531,
+            1781,
+            2913,
+            1134
+          ],
+          [
+            857,
+            1397,
+            3989
+          ],
+          [],
+          [
+            1171,
+            1874,
+            2631
+          ],
+          [
+            1364
+          ],
+          [
+            4021,
+            2547,
+            1876
+          ],
+          []
+        ],
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "selectedIndices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "targetPosition": 4
+      },
+      "units": [
+        {
+          "kind": "word",
+          "surface": "Chào",
+          "start": 0,
+          "end": 4
+        },
+        {
+          "kind": "word",
+          "surface": "bạn",
+          "start": 5,
+          "end": 8
+        },
+        {
+          "kind": "punct",
+          "surface": "!,",
+          "start": 8,
+          "end": 10
+        },
+        {
+          "kind": "word",
+          "surface": "đơn",
+          "start": 11,
+          "end": 14
+        },
+        {
+          "kind": "word",
+          "surface": "đã",
+          "start": 15,
+          "end": 17
+        },
+        {
+          "kind": "word",
+          "surface": "gửi",
+          "start": 18,
+          "end": 21
+        },
+        {
+          "kind": "punct",
+          "surface": "...",
+          "start": 21,
+          "end": 24
+        }
+      ]
+    },
+    {
+      "name": "protected_url_phone_placeholder_never_decomposed",
+      "text": "Gọi hotline 0987654321 hoặc truy cập https://tendoo.vn/km để nhận {{OTP}} ngay",
+      "targetWordIndex": 7,
+      "structural": {
+        "protectedUnitSurfaces": [
+          "0987654321",
+          "https://tendoo.vn/km",
+          "{{OTP}}"
+        ],
+        "protectedIdsAll": 5,
+        "protectedCharHashesEmpty": true
+      },
+      "expected": {
+        "ids": [
+          1,
+          18,
+          5,
+          19,
+          20,
+          21,
+          5,
+          22,
+          23,
+          5,
+          1
+        ],
+        "markers": [
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          2,
+          1,
+          0,
+          2,
+          0
+        ],
+        "charHashes": [
+          [
+            533,
+            3027,
+            2356
+          ],
+          [
+            3368,
+            1630,
+            3293,
+            3398,
+            2718,
+            60,
+            2004,
+            182,
+            3932,
+            1528,
+            2337,
+            1704,
+            3853,
+            2998,
+            1575
+          ],
+          [],
+          [
+            3368,
+            1254,
+            1028,
+            348,
+            3423,
+            1581
+          ],
+          [
+            3,
+            3104,
+            2379,
+            2498,
+            27,
+            353
+          ],
+          [
+            1580,
+            279,
+            724
+          ],
+          [],
+          [
+            795
+          ],
+          [
+            2075,
+            1119,
+            2697,
+            3555,
+            2339,
+            1271
+          ],
+          [],
+          [
+            866,
+            1061,
+            207,
+            3513,
+            3284,
+            1344
+          ]
+        ],
+        "mask": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "selectedIndices": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "targetPosition": 7
+      },
+      "units": [
+        {
+          "kind": "word",
+          "surface": "Gọi",
+          "start": 0,
+          "end": 3
+        },
+        {
+          "kind": "word",
+          "surface": "hotline",
+          "start": 4,
+          "end": 11
+        },
+        {
+          "kind": "protected",
+          "surface": "0987654321",
+          "start": 12,
+          "end": 22
+        },
+        {
+          "kind": "word",
+          "surface": "hoặc",
+          "start": 23,
+          "end": 27
+        },
+        {
+          "kind": "word",
+          "surface": "truy",
+          "start": 28,
+          "end": 32
+        },
+        {
+          "kind": "word",
+          "surface": "cập",
+          "start": 33,
+          "end": 36
+        },
+        {
+          "kind": "protected",
+          "surface": "https://tendoo.vn/km",
+          "start": 37,
+          "end": 57
+        },
+        {
+          "kind": "word",
+          "surface": "để",
+          "start": 58,
+          "end": 60
+        },
+        {
+          "kind": "word",
+          "surface": "nhận",
+          "start": 61,
+          "end": 65
+        },
+        {
+          "kind": "protected",
+          "surface": "{{OTP}}",
+          "start": 66,
+          "end": 73
+        },
+        {
+          "kind": "word",
+          "surface": "ngay",
+          "start": 74,
+          "end": 78
+        }
+      ]
+    },
+    {
+      "name": "nfd_nfc_equivalence_identical_vectors",
+      "textNfc": "hòa bình sớm nhé",
+      "textNfd": "hoà bình sớm nhế",
+      "targetWordIndex": 0,
+      "pairCase": "nfd_nfc_equivalence_identical_vectors__second",
+      "units": [
+        {
+          "kind": "word",
+          "surface": "hòa",
+          "start": 0,
+          "end": 3
+        },
+        {
+          "kind": "word",
+          "surface": "bình",
+          "start": 4,
+          "end": 8
+        },
+        {
+          "kind": "word",
+          "surface": "sớm",
+          "start": 9,
+          "end": 12
+        },
+        {
+          "kind": "word",
+          "surface": "nhé",
+          "start": 13,
+          "end": 16
+        }
+      ],
+      "expected": {
+        "ids": [
+          1,
+          1,
+          27,
+          12
+        ],
+        "markers": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "charHashes": [
+          [
+            458,
+            3571,
+            49
+          ],
+          [
+            3162,
+            1660,
+            2075,
+            1500,
+            380,
+            2652
+          ],
+          [
+            999,
+            133,
+            574
+          ],
+          [
+            2075,
+            3279,
+            371
+          ]
+        ],
+        "mask": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "selectedIndices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "targetPosition": 0
+      }
+    },
+    {
+      "name": "nfd_nfc_equivalence_identical_vectors__second",
+      "text": "hòa bình sớm nhé",
+      "targetWordIndex": 0,
+      "structural": {},
+      "expected": {
+        "ids": [
+          1,
+          1,
+          27,
+          12
+        ],
+        "markers": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "charHashes": [
+          [
+            458,
+            3571,
+            49
+          ],
+          [
+            3162,
+            1660,
+            2075,
+            1500,
+            380,
+            2652
+          ],
+          [
+            999,
+            133,
+            574
+          ],
+          [
+            2075,
+            3279,
+            371
+          ]
+        ],
+        "mask": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "selectedIndices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "targetPosition": 0
+      },
+      "units": [
+        {
+          "kind": "word",
+          "surface": "hòa",
+          "start": 0,
+          "end": 4
+        },
+        {
+          "kind": "word",
+          "surface": "bình",
+          "start": 5,
+          "end": 10
+        },
+        {
+          "kind": "word",
+          "surface": "sớm",
+          "start": 11,
+          "end": 16
+        },
+        {
+          "kind": "word",
+          "surface": "nhé",
+          "start": 17,
+          "end": 21
+        }
+      ]
+    },
+    {
+      "name": "oov_word_deterministic_char_hashes",
+      "text": "zzqqx mã đơn hàng",
+      "targetWordIndex": 0,
+      "structural": {
+        "oovId": 1,
+        "charHashBucketModulo": 4096,
+        "charHashesNonEmpty": true,
+        "charHashesSortedByConstructionOrder": true
+      },
+      "expected": {
+        "ids": [
+          1,
+          24,
+          15,
+          9
+        ],
+        "markers": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "charHashes": [
+          [
+            2933,
+            852,
+            3287,
+            3756,
+            1868,
+            831,
+            1917,
+            1287,
+            2245
+          ],
+          [
+            2662
+          ],
+          [
+            1171,
+            1874,
+            2631
+          ],
+          [
+            2004,
+            1128,
+            866,
+            2510,
+            925,
+            1291
+          ]
+        ],
+        "mask": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "selectedIndices": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "targetPosition": 0
+      },
+      "units": [
+        {
+          "kind": "word",
+          "surface": "zzqqx",
+          "start": 0,
+          "end": 5
+        },
+        {
+          "kind": "word",
+          "surface": "mã",
+          "start": 6,
+          "end": 8
+        },
+        {
+          "kind": "word",
+          "surface": "đơn",
+          "start": 9,
+          "end": 12
+        },
+        {
+          "kind": "word",
+          "surface": "hàng",
+          "start": 13,
+          "end": 17
+        }
+      ]
+    },
+    {
+      "name": "candidate_option_encoding_order_independent",
+      "optionSurfaces": [
+        "thành công",
+        "mạng"
+      ],
+      "structural": {
+        "note": "encodeOptionSurface(surface) must be a pure per-surface function; permuting the candidate list never changes any option's ids/charHashes."
+      },
+      "expectedOptions": [
+        {
+          "id": 1,
+          "charHashes": [
+            1681,
+            2004,
+            1128,
+            2075,
+            85,
+            2324,
+            3285,
+            3924,
+            866,
+            1922,
+            2510,
+            3072,
+            1249,
+            1282,
+            1747,
+            2657,
+            3401,
+            2180,
+            82,
+            1632,
+            2214,
+            3109,
+            2951,
+            1906
+          ]
+        },
+        {
+          "id": 1,
+          "charHashes": [
+            2390,
+            1397,
+            866,
+            808,
+            2902,
+            1373
+          ]
+        }
+      ]
+    }
+  ]
+}

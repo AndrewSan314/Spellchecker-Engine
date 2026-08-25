@@ -1,0 +1,19 @@
+{
+  "name": "sms-validation-demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "POC demo of the SMS Content Validation Engine (per SMS_CONTENT_VALIDATION_IMPLEMENTATION_PLAN.md). Local-first, deterministic rules + small statistical context model. No external AI/API.",
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node test/core.test.mjs && node test/rules.test.mjs",
+    "bench": "node benchmark/run-benchmark.mjs",
+    "data:audit": "python -m unittest test.test_spelling_dataset_split test.test_clean_source_split test.test_split_grouping test.test_benchmark_artifact_scope -v && node --test test/test_benchmark_scope.mjs",
+    "eval:spelling:dev": "node tools/run_spelling_eval.mjs --split dev",
+    "eval:spelling:test": "node tools/run_spelling_eval.mjs --split test --final",
+    "profile:engine": "node --expose-gc tools/profile_engine.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

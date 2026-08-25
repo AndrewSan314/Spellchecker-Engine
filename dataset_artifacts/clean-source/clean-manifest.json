@@ -1,0 +1,16 @@
+{
+  "format": "clean-source-split-v1",
+  "seed": 20260824,
+  "source": "domain seed files only; Viwiki annotated documents excluded",
+  "rows": 1650,
+  "splits": {
+    "train": 1320,
+    "dev": 165,
+    "test": 165
+  },
+  "artifacts": {
+    "train": "clean-train.txt",
+    "dev": "clean-dev.txt",
+    "test": "clean-test.txt"
+  }
+}

@@ -1,0 +1,466 @@
+{
+  "schema": "attention-reranker-artifact-v1",
+  "formatVersion": 1,
+  "magic": "TDRANK01",
+  "arch": "A",
+  "config": {
+    "arch_id": "A",
+    "blocks": 1,
+    "hidden_dim": 48,
+    "num_heads": 2,
+    "head_dim": 24,
+    "ffn_dim": 96,
+    "max_tokens": 32,
+    "vocab_size": 787,
+    "char_buckets": 4096,
+    "num_markers": 4,
+    "pre_ln": true,
+    "layer_norm_eps": 1e-05
+  },
+  "k": 8,
+  "vocabHash": "7704b282811d497b9c293b885374aaff16b8b0dced1fdf4825743f58c56cb724",
+  "shortlistConfigHash": "cdf6f8e4f59e00ea68e5d74d7d3ab216355bdb850af77a31d8392fef7b27b407",
+  "binHash": "9ab858840ea4f4eca3fa3f40206aff6d2ab1f7f08bb077d81fe0465f87cdd3d1",
+  "binSize": 288688,
+  "tensorCount": 29,
+  "tensors": {
+    "model.classical_proj.bias": {
+      "nameId": 61,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        16
+      ],
+      "dataOffset": 1888,
+      "dataLength": 64,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 2093100160
+    },
+    "model.classical_proj.weight": {
+      "nameId": 60,
+      "dtype": "int8",
+      "quantMode": "per_channel",
+      "dims": [
+        16,
+        15
+      ],
+      "dataOffset": 1952,
+      "dataLength": 240,
+      "scaleOffset": 2192,
+      "scaleLength": 64,
+      "checksum": 4082374025
+    },
+    "encoder.blocks.0.attn.k_proj.bias": {
+      "nameId": 15,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 2256,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 1536241227
+    },
+    "encoder.blocks.0.attn.k_proj.weight": {
+      "nameId": 14,
+      "dtype": "int8",
+      "quantMode": "per_channel",
+      "dims": [
+        48,
+        48
+      ],
+      "dataOffset": 2448,
+      "dataLength": 2304,
+      "scaleOffset": 4752,
+      "scaleLength": 192,
+      "checksum": 4133646638
+    },
+    "encoder.blocks.0.attn.out_proj.bias": {
+      "nameId": 19,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 4944,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 1095170723
+    },
+    "encoder.blocks.0.attn.out_proj.weight": {
+      "nameId": 18,
+      "dtype": "int8",
+      "quantMode": "per_channel",
+      "dims": [
+        48,
+        48
+      ],
+      "dataOffset": 5136,
+      "dataLength": 2304,
+      "scaleOffset": 7440,
+      "scaleLength": 192,
+      "checksum": 1899262897
+    },
+    "encoder.blocks.0.attn.q_proj.bias": {
+      "nameId": 13,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 7632,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 2578834329
+    },
+    "encoder.blocks.0.attn.q_proj.weight": {
+      "nameId": 12,
+      "dtype": "int8",
+      "quantMode": "per_channel",
+      "dims": [
+        48,
+        48
+      ],
+      "dataOffset": 7824,
+      "dataLength": 2304,
+      "scaleOffset": 10128,
+      "scaleLength": 192,
+      "checksum": 1503300940
+    },
+    "encoder.blocks.0.attn.v_proj.bias": {
+      "nameId": 17,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 10320,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 1449302728
+    },
+    "encoder.blocks.0.attn.v_proj.weight": {
+      "nameId": 16,
+      "dtype": "int8",
+      "quantMode": "per_channel",
+      "dims": [
+        48,
+        48
+      ],
+      "dataOffset": 10512,
+      "dataLength": 2304,
+      "scaleOffset": 12816,
+      "scaleLength": 192,
+      "checksum": 759754271
+    },
+    "encoder.blocks.0.ffn.0.bias": {
+      "nameId": 23,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        96
+      ],
+      "dataOffset": 13008,
+      "dataLength": 384,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 2524580815
+    },
+    "encoder.blocks.0.ffn.0.weight": {
+      "nameId": 22,
+      "dtype": "int8",
+      "quantMode": "per_channel",
+      "dims": [
+        96,
+        48
+      ],
+      "dataOffset": 13392,
+      "dataLength": 4608,
+      "scaleOffset": 18000,
+      "scaleLength": 384,
+      "checksum": 2122868201
+    },
+    "encoder.blocks.0.ffn.2.bias": {
+      "nameId": 25,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 18384,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 2578684074
+    },
+    "encoder.blocks.0.ffn.2.weight": {
+      "nameId": 24,
+      "dtype": "int8",
+      "quantMode": "per_channel",
+      "dims": [
+        48,
+        96
+      ],
+      "dataOffset": 18576,
+      "dataLength": 4608,
+      "scaleOffset": 23184,
+      "scaleLength": 192,
+      "checksum": 2466481789
+    },
+    "encoder.blocks.0.ln1.bias": {
+      "nameId": 11,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 23376,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 533576340
+    },
+    "encoder.blocks.0.ln1.weight": {
+      "nameId": 10,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 23568,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 1162520539
+    },
+    "encoder.blocks.0.ln2.bias": {
+      "nameId": 21,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 23760,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 1278877136
+    },
+    "encoder.blocks.0.ln2.weight": {
+      "nameId": 20,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 23952,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 2157926940
+    },
+    "encoder.char_embedding.weight": {
+      "nameId": 2,
+      "dtype": "int8",
+      "quantMode": "per_row",
+      "dims": [
+        4096,
+        48
+      ],
+      "dataOffset": 24144,
+      "dataLength": 196608,
+      "scaleOffset": 220752,
+      "scaleLength": 16384,
+      "checksum": 3850979040
+    },
+    "encoder.final_ln.bias": {
+      "nameId": 51,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 237136,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 730291461
+    },
+    "encoder.final_ln.weight": {
+      "nameId": 50,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 237328,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 1749244823
+    },
+    "encoder.marker_embedding.weight": {
+      "nameId": 4,
+      "dtype": "int8",
+      "quantMode": "per_row",
+      "dims": [
+        4,
+        48
+      ],
+      "dataOffset": 237520,
+      "dataLength": 192,
+      "scaleOffset": 237712,
+      "scaleLength": 16,
+      "checksum": 4123753655
+    },
+    "encoder.position_embedding.weight": {
+      "nameId": 3,
+      "dtype": "int8",
+      "quantMode": "per_row",
+      "dims": [
+        32,
+        48
+      ],
+      "dataOffset": 237728,
+      "dataLength": 1536,
+      "scaleOffset": 239264,
+      "scaleLength": 128,
+      "checksum": 1218612516
+    },
+    "encoder.word_embedding.weight": {
+      "nameId": 1,
+      "dtype": "int8",
+      "quantMode": "per_row",
+      "dims": [
+        787,
+        48
+      ],
+      "dataOffset": 239392,
+      "dataLength": 37776,
+      "scaleOffset": 277168,
+      "scaleLength": 3148,
+      "checksum": 439662894
+    },
+    "model.option_scorer.0.bias": {
+      "nameId": 71,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        48
+      ],
+      "dataOffset": 280320,
+      "dataLength": 192,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 2711877311
+    },
+    "model.option_scorer.0.weight": {
+      "nameId": 70,
+      "dtype": "int8",
+      "quantMode": "per_channel",
+      "dims": [
+        48,
+        164
+      ],
+      "dataOffset": 280512,
+      "dataLength": 7872,
+      "scaleOffset": 288384,
+      "scaleLength": 192,
+      "checksum": 648190533
+    },
+    "model.option_scorer.2.bias": {
+      "nameId": 73,
+      "dtype": "float32",
+      "quantMode": "none",
+      "dims": [
+        1
+      ],
+      "dataOffset": 288576,
+      "dataLength": 4,
+      "scaleOffset": 0,
+      "scaleLength": 0,
+      "checksum": 3025768834
+    },
+    "model.option_scorer.2.weight": {
+      "nameId": 72,
+      "dtype": "int8",
+      "quantMode": "per_channel",
+      "dims": [
+        1,
+        48
+      ],
+      "dataOffset": 288592,
+      "dataLength": 48,
+      "scaleOffset": 288640,
+      "scaleLength": 4,
+      "checksum": 444166859
+    },
+    "model.option_type_embedding.weight": {
+      "nameId": 62,
+      "dtype": "int8",
+      "quantMode": "per_row",
+      "dims": [
+        4,
+        4
+      ],
+      "dataOffset": 288656,
+      "dataLength": 16,
+      "scaleOffset": 288672,
+      "scaleLength": 16,
+      "checksum": 2608387697
+    }
+  },
+  "nameToId": {
+    "encoder.word_embedding.weight": 1,
+    "encoder.char_embedding.weight": 2,
+    "encoder.position_embedding.weight": 3,
+    "encoder.marker_embedding.weight": 4,
+    "encoder.blocks.0.ln1.weight": 10,
+    "encoder.blocks.0.ln1.bias": 11,
+    "encoder.blocks.0.attn.q_proj.weight": 12,
+    "encoder.blocks.0.attn.q_proj.bias": 13,
+    "encoder.blocks.0.attn.k_proj.weight": 14,
+    "encoder.blocks.0.attn.k_proj.bias": 15,
+    "encoder.blocks.0.attn.v_proj.weight": 16,
+    "encoder.blocks.0.attn.v_proj.bias": 17,
+    "encoder.blocks.0.attn.out_proj.weight": 18,
+    "encoder.blocks.0.attn.out_proj.bias": 19,
+    "encoder.blocks.0.ln2.weight": 20,
+    "encoder.blocks.0.ln2.bias": 21,
+    "encoder.blocks.0.ffn.0.weight": 22,
+    "encoder.blocks.0.ffn.0.bias": 23,
+    "encoder.blocks.0.ffn.2.weight": 24,
+    "encoder.blocks.0.ffn.2.bias": 25,
+    "encoder.blocks.1.ln1.weight": 30,
+    "encoder.blocks.1.ln1.bias": 31,
+    "encoder.blocks.1.attn.q_proj.weight": 32,
+    "encoder.blocks.1.attn.q_proj.bias": 33,
+    "encoder.blocks.1.attn.k_proj.weight": 34,
+    "encoder.blocks.1.attn.k_proj.bias": 35,
+    "encoder.blocks.1.attn.v_proj.weight": 36,
+    "encoder.blocks.1.attn.v_proj.bias": 37,
+    "encoder.blocks.1.attn.out_proj.weight": 38,
+    "encoder.blocks.1.attn.out_proj.bias": 39,
+    "encoder.blocks.1.ln2.weight": 40,
+    "encoder.blocks.1.ln2.bias": 41,
+    "encoder.blocks.1.ffn.0.weight": 42,
+    "encoder.blocks.1.ffn.0.bias": 43,
+    "encoder.blocks.1.ffn.2.weight": 44,
+    "encoder.blocks.1.ffn.2.bias": 45,
+    "encoder.final_ln.weight": 50,
+    "encoder.final_ln.bias": 51,
+    "model.classical_proj.weight": 60,
+    "model.classical_proj.bias": 61,
+    "model.option_type_embedding.weight": 62,
+    "model.option_scorer.0.weight": 70,
+    "model.option_scorer.0.bias": 71,
+    "model.option_scorer.2.weight": 72,
+    "model.option_scorer.2.bias": 73
+  }
+}
