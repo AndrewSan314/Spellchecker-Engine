@@ -81,3 +81,17 @@ test('no attest map entries: falls back to pure cheap/distance union', () => {
   assert.equal(out.length, 3); // whole pool fits under the bound
   assert.equal(out[0].word, 'p1'); // cheap order preserved on ties
 });
+
+test('recall score is a production signal and rescues a low-ranked candidate', () => {
+  const pool = [
+    E('cheap-a', 1, 9000), E('cheap-b', 1, 8000),
+    E('cheap-c', 1, 7000), E('cheap-d', 1, 6000),
+    E('recall-winner', 2, 100),
+  ];
+  const out = selectDiverseShortlist(pool, {
+    attestOf: new Map(), famKey: '', size: 4,
+    recallScoreOf: (c) => c.word === 'recall-winner' ? 0.99 : 0.01,
+  });
+  assert.ok(out.some((c) => c.word === 'recall-winner'));
+  assert.equal(out.length, 4);
+});

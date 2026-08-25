@@ -23,6 +23,7 @@ import {
   MAX_CONTEXT_TOKENS,
   CHAR_HASH_BUCKETS,
   fnv1a32Utf8,
+  charNgramHashes,
   normalizeForModel,
   unitsFromDocument,
   selectContextIndices,
@@ -82,10 +83,11 @@ test('short SMS uses all tokens; vocab ids and trailing punct marker correct', (
   const { units, out } = encodeCase(c);
   assert.equal(units.length, c.structural.unitCount);
   assert.equal(out.selectedIndices.length, c.structural.selectedCount);
-  assert.deepEqual(
-    out.ids.slice(0, 5), c.structural.wordVocabIds);
+  const expectedIds = c.structural.wordVocabIds.map((id, i) =>
+    i === out.targetPosition ? SPECIAL_IDS.MASK : id);
+  assert.deepEqual(out.ids.slice(0, 5), expectedIds);
   assert.equal(out.markers[out.markers.length - 1], MARKER.PUNCT);
-  assert.equal(out.ids[out.targetPosition], VOCAB.get('thành'));
+  assert.equal(out.ids[out.targetPosition], SPECIAL_IDS.MASK);
   assert.equal(out.markers[out.targetPosition], MARKER.TARGET);
 });
 
@@ -166,14 +168,15 @@ test('NFD and NFC texts produce identical model vectors', () => {
 test('OOV word maps to UNK with deterministic in-range char 2..4-gram hashes', () => {
   const c = FIXTURE.cases.find((x) => x.name === 'oov_word_deterministic_char_hashes');
   const { out } = encodeCase(c);
-  assert.equal(out.ids[0], c.structural.oovId);
-  const hashes = out.charHashes[0];
+  assert.equal(out.ids[0], SPECIAL_IDS.MASK);
+  assert.deepEqual(out.charHashes[0], [], 'target surface must be hidden');
+  const hashes = charNgramHashes('oovxyz');
   assert.ok(hashes.length > 0);
   for (const h of hashes) {
     assert.ok(h >= 0 && h < c.structural.charHashBucketModulo);
   }
   // deterministic repeat + construction-order stability
-  assert.deepEqual(encodeCase(c).out.charHashes[0], hashes);
+  assert.deepEqual(charNgramHashes('oovxyz'), hashes);
 });
 
 test('option encoding is per-surface pure: candidate order cannot change it', () => {

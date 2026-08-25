@@ -26,9 +26,9 @@
       "realWordTypoMinProbability": 0.95,
       "realWordTypoMaxOriginalWindows": 3,
       "attentionMode": "SHADOW",
-      "attentionMinProbability": 0.95,
-      "attentionMinCandidateWindows": 1,
-      "attentionMaxOriginalWindows": 3
+      "attentionMinProbability": 0.5,
+      "attentionMinCandidateWindows": 2,
+      "attentionMaxOriginalWindows": 1
     },
     "interpretation": "Full-grid verification fixed the truncated v2 search and found DIFFERENT_KEY_REAL_WORD p>=0.95/maxOriginalWindows=3 feasible. Word-boundary remains SHADOW pending separate attribution verification."
   },
@@ -98,8 +98,8 @@
     "wordBoundaryCorrectionMode": "SHADOW",
     "wordBoundaryMinFrequency": 2000,
     "attentionMode": "SHADOW",
-    "attentionMinProbability": 0.95,
-    "attentionMinCandidateWindows": 1,
-    "attentionMaxOriginalWindows": 3
+    "attentionMinProbability": 0.5,
+    "attentionMinCandidateWindows": 2,
+    "attentionMaxOriginalWindows": 1
   }
 }

@@ -139,6 +139,24 @@ export function calculateOracleMetrics({
   shortlistHitsAt6,
   shortlistHitsAt8,
 }) {
+  const count = (name, value, max) => {
+    if (!Number.isInteger(value) || !Number.isFinite(value)) {
+      throw new Error(`Invalid ${name}: count must be finite integer`);
+    }
+    if (value < 0 || (max != null && value > max)) {
+      throw new Error(`Invalid ${name}: must be between 0 and ${max}`);
+    }
+    return value;
+  };
+  count('allAttempts', allAttempts);
+  count('widePoolHits', widePoolHits, allAttempts);
+  count('shortlistHitsAt4', shortlistHitsAt4, widePoolHits);
+  count('shortlistHitsAt6', shortlistHitsAt6, widePoolHits);
+  count('shortlistHitsAt8', shortlistHitsAt8, widePoolHits);
+  if (!(shortlistHitsAt4 <= shortlistHitsAt6
+    && shortlistHitsAt6 <= shortlistHitsAt8)) {
+    throw new Error('Invariant violation: shortlist hits must be monotonic');
+  }
   const widePoolOracle = allAttempts > 0 ? widePoolHits / allAttempts : 0;
   const shortlistRetentionAt4 = widePoolHits > 0 ? shortlistHitsAt4 / widePoolHits : 0;
   const shortlistRetentionAt6 = widePoolHits > 0 ? shortlistHitsAt6 / widePoolHits : 0;
@@ -177,6 +195,34 @@ export function calculateOracleMetrics({
       6: absoluteOracleAt6,
       8: absoluteOracleAt8,
     },
+    // Keep numerators and denominators next to percentages so consumers can
+    // audit the arithmetic instead of trusting a rounded ratio.
+    numerators: {
+      widePoolOracle: widePoolHits,
+      shortlistRetention: {
+        4: shortlistHitsAt4,
+        6: shortlistHitsAt6,
+        8: shortlistHitsAt8,
+      },
+      absoluteOracle: {
+        4: shortlistHitsAt4,
+        6: shortlistHitsAt6,
+        8: shortlistHitsAt8,
+      },
+    },
+    denominators: {
+      widePoolOracle: allAttempts,
+      shortlistRetention: {
+        4: widePoolHits,
+        6: widePoolHits,
+        8: widePoolHits,
+      },
+      absoluteOracle: {
+        4: allAttempts,
+        6: allAttempts,
+        8: allAttempts,
+      },
+    },
   };
 }
 
@@ -190,15 +236,17 @@ export function selectShortlistK(metrics) {
   const ret4 = metrics?.shortlistRetention?.['4'] ?? metrics?.shortlistRetentionAt4 ?? metrics?.at4;
   const wide = metrics?.widePoolOracle ?? 0;
 
-  if (ret8 == null) throw new Error('retention@8 required before freezing K');
+  if (ret8 == null || !Number.isFinite(ret8) || ret8 < 0 || ret8 > 1) {
+    throw new Error('retention@8 required before freezing K and must be 0..1');
+  }
 
   const threshold = ret8 - K_SELECTION_TOLERANCE;
   for (const [k, v] of [[4, ret4], [6, ret6], [8, ret8]]) {
-    if (v != null && v >= threshold && v >= 0.90) {
+    if (v != null && Number.isFinite(v) && v >= 0 && v <= 1 && v >= threshold) {
       return {
         k,
         reason: `smallest K in {4,6,8} with retention@K (${(v * 100).toFixed(2)}%) `
-          + `>= max(90%, retention@8 - 0.005) (${(threshold * 100).toFixed(2)}%); `
+          + `>= retention@8 - 0.005 (${(threshold * 100).toFixed(2)}%); `
           + `wide-pool oracle ${(wide * 100).toFixed(2)}%`,
       };
     }

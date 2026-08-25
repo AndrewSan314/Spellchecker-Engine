@@ -15,9 +15,11 @@ import {
 } from '../language.mjs';
 import { ORIGINAL_PRIOR_BONUS } from '../language.mjs';
 import { extractContextEvidence, evidenceScore } from '../context-evidence.mjs';
-import { RECALL_RANK_SENTINEL, ranksForCandidates } from '../recall-reranker.mjs';
+import {
+  RECALL_RANK_SENTINEL, ranksForCandidates, buildRecallPairwiseFeatures,
+} from '../recall-reranker.mjs';
 import { evaluateWordBoundaryCandidates } from '../word-boundary-candidates.mjs';
-import { unitsFromDocument, encodeContextUnits, normalizeForModel } from '../attention-tokenizer.mjs';
+import { unitsFromDocument, encodeContextUnits, encodeOptionSurface, normalizeForModel } from '../attention-tokenizer.mjs';
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -519,7 +521,7 @@ const REAL_WORD_SHADOW_RIVAL_LIMIT = 3;
  * @param {{attestOf:Map<string,boolean>, famKey:string, size:number}} p
  */
 export function selectDiverseShortlist(entries, { attestOf, famKey, size = 8,
-  cheapOrder = null }) {
+  cheapOrder = null, recallScoreOf = null }) {
   const keyOf = (c) => `${c.word.toLowerCase()}|${c.stripped ?? ''}`;
   const seen = new Set();
   const out = [];
@@ -536,6 +538,11 @@ export function selectDiverseShortlist(entries, { attestOf, famKey, size = 8,
     cheapOrder.forEach((c, idx) => cheapMap.set(c.word.toLowerCase(), idx));
   }
   const cheapRank = (c) => cheapMap.get(c.word.toLowerCase()) ?? 999;
+  const recallScore = (c) => {
+    if (typeof recallScoreOf !== 'function') return null;
+    const value = recallScoreOf(c);
+    return Number.isFinite(value) ? value : null;
+  };
 
   // 1. Top 2 by cheap overall score (head)
   if (cheapOrder) {
@@ -563,14 +570,49 @@ export function selectDiverseShortlist(entries, { attestOf, famKey, size = 8,
   if (attested[0]) add(attested[0]);
   if (attested[1] && size >= 8) add(attested[1]);
 
-  // 5. Highest frequency candidate
+  // 5. Best production recall-reranker signal. This is deliberately a
+  // callback: callers may reuse the already-loaded immutable model, while
+  // tests and extraction can supply a deterministic feature score. Labels
+  // are never visible to this selector.
+  const recallRanked = typeof recallScoreOf === 'function'
+    ? [...entries].map((c, index) => ({ c, index, score: recallScore(c) }))
+      .filter((x) => x.score != null)
+      .sort((a, b) => b.score - a.score
+        || cheapRank(a.c) - cheapRank(b.c)
+        || a.index - b.index)
+    : [];
+  if (recallRanked[0]) add(recallRanked[0].c);
+
+  // 6. Highest frequency candidate
   const byFreq = [...entries].sort((a, b) => (b.freq ?? 0) - (a.freq ?? 0) || cheapRank(a) - cheapRank(b));
   if (byFreq[0]) add(byFreq[0]);
 
-  // 6. Fill remainder with cheap ranking / distance order
+  // 7. Fill remainder with cheap ranking / distance order
   for (const c of (cheapOrder ?? byDistFreq)) {
     if (out.length >= size) break;
     add(c);
+  }
+
+  // If all diversity heads consumed the bound, let a materially stronger
+  // recall score replace only a non-head filler. This preserves the existing
+  // distance/family/context guarantees while rescuing candidates that are
+  // cheap-rank outliers. No gold/label information enters this decision.
+  if (recallRanked[0] && !seen.has(keyOf(recallRanked[0].c)) && out.length >= size) {
+    const headKeys = new Set([
+      cheapOrder?.[0], cheapOrder?.[1], sameKeys[0], byDistFreq[0], attested[0],
+    ].filter(Boolean).map(keyOf));
+    const candidate = recallRanked[0].c;
+    const weakest = [...out].map((c, index) => ({ c, index }))
+      .filter((x) => !headKeys.has(keyOf(x.c)))
+      .sort((a, b) => cheapRank(b.c) - cheapRank(a.c)
+        || (a.c.freq ?? 0) - (b.c.freq ?? 0)
+        || a.index - b.index)[0];
+    if (weakest) {
+      const oldScore = recallScore(weakest.c);
+      if (oldScore == null || recallScore(candidate) > oldScore) {
+        out[weakest.index] = candidate;
+      }
+    }
   }
   return out;
 }
@@ -1036,7 +1078,14 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
   // Wrong-tone typos ("quỳ khách" for "quý khách"): same-key sibling merge
   // now lives INSIDE the builder's UNKNOWN_TYPO lane.
   if (cands.length === 0) {
-    return { stage: 'no-candidates', reason: 'empty-pool', pool };
+    return {
+      stage: 'no-candidates', reason: 'empty-pool', pool,
+      decision: {
+        generatedWords: [], consideredWords: 0, selectedWord: null,
+        emitted: false, rejectionReason: 'no-candidates',
+        decisionOwner: 'classical-unknown-lane',
+      },
+    };
   }
 
   const alpha = snap.get('linguistic.typoAlpha');
@@ -1089,6 +1138,24 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
   const wideRanked = [...cands]
     .sort((a, b) => cheapScore(b) - cheapScore(a)
       || a.word.localeCompare(b.word));
+  const shortlistRankMap = ranksForCandidates(cands);
+  const recallScoreOf = services.recallReranker?.enabled ? (candidate) => {
+    try {
+      const rank = shortlistRankMap.get(candidate.word.toLowerCase()) ?? {};
+      return services.recallReranker.score(buildRecallPairwiseFeatures({
+        languageModel,
+        services,
+        words,
+        idx,
+        candidateWord: candidate.word,
+        originalWord: t.normalized,
+        cheapRank: rank.cheapRank,
+        poolRank: rank.poolRank,
+      }));
+    } catch {
+      return null;
+    }
+  } : null;
   // Task 7 Step 2: diversity-preserving shortlist replaces the pure cheap
   // top-K cut so a context-attested winner below the frequency cut survives
   // to the expensive stage. Bound stays at four non-original candidates.
@@ -1096,8 +1163,15 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
     snap.get('linguistic.spellingShortlistSize')
     ?? Math.max(1, cheapTopK));
   cands = selectDiverseShortlist(wideRanked,
-    { attestOf, famKey, size: shortlistSize, cheapOrder: wideRanked });
+    {
+      attestOf,
+      famKey,
+      size: shortlistSize,
+      cheapOrder: wideRanked,
+      recallScoreOf,
+    });
 
+  let attentionCands = cands;
   const scored = cands.map((c) => {
     const freq = services.lexicon.frequency(c.word) || 1;
     const cost = damerauOsaDistance(
@@ -1214,7 +1288,7 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
   }
 
   const maxSuggestions = snap.get('linguistic.maxSpellingSuggestions');
-  const suggestions = ranked.filter((r) => !r.isOriginal)
+  let suggestions = ranked.filter((r) => !r.isOriginal)
     .slice(0, maxSuggestions)
     .map((r) => r.word);
 
@@ -1234,26 +1308,33 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
         const enc = encodeContextUnits(units, targetUnitIdx, vocab);
         const ctxIds = [...enc.ids];
         const ctxMask = [...enc.mask];
+        const ctxCharHashes = enc.charHashes.map((hashes) => [...hashes]);
         while (ctxIds.length < 32) {
           ctxIds.push(0);
           ctxMask.push(0);
+          ctxCharHashes.push([]);
         }
 
         const k = reranker.k || 8;
-        const origNorm = normalizeForModel(t.normalized);
-        const optIds = [vocab.get(origNorm) ?? 1];
+        attentionCands = selectDiverseShortlist(built.entries, {
+          attestOf, famKey, size: k, cheapOrder: wideRanked, recallScoreOf,
+        });
+        const originalOption = encodeOptionSurface(t.normalized, vocab);
+        const optIds = [originalOption.id];
         const optMask = [1];
+        const optionCharHashes = [originalOption.charHashes];
         const classicalFeats = [new Array(15).fill(0)];
         classicalFeats[0][1] = 1.0;
         classicalFeats[0][10] = t.normalized.length;
         classicalFeats[0][11] = services.lexicon.contains(t.normalized) ? 1 : 0;
         classicalFeats[0][14] = classicalFeats[0][11];
 
-        const rankMap = ranksForCandidates(cands);
-        for (let ci = 0; ci < Math.min(cands.length, k); ci++) {
-          const c = cands[ci];
-          const cNorm = normalizeForModel(c.word);
-          optIds.push(vocab.get(cNorm) ?? 1);
+        const rankMap = ranksForCandidates(attentionCands);
+        for (let ci = 0; ci < Math.min(attentionCands.length, k); ci++) {
+          const c = attentionCands[ci];
+          const option = encodeOptionSurface(c.word, vocab);
+          optIds.push(option.id);
+          optionCharHashes.push(option.charHashes);
           optMask.push(1);
 
           const fVec = new Array(15).fill(0);
@@ -1288,6 +1369,7 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
           optIds.push(0);
           optMask.push(0);
           classicalFeats.push(new Array(15).fill(0));
+          optionCharHashes.push([]);
         }
 
         const attRes = reranker.scoreOptions({
@@ -1296,23 +1378,49 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
           targetPosition: enc.targetPosition,
           optionWordIds: optIds,
           optionMask: optMask,
+          optionCharHashes,
+          charHashes: ctxCharHashes,
           classicalFeatures: classicalFeats,
         });
 
         const elapsed = performance.now() - t0;
         const selIdx = attRes.selectedIndex;
-        const selWord = selIdx === 0 ? t.normalized : (cands[selIdx - 1]?.word ?? null);
+        const selWord = selIdx === 0 ? t.normalized : (attentionCands[selIdx - 1]?.word ?? null);
         const classWord = (best && !best.isOriginal) ? best.word : t.normalized;
+
+        let candWin = 0;
+        let origWin = 0;
+        let chosenWord = null;
+        if (selIdx > 0 && attentionCands[selIdx - 1]) {
+          const chosenCand = attentionCands[selIdx - 1];
+          chosenWord = chosenCand.word;
+          const feats = extractContextEvidence({
+            languageModel: services.languageModel,
+            words: words.map((w) => (typeof w === 'string' ? w : w.normalized)),
+            idx,
+            candidateWord: chosenCand.word,
+            originalWord: t.normalized,
+          });
+          candWin = feats.candidateAttestedWindows ?? 0;
+          origWin = feats.originalAttestedWindows ?? 0;
+        }
 
         shadowAttention = {
           evaluated: true,
           mode: attMode,
           selectedOptionIndex: selIdx,
           selectedWord: selWord,
+          chosenCandidateWord: chosenWord,
           probabilities: attRes.probabilities,
           logits: attRes.logits,
           confidence: attRes.probabilities[selIdx],
           agreementWithClassical: selWord === classWord,
+          candidateAttestedWindows: candWin,
+          originalAttestedWindows: origWin,
+          tokenStart: t.start,
+          tokenEnd: t.end,
+          tokenOriginal: t.original,
+          tokenNormalized: t.normalized,
           latencyMs: elapsed,
         };
 
@@ -1325,16 +1433,7 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
             ?? snap.get('linguistic.attentionMaxOriginalWindows') ?? 3;
 
           if (selIdx > 0) {
-            const chosenCand = cands[selIdx - 1];
-            const feats = extractContextEvidence({
-              languageModel: services.languageModel,
-              words: words.map((w) => (typeof w === 'string' ? w : w.normalized)),
-              idx,
-              candidateWord: chosenCand.word,
-              originalWord: t.normalized,
-            });
-            const candWin = feats.candidateAttestedWindows ?? 0;
-            const origWin = feats.originalAttestedWindows ?? 99;
+            const chosenCand = attentionCands[selIdx - 1];
             if (shadowAttention.confidence >= attMinProb && candWin >= attMinCandWin && origWin <= attMaxOrigWin) {
               emit = true;
               best = {
@@ -1343,7 +1442,10 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
                 freq: services.lexicon.frequency(chosenCand.word) || 1,
                 isOriginal: false,
               };
-              suggestions = [chosenCand.word];
+              suggestions = [
+                chosenCand.word,
+                ...suggestions.filter((s) => s.toLowerCase() !== chosenCand.word.toLowerCase()),
+              ].slice(0, maxSuggestions);
               gates.attentionEmit = true;
             } else {
               emit = false;
@@ -1360,10 +1462,27 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
     }
   }
 
+  const rejectionReason = emit ? null
+    : (gates.attentionDeclined ? 'attention-threshold'
+      : gates.attentionKeepOriginal ? 'attention-kept-original'
+        : gates.confidenceFail ? 'confidence-fail'
+          : gates.marginFail ? 'margin-fail'
+            : gates.noNonOriginalWinner ? 'keep-original'
+              : 'classical-gate-rejected');
   return {
     stage: 'decided',
     emit,
     gates,
+    decision: {
+      generatedWords: wideRanked.map((c) => String(c.word).toLowerCase()),
+      consideredWords: cands.length,
+      selectedWord: best?.isOriginal ? t.normalized.toLowerCase()
+        : best?.word?.toLowerCase() ?? null,
+      emitted: emit,
+      rejectionReason,
+      decisionOwner: attMode === 'EXPERIMENTAL_ACTIVE' && gates.attentionEmit
+        ? 'attention-gated' : 'classical-unknown-lane',
+    },
     poolWideCount: wideRanked.length,
     wideRankedWords: wideRanked.map((c) => c.word),
     cheapKept: cands.map((c) => c.word),

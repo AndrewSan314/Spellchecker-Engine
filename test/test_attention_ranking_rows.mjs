@@ -126,6 +126,16 @@ test('oracle@K arithmetic, three-metric schema and the freeze rule', () => {
   assert.equal(validMetrics.shortlistRetention[8], 0.95);
   assert.equal(validMetrics.absoluteOracle[8], 0.76);
   assert.ok(validMetrics.absoluteOracle[8] <= validMetrics.widePoolOracle);
+  assert.deepEqual(validMetrics.numerators, {
+    widePoolOracle: 800,
+    shortlistRetention: { 4: 650, 6: 720, 8: 760 },
+    absoluteOracle: { 4: 650, 6: 720, 8: 760 },
+  });
+  assert.deepEqual(validMetrics.denominators, {
+    widePoolOracle: 1000,
+    shortlistRetention: { 4: 800, 6: 800, 8: 800 },
+    absoluteOracle: { 4: 1000, 6: 1000, 8: 1000 },
+  });
 
   // Invariant violations must throw
   assert.throws(() => calculateOracleMetrics({
@@ -134,13 +144,34 @@ test('oracle@K arithmetic, three-metric schema and the freeze rule', () => {
     shortlistHitsAt4: 600,
     shortlistHitsAt6: 650,
     shortlistHitsAt8: 750, // 750 > 700!
-  }), /Invariant violation/);
+  }), /shortlistHitsAt8|Invariant violation/);
 
-  // freeze rule: smallest K within 0.005 of retention@8 with retention >= 90%
+  // Freeze arithmetic is independent of the activation gate's 90% threshold.
   const sel = selectShortlistK(validMetrics);
   assert.equal(sel.k, 8);
-  assert.match(sel.reason, /K=8/);
+  assert.match(sel.reason, /smallest K/);
   assert.deepEqual(K_CHOICES, [4, 6, 8]);
+  assert.throws(() => calculateOracleMetrics({
+    allAttempts: 10,
+    widePoolHits: 11,
+    shortlistHitsAt4: 1,
+    shortlistHitsAt6: 1,
+    shortlistHitsAt8: 1,
+  }), /widePoolHits/);
+  assert.throws(() => calculateOracleMetrics({
+    allAttempts: 10,
+    widePoolHits: 5,
+    shortlistHitsAt4: 4,
+    shortlistHitsAt6: 3,
+    shortlistHitsAt8: 5,
+  }), /monotonic/);
+  assert.throws(() => calculateOracleMetrics({
+    allAttempts: Number.NaN,
+    widePoolHits: 0,
+    shortlistHitsAt4: 0,
+    shortlistHitsAt6: 0,
+    shortlistHitsAt8: 0,
+  }), /finite/);
 });
 
 test('training-source path guard rejects held-out markers before any read', () => {
@@ -190,8 +221,15 @@ test('generated splits satisfy the plan contract (post-extraction)', { skip: !lo
   const manifest = loadManifest();
   assert.equal(manifest.schema, 'attention-ranking-split-manifest-v1');
   assert.ok(manifest.hashes?.vsecTrain && manifest.hashes?.cleanTrain);
-  for (const k of ['widePoolOracle', 'oracleAt4', 'oracleAt6', 'oracleAt8']) {
-    assert.ok(typeof manifest.oracle[k] === 'number');
+  assert.equal(typeof manifest.oracle.widePoolOracle, 'number');
+  assert.equal(typeof manifest.oracle.shortlistRetention?.['8'], 'number');
+  assert.equal(typeof manifest.oracle.absoluteOracle?.['8'], 'number');
+  if (manifest.oracle.numerators) {
+    assert.deepEqual(manifest.oracle.numerators, {
+      widePoolOracle: manifest.oracle.widePoolHits,
+      shortlistRetention: manifest.oracle.shortlistHits,
+      absoluteOracle: manifest.oracle.shortlistHits,
+    });
   }
   assert.ok(K_CHOICES.includes(manifest.frozenK));
 

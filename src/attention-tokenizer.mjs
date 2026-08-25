@@ -34,6 +34,7 @@ export const FIRST_LEARNED_ID = 8;
 export const CHAR_HASH_BUCKETS = 4096;
 export const CHAR_NGRAM_MIN = 2;
 export const CHAR_NGRAM_MAX = 4;
+export const MAX_CHAR_NGRAMS = 32;
 export const MAX_CONTEXT_TOKENS = 32;
 
 /** FNV-1a, 32-bit, over UTF-8 bytes. */
@@ -73,7 +74,7 @@ export function charNgramsOf(word) {
 }
 
 export function charNgramHashes(word) {
-  return charNgramsOf(normalizeForModel(word)).map(hashCharNgram);
+  return charNgramsOf(normalizeForModel(word)).slice(0, MAX_CHAR_NGRAMS).map(hashCharNgram);
 }
 
 /**
@@ -151,9 +152,10 @@ function unitIdAndMarker(unit, isTarget, vocabMap) {
   const norm = normalizeForModel(unit.surface);
   const id = vocabMap?.get(norm) ?? SPECIAL_IDS.UNK;
   return {
-    id,
+    // Hide the surface under correction; only its target marker remains.
+    id: isTarget ? SPECIAL_IDS.MASK : id,
     marker: isTarget ? MARKER.TARGET : MARKER.NONE,
-    hashes: charNgramHashes(norm),
+    hashes: isTarget ? [] : charNgramHashes(norm),
   };
 }
 

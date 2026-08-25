@@ -14,9 +14,12 @@ import {
 
 function makeEngine(mode) {
   const engine = createDefaultEngine();
-  if (mode) {
-    engine.configService.reload({ linguistic: { wrongDiacriticMode: mode } });
-  }
+  engine.configService.reload({
+    linguistic: {
+      wrongDiacriticMode: mode || 'OFF',
+      realWordTypoMode: 'OFF',
+    },
+  });
   return engine;
 }
 

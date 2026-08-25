@@ -34,6 +34,7 @@ from tools.attention_model import (
     create_model,
 )
 from tools.attention_tokenizer import (
+    MAX_CHAR_NGRAMS,
     MAX_CONTEXT_TOKENS,
     SPECIAL_IDS,
     VOCAB_SIZE,
@@ -97,6 +98,16 @@ def extract_classical_feature_tensor(row: dict, k: int = 8) -> Tuple[np.ndarray,
     return mat, mask
 
 
+def pad_char_hash_rows(rows: List[List[int]], width: int) -> Tuple[torch.Tensor, torch.Tensor]:
+    values = torch.zeros((width, MAX_CHAR_NGRAMS), dtype=torch.long)
+    counts = torch.zeros(width, dtype=torch.long)
+    for i, hashes in enumerate(rows[:width]):
+        clipped = [int(h) for h in hashes[:MAX_CHAR_NGRAMS]]
+        if clipped:
+            values[i, :len(clipped)] = torch.tensor(clipped, dtype=torch.long)
+            counts[i] = len(clipped)
+    return values, counts
+
 class ListwiseReranker(nn.Module):
     def __init__(
         self,
@@ -124,6 +135,8 @@ class ListwiseReranker(nn.Module):
         markers: Optional[torch.Tensor] = None,
         char_hashes: Optional[torch.Tensor] = None,
         char_counts: Optional[torch.Tensor] = None,
+        option_char_hashes: Optional[torch.Tensor] = None,
+        option_char_counts: Optional[torch.Tensor] = None,
     ) -> dict:
         """
         Single-encode listwise scoring.
@@ -154,7 +167,11 @@ class ListwiseReranker(nn.Module):
         scores = []
         for opt_idx in range(num_options):
             opt_words = option_word_ids[:, opt_idx]  # (batch,)
-            opt_emb = self.model.compute_option_embedding(opt_words)  # (batch, hidden_dim)
+            opt_emb = self.model.compute_option_embedding(
+                opt_words,
+                option_char_hashes[:, opt_idx] if option_char_hashes is not None else None,
+                option_char_counts[:, opt_idx] if option_char_counts is not None else None,
+            )  # (batch, hidden_dim)
 
             class_feat = classical_features[:, opt_idx]  # (batch, num_classical_features)
             class_proj = self.model.classical_proj(class_feat)  # (batch, 16)
@@ -234,26 +251,37 @@ class RankingDataset(Dataset):
             ctx_markers = enc["markers"][:MAX_CONTEXT_TOKENS]
 
         target_pos = enc["targetPosition"]
+        ctx_char_values, ctx_char_counts = pad_char_hash_rows(enc["charHashes"], MAX_CONTEXT_TOKENS)
 
         # Build options: option 0 = original, option 1..K = candidates
-        opt_ids = [self.vocab.get(normalize_for_model(row.get("original", "")), SPECIAL_IDS["UNK"])]
+        original_option = encode_option_surface(row.get("original", ""), self.vocab)
+        opt_ids = [original_option["id"]]
+        option_char_rows = [original_option["charHashes"]]
         cands = row.get("candidates", [])
         for c in cands[:self.k]:
             surf = c.get("surface", "")
-            opt_ids.append(self.vocab.get(normalize_for_model(surf), SPECIAL_IDS["UNK"]))
+            option = encode_option_surface(surf, self.vocab)
+            opt_ids.append(option["id"])
+            option_char_rows.append(option["charHashes"])
 
         # Pad options to K+1
         while len(opt_ids) < self.k + 1:
             opt_ids.append(SPECIAL_IDS["PAD"])
+            option_char_rows.append([])
 
         feat_mat, opt_mask = extract_classical_feature_tensor(row, k=self.k)
+        option_char_values, option_char_counts = pad_char_hash_rows(option_char_rows, self.k + 1)
 
         return {
             "word_ids": torch.tensor(ctx_ids, dtype=torch.long),
             "mask": torch.tensor(ctx_mask, dtype=torch.float32),
             "markers": torch.tensor(ctx_markers, dtype=torch.long),
+            "char_hashes": ctx_char_values,
+            "char_counts": ctx_char_counts,
             "target_position": torch.tensor(target_pos, dtype=torch.long),
             "option_word_ids": torch.tensor(opt_ids, dtype=torch.long),
+            "option_char_hashes": option_char_values,
+            "option_char_counts": option_char_counts,
             "option_mask": torch.tensor(opt_mask, dtype=torch.float32),
             "classical_features": torch.tensor(feat_mat, dtype=torch.float32),
             "label_index": torch.tensor(row.get("labelIndex", 0), dtype=torch.long),
@@ -267,8 +295,12 @@ def ranking_collate_fn(batch: List[dict]) -> dict:
         "word_ids": torch.stack([b["word_ids"] for b in batch]),
         "mask": torch.stack([b["mask"] for b in batch]),
         "markers": torch.stack([b["markers"] for b in batch]),
+        "char_hashes": torch.stack([b["char_hashes"] for b in batch]),
+        "char_counts": torch.stack([b["char_counts"] for b in batch]),
         "target_positions": torch.stack([b["target_position"] for b in batch]),
         "option_word_ids": torch.stack([b["option_word_ids"] for b in batch]),
+        "option_char_hashes": torch.stack([b["option_char_hashes"] for b in batch]),
+        "option_char_counts": torch.stack([b["option_char_counts"] for b in batch]),
         "option_mask": torch.stack([b["option_mask"] for b in batch]),
         "classical_features": torch.stack([b["classical_features"] for b in batch]),
         "labels": torch.stack([b["label_index"] for b in batch]),
@@ -303,6 +335,10 @@ def evaluate_ranking_metrics(
             word_ids = batch["word_ids"].to(device)
             mask = batch["mask"].to(device)
             markers = batch["markers"].to(device)
+            char_hashes = batch["char_hashes"].to(device)
+            char_counts = batch["char_counts"].to(device)
+            option_char_hashes = batch["option_char_hashes"].to(device)
+            option_char_counts = batch["option_char_counts"].to(device)
             target_positions = batch["target_positions"].to(device)
             option_word_ids = batch["option_word_ids"].to(device)
             option_mask = batch["option_mask"].to(device)
@@ -318,6 +354,10 @@ def evaluate_ranking_metrics(
                 option_mask=option_mask,
                 classical_features=classical_features,
                 markers=markers,
+                char_hashes=char_hashes,
+                char_counts=char_counts,
+                option_char_hashes=option_char_hashes,
+                option_char_counts=option_char_counts,
             )
 
             loss = compute_listwise_loss(out["logits"], labels, option_mask)
@@ -474,6 +514,10 @@ def main():
                 word_ids = batch["word_ids"].to(device)
                 mask = batch["mask"].to(device)
                 markers = batch["markers"].to(device)
+                char_hashes = batch["char_hashes"].to(device)
+                char_counts = batch["char_counts"].to(device)
+                option_char_hashes = batch["option_char_hashes"].to(device)
+                option_char_counts = batch["option_char_counts"].to(device)
                 target_positions = batch["target_positions"].to(device)
                 option_word_ids = batch["option_word_ids"].to(device)
                 option_mask = batch["option_mask"].to(device)
@@ -489,6 +533,10 @@ def main():
                     option_mask=option_mask,
                     classical_features=classical_features,
                     markers=markers,
+                    char_hashes=char_hashes,
+                    char_counts=char_counts,
+                    option_char_hashes=option_char_hashes,
+                    option_char_counts=option_char_counts,
                 )
                 loss = compute_listwise_loss(out["logits"], labels, option_mask)
                 loss.backward()

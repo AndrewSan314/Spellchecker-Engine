@@ -51,6 +51,15 @@ QUANT_NONE = 0
 QUANT_PER_ROW = 1
 QUANT_PER_CHANNEL = 2
 
+
+def sha256_file(path: str) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        while chunk := fh.read(65536):
+            h.update(chunk)
+    return h.hexdigest()
+
+
 # Canonical tensor name mapping to stable numeric IDs
 TENSOR_NAME_TO_ID = {
     "encoder.word_embedding.weight": 1,
@@ -300,6 +309,15 @@ def export_quantized_model(
             h.update(chunk)
     bin_hash = h.hexdigest()
 
+    ckpt_hash = sha256_file(checkpoint_path) if checkpoint_path and os.path.exists(checkpoint_path) else ""
+    shortlist_cfg_path = ".tmp/attention-shortlist-config.json"
+    shortlist_cfg_hash = sha256_file(shortlist_cfg_path) if shortlist_cfg_path and os.path.exists(shortlist_cfg_path) else ckpt.get("shortlist_config_hash", "")
+    manifest_path = ".tmp/attention-ranking-split-manifest.json"
+    manifest_hash = sha256_file(manifest_path) if manifest_path and os.path.exists(manifest_path) else ""
+    vocab_file_hash = sha256_file(vocab_path) if vocab_path and os.path.exists(vocab_path) else ckpt.get("vocab_hash", "")
+    tok_path = "src/attention-tokenizer.mjs"
+    tok_hash = sha256_file(tok_path) if tok_path and os.path.exists(tok_path) else ""
+
     # Write JSON metadata
     metadata = {
         "schema": "attention-reranker-artifact-v1",
@@ -308,17 +326,31 @@ def export_quantized_model(
         "arch": cfg_dict.get("arch_id", "A"),
         "config": cfg_dict,
         "k": ckpt.get("k", 8),
-        "vocabHash": ckpt.get("vocab_hash", ""),
-        "shortlistConfigHash": ckpt.get("shortlist_config_hash", ""),
+        "tokenizerVersion": "attention-tokenizer-v1",
+        "tokenizerHash": tok_hash,
+        "vocabHash": vocab_file_hash,
+        "shortlistConfigHash": shortlist_cfg_hash,
+        "rankingSplitManifestHash": manifest_hash,
+        "checkpointHash": ckpt_hash,
         "binHash": bin_hash,
         "binSize": os.path.getsize(output_bin),
         "tensorCount": tensor_count,
         "tensors": meta_tensors,
         "nameToId": TENSOR_NAME_TO_ID,
+        "provenance": {
+            "hashes": {
+                "checkpoint": ckpt_hash,
+                "model": bin_hash,
+                "tokenizer": tok_hash,
+                "tokenizerVersion": "attention-tokenizer-v1",
+                "vocab": vocab_file_hash,
+                "shortlistConfig": shortlist_cfg_hash,
+                "rankingSplitManifest": manifest_hash,
+            },
+        },
     }
     with open(output_meta, "w", encoding="utf-8") as fh:
         json.dump(metadata, fh, indent=2)
-
     return metadata
 
 

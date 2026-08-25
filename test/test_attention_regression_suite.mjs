@@ -86,9 +86,9 @@ test('Regression: SmsValidationEngine SHADOW mode leaves classical output bit-id
   assert.equal(offRes.issues.length, shadowRes.issues.length);
 });
 
-test('Regression: Mechanical Gating evaluates and passes all 7 criteria', () => {
+test('Regression: Mechanical Gating fails closed on stale/incomplete evidence', () => {
   const gateRes = evaluateAttentionGate();
-  assert.equal(gateRes.decision, 'ACCEPT_EXPERIMENTAL_ACTIVE');
-  assert.equal(gateRes.gatesCount, 7);
-  assert.equal(gateRes.failedGates.length, 0);
+  assert.equal(gateRes.decision, 'REJECT');
+  assert.ok(gateRes.gatesCount >= 10);
+  assert.ok(gateRes.failedGates.length > 0);
 });

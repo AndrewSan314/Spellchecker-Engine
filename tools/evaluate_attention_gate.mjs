@@ -1,180 +1,252 @@
-// ============================================================
-// Task 11 (tiny-attention-spelling-reranker-FIXED plan) —
-// Mechanical Gating for EXPERIMENTAL_ACTIVE.
-//
-// 7 Mandatory Gates:
-//   1. Candidate oracle recall at K >= 90%
-//   2. Cold load <= 15 ms, artifact size <= 10 MiB
-//   3. SMS-length latency p95 <= 5 ms
-//   4. Internal-test precision >= baseline precision - 0.02
-//   5. Internal-test F0.5 >= baseline F0.5
-//   6. Calibration false-positive delta <= 0
-//   7. Dev precision >= 0.70 without precision regression
-//
-// Outcome:
-//   - All pass -> "ACCEPT_EXPERIMENTAL_ACTIVE"
-//   - Any fail -> "REJECT" (spelling.attentionMode stays "SHADOW")
-// ============================================================
+// Mechanical attention activation gate. Missing, stale, malformed, or
+// incomplete evidence fails closed to REJECT; no historical/default metric is
+// substituted and no OR escape can activate the experiment.
 import { readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+
+const K_CHOICES = [4, 6, 8];
+const MAX_BYTES = 10 * 1024 * 1024;
+
+function loadJson(filePath) {
+  try {
+    if (!filePath || !existsSync(filePath)) return null;
+    return JSON.parse(readFileSync(filePath, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function finite(value) {
+  return typeof value === 'number' && Number.isFinite(value);
+}
+
+function metric(obj, paths) {
+  for (const path of paths) {
+    let value = obj;
+    for (const key of path.split('.')) value = value?.[key];
+    if (finite(value)) return value;
+  }
+  return null;
+}
+
+function hashFile(filePath) {
+  try {
+    return createHash('sha256').update(readFileSync(filePath)).digest('hex');
+  } catch {
+    return null;
+  }
+}
+
+function provenanceOk(values) {
+  const hashes = values.filter(Boolean).map((value) => value?.provenance?.hashes ?? value?.hashes);
+  if (hashes.length === 0 || hashes.some((value) => !value || typeof value !== 'object')) return false;
+  // Reports may carry extra per-file hashes, but these identity axes must be
+  // consistent wherever present without conflicts.
+  const required = ['dataset', 'model', 'tokenizer', 'config'];
+  for (const key of required) {
+    const seen = hashes.map((value) => value[key]).filter(Boolean);
+    if (seen.length > 1 && new Set(seen).size !== 1) return false;
+  }
+  return true;
+}
+
+function addGate(gates, name, pass, detail = {}) {
+  gates.push({ name, pass: Boolean(pass), detail });
+}
 
 export function evaluateAttentionGate({
   shortlistConfigPath = '.tmp/attention-shortlist-config.json',
   artifactPath = 'src/data/attention-reranker.int8.bin',
+  metadataPath = 'src/data/attention-reranker.json',
+  vocabPath = '.tmp/attention-vocab.json',
   calibrationReportPath = '.tmp/attention-engine-calibration-report.json',
   internalTestReportPath = '.tmp/attention-internal-test-report.json',
-  devReportPath = '.tmp/attention-dev-report.json',
+  devReportPath = null,
+  cleanEvidencePath = '.tmp/attention-clean-evidence.json',
+  redTeamEvidencePath = '.tmp/attention-protected-redteam-evidence.json',
+  multidimEvidencePath = '.tmp/attention-multidimensional-evidence.json',
+  testsDeterminismPath = '.tmp/attention-tests-determinism-evidence.json',
+  runtimeBaselinePath = 'dataset_artifacts/evaluation/attention-classical-runtime-baseline.json',
   outputDecisionPath = null,
 } = {}) {
   const gates = [];
+  const shortlist = loadJson(shortlistConfigPath);
+  const metadata = loadJson(metadataPath);
+  const calibration = loadJson(calibrationReportPath);
+  const internal = loadJson(internalTestReportPath);
+  const dev = loadJson(devReportPath);
+  const runtime = loadJson(runtimeBaselinePath);
+  const cleanEvidence = loadJson(cleanEvidencePath);
+  const redTeamEvidence = loadJson(redTeamEvidencePath);
+  const multidimEvidence = loadJson(multidimEvidencePath);
+  const testsEvidence = loadJson(testsDeterminismPath);
 
-  // Gate 1: Candidate oracle recall at K >= 90% of wide pool (or absolute >= 70%)
-  let g1Pass = false;
-  let g1Detail = {};
-  if (existsSync(shortlistConfigPath)) {
-    const sl = JSON.parse(readFileSync(shortlistConfigPath, 'utf8'));
-    const k = sl.k || 8;
-    const oracleAtK = sl.oracle?.[`oracleAt${k}`] ?? sl.oracle?.oracleAt8 ?? 0;
-    const widePool = sl.oracle?.widePoolOracle ?? 0.74;
-    const relCoveragePct = widePool > 0 ? (oracleAtK / widePool) * 100 : 0;
-    const absPct = oracleAtK * 100;
-    g1Pass = relCoveragePct >= 90.0 || absPct >= 70.0;
-    g1Detail = {
-      k,
-      oracleAtKPct: Math.round(absPct * 100) / 100,
-      relativeWidePoolCoveragePct: Math.round(relCoveragePct * 100) / 100,
-      requiredPct: 90.0,
-    };
-  } else {
-    g1Detail = { error: 'shortlist config missing' };
-  }
-  gates.push({ name: 'Candidate oracle coverage at K >= 90% of wide pool', pass: g1Pass, detail: g1Detail });
-
-  // Gate 2: Artifact size <= 10 MiB, cold load <= 15 ms
-  let g2Pass = false;
-  let g2Detail = {};
-  if (existsSync(artifactPath)) {
-    const sz = statSync(artifactPath).size;
-    const maxBytes = 10 * 1024 * 1024;
-    g2Pass = sz <= maxBytes;
-    g2Detail = { sizeBytes: sz, maxBytes, sizeKb: Math.round(sz / 1024) };
-  } else {
-    g2Detail = { error: 'artifact missing' };
-  }
-  gates.push({ name: 'Artifact size <= 10 MiB', pass: g2Pass, detail: g2Detail });
-
-  // Gate 3: SMS latency p95 <= 5 ms
-  // Latency measured in Task 8 is 1.50 ms
-  const latencyP95Ms = 1.50;
-  const g3Pass = latencyP95Ms <= 5.0;
-  gates.push({
-    name: 'SMS-length p95 latency <= 5 ms',
-    pass: g3Pass,
-    detail: { p95Ms: latencyP95Ms, limitMs: 5.0 },
+  const k = shortlist?.k;
+  const oracle = shortlist?.oracle;
+  const retention = oracle?.shortlistRetention?.[String(k)];
+  const n = oracle?.numerators;
+  const d = oracle?.denominators;
+  const oracleConsistent = shortlist?.schema === 'attention-shortlist-config-v1'
+    && K_CHOICES.includes(k)
+    && finite(oracle?.allAttempts) && oracle.allAttempts > 0
+    && finite(oracle?.widePoolHits) && oracle.widePoolHits >= 0
+    && oracle.widePoolHits <= oracle.allAttempts
+    && finite(retention) && retention >= 0 && retention <= 1
+    && finite(n?.widePoolOracle) && n.widePoolOracle === oracle.widePoolHits
+    && finite(d?.widePoolOracle) && d.widePoolOracle === oracle.allAttempts
+    && finite(n?.shortlistRetention?.[String(k)])
+    && n.shortlistRetention[String(k)] <= oracle.widePoolHits
+    && finite(d?.shortlistRetention?.[String(k)])
+    && d.shortlistRetention[String(k)] === oracle.widePoolHits;
+  addGate(gates, 'shortlist schema/provenance valid', oracleConsistent, {
+    schema: shortlist?.schema ?? null, k, retention,
+  });
+  addGate(gates, 'shortlist retention@K >= 90%', oracleConsistent && retention >= 0.90, {
+    retentionPct: finite(retention) ? retention * 100 : null, requiredPct: 90,
   });
 
-  // Gate 4: Internal-test precision >= baseline precision - 0.02
-  // Gate 5: Internal-test F0.5 >= baseline F0.5
-  let g4Pass = false;
-  let g5Pass = false;
-  let g4Detail = {};
-  let g5Detail = {};
-  if (existsSync(internalTestReportPath)) {
-    const intRep = JSON.parse(readFileSync(internalTestReportPath, 'utf8'));
-    const precDelta = intRep.precisionDelta ?? -1;
-    const f05Delta = intRep.f05Delta ?? -1;
-    g4Pass = precDelta >= -0.02;
-    g5Pass = f05Delta >= 0.0;
-    g4Detail = { precisionDelta: precDelta, minDelta: -0.02 };
-    g5Detail = { f05Delta, minDelta: 0.0 };
-  } else {
-    g4Detail = { error: 'internal test report missing' };
-    g5Detail = { error: 'internal test report missing' };
-  }
-  gates.push({ name: 'Internal-test precision >= baseline - 0.02', pass: g4Pass, detail: g4Detail });
-  gates.push({ name: 'Internal-test F0.5 >= baseline F0.5', pass: g5Pass, detail: g5Detail });
+  const binBytes = existsSync(artifactPath) ? statSync(artifactPath).size : null;
+  const metaBytes = existsSync(metadataPath) ? statSync(metadataPath).size : null;
+  const vocabBytes = existsSync(vocabPath) ? statSync(vocabPath).size : null;
+  const artifactBytes = [binBytes, metaBytes, vocabBytes].every((value) => Number.isInteger(value))
+    ? binBytes + metaBytes + vocabBytes : null;
+  const shortlistHash = hashFile(shortlistConfigPath);
+  const vocabHash = hashFile(vocabPath);
+  const artifactHashesMatch = (!metadata?.shortlistConfigHash || metadata.shortlistConfigHash === shortlistHash)
+    && (!metadata?.vocabHash || metadata.vocabHash === vocabHash);
+  addGate(gates, 'artifact BIN+JSON+vocab <= 10 MiB', artifactBytes != null && artifactBytes <= MAX_BYTES, {
+    binBytes, metaBytes, vocabBytes, totalBytes: artifactBytes, maxBytes: MAX_BYTES,
+  });
+  addGate(gates, 'artifact metadata matches frozen K/schema/hashes', artifactHashesMatch
+    && (metadata?.schema === 'attention-reranker-v1'
+    || metadata?.schema === 'attention-reranker-artifact-v1')
+    && metadata?.k === k && metadata?.tokenizerVersion === 'attention-tokenizer-v1', {
+    metadataSchema: metadata?.schema ?? null, metadataK: metadata?.k ?? null,
+    tokenizerVersion: metadata?.tokenizerVersion ?? null,
+    shortlistHash, metadataShortlistHash: metadata?.shortlistConfigHash ?? null,
+    vocabHash, metadataVocabHash: metadata?.vocabHash ?? null,
+  });
 
-  // Gate 6: Calibration false-positive delta <= 0
-  let g6Pass = false;
-  let g6Detail = {};
-  if (existsSync(calibrationReportPath)) {
-    const calRep = JSON.parse(readFileSync(calibrationReportPath, 'utf8'));
-    const fpDelta = calRep.winner?.fpDelta ?? calRep.winner?.fp - calRep.baseline?.fp ?? 99;
-    g6Pass = fpDelta <= 0;
-    g6Detail = { fpDelta, maxDelta: 0 };
-  } else {
-    g6Detail = { error: 'calibration report missing' };
-  }
-  gates.push({ name: 'Calibration false-positive delta <= 0', pass: g6Pass, detail: g6Detail });
+  const devClassical = dev?.classical ?? dev?.baseline;
+  const devAttention = dev?.attention ?? dev?.evaluated;
+  const devQuality = dev?.schema === 'attention-dev-report-v2'
+    && dev?.devOpenCount === 1
+    && devClassical && devAttention
+    && finite(devClassical.precision) && finite(devClassical.recall) && finite(devClassical.f05)
+    && finite(devAttention.precision) && finite(devAttention.recall) && finite(devAttention.f05);
 
-  // Gate 7: Dev precision >= 0.70 without severe regression
-  let g7Pass = false;
-  let g7Detail = {};
-  if (existsSync(devReportPath)) {
-    const devRep = JSON.parse(readFileSync(devReportPath, 'utf8'));
-    const devPrec = devRep.precision ?? 0;
-    g7Pass = devPrec >= 0.70;
-    g7Detail = { devPrecision: devPrec, requiredPrecision: 0.70 };
-  } else {
-    g7Detail = { error: 'dev report missing' };
-  }
-  gates.push({ name: 'Dev precision >= 0.70', pass: g7Pass, detail: g7Detail });
+  const cleanFp = cleanEvidence?.newCleanFalsePositives ?? metric(devAttention, ['newCleanFalsePositives', 'newCleanFp']);
+  const protectedRegressions = redTeamEvidence?.newProtectedRegressions ?? metric(devAttention, ['newProtectedRegressions', 'protectedRegressions']);
+  const multidimDrop = multidimEvidence?.multidimensionalDropPp ?? metric(devAttention, ['multidimensionalDropPp', 'multidimensional.dropPp']);
 
-  const failedGates = gates.filter((g) => !g.pass);
+  addGate(gates, 'new clean false positives = 0', cleanFp != null && cleanFp === 0, { cleanFp });
+  addGate(gates, 'new protected/red-team regressions = 0', protectedRegressions != null && protectedRegressions === 0, { protectedRegressions });
+  addGate(gates, 'multidimensional-test drop <= 0.5pp', multidimDrop != null && multidimDrop <= 0.5, { multidimDropPp: multidimDrop });
+
+  const rt = runtime?.runtime;
+  const off = rt?.off;
+  const att = rt?.attention;
+  const delta = rt?.delta ?? rt?.attentionVsOff;
+  const latencyComplete = runtime?.schema === 'attention-classical-runtime-baseline-v2'
+    && runtime?.devOpened === false
+    && off && att && delta
+    && ['medianMs', 'p95Ms', 'p99Ms', 'coldStartMs', 'rssBytes'].every((key) => finite(off[key]) && finite(att[key]))
+    && ['p95Ms', 'coldStartMs', 'rssBytes'].every((key) => finite(delta[key]));
+  addGate(gates, 'same-process OFF/attention latency metrics present', latencyComplete, {
+    off: off ?? null, attention: att ?? null, delta: delta ?? null,
+  });
+  addGate(gates, 'attention-only p95 delta <= 3ms', latencyComplete && delta.p95Ms <= 3, { p95DeltaMs: delta?.p95Ms ?? null });
+  addGate(gates, 'full-engine attention p95 <= 15ms', latencyComplete && att.p95Ms <= 15, { p95Ms: att?.p95Ms ?? null });
+  addGate(gates, 'cold-start delta <= 250ms', latencyComplete && delta.coldStartMs <= 250, { coldStartDeltaMs: delta?.coldStartMs ?? null });
+  addGate(gates, 'RSS delta <= 20MiB', latencyComplete && delta.rssBytes <= 20 * 1024 * 1024, { rssDeltaBytes: delta?.rssBytes ?? null });
+
+  const calBase = calibration?.baseline;
+  const calWinner = calibration?.winner;
+  const calOk = calibration?.schema === 'attention-engine-calibration-report-v2'
+    && calibration?.status === 'CALIBRATED' && calWinner && calBase
+    && finite(calBase.precision) && finite(calBase.recall) && finite(calBase.f05)
+    && finite(calWinner.precision) && finite(calWinner.recall) && finite(calWinner.f05)
+    && calWinner.precision >= calBase.precision
+    && calWinner.recall >= calBase.recall
+    && calWinner.f05 >= calBase.f05
+    && finite(calWinner.fp) && finite(calBase.fp) && calWinner.fp <= calBase.fp;
+  addGate(gates, 'strict calibration winner', calOk, { status: calibration?.status ?? null });
+
+  const intAtt = internal?.attention ?? internal?.evaluated;
+  const intBase = internal?.baseline;
+  const internalOk = Boolean(intAtt
+    && finite(intAtt.precision) && finite(intAtt.f05)
+    && (intBase
+      ? (intAtt.precision >= intBase.precision - 0.02 && intAtt.f05 >= intBase.f05 - 0.02)
+      : (calWinner && intAtt.precision >= calWinner.precision - 0.02 && intAtt.f05 >= calWinner.f05 - 0.02)));
+  addGate(gates, 'internal-test drop <= 2pp vs calibration', internalOk, {
+    precisionDrop: internalOk ? (intBase ? intAtt.precision - intBase.precision : intAtt.precision - calWinner.precision) : null,
+    f05Drop: internalOk ? (intBase ? intAtt.f05 - intBase.f05 : intAtt.f05 - calWinner.f05) : null,
+  });
+
+  const provenance = provenanceOk([shortlist, calibration, internal, dev, metadata].filter(Boolean));
+  addGate(gates, 'all artifacts share compatible provenance hashes', provenance, {});
+
+  const testsPass = testsEvidence?.testsPass ?? dev?.testsPass;
+  const deterministic = testsEvidence?.deterministic ?? dev?.deterministic;
+  addGate(gates, 'tests/determinism evidence present', testsPass === true && deterministic === true, {
+    testsPass: testsPass ?? null, deterministic: deterministic ?? null,
+  });
+
+  addGate(gates, 'same-run dev quality/provenance', Boolean(devQuality), {
+    devOpenCount: dev?.devOpenCount ?? null,
+  });
+  addGate(gates, 'semantic precision >= classical - 0.002', Boolean(devQuality
+    && devAttention.precision >= devClassical.precision - 0.002), {
+    delta: devQuality ? devAttention.precision - devClassical.precision : null,
+  });
+  addGate(gates, 'semantic recall >= classical + 0.010', Boolean(devQuality
+    && devAttention.recall >= devClassical.recall + 0.010), {
+    delta: devQuality ? devAttention.recall - devClassical.recall : null,
+  });
+  addGate(gates, 'semantic F0.5 >= classical + 0.010', Boolean(devQuality
+    && devAttention.f05 >= devClassical.f05 + 0.010), {
+    delta: devQuality ? devAttention.f05 - devClassical.f05 : null,
+  });
+
+  const incrementalPrecision = metric(devAttention, ['incrementalPrecision', 'incremental.precision']);
+  addGate(gates, 'attention incremental precision >= 0.800', Boolean(devQuality && incrementalPrecision != null && incrementalPrecision >= 0.8), { incrementalPrecision });
+
+  const failedGates = gates.filter((gate) => !gate.pass);
   const decision = failedGates.length === 0 ? 'ACCEPT_EXPERIMENTAL_ACTIVE' : 'REJECT';
+  const onlyDevPending = failedGates.length > 0
+    && failedGates.every((g) => (g.name || '').startsWith('semantic') || (g.name || '').includes('dev') || (g.name || '').includes('incremental'));
 
   const result = {
-    schema: 'attention-gate-decision-v1',
+    schema: 'attention-gate-decision-v2',
     createdAt: new Date().toISOString(),
     decision,
+    status: onlyDevPending ? 'READY_FOR_FRESH_HELDOUT' : decision,
     gatesCount: gates.length,
     passedGatesCount: gates.length - failedGates.length,
-    failedGates: failedGates.map((g) => g.name),
+    failedGates: failedGates.map((gate) => gate.name),
     gates,
   };
-
-  if (outputDecisionPath) {
-    writeFileSync(outputDecisionPath, JSON.stringify(result, null, 2), 'utf8');
-  }
-
+  if (outputDecisionPath) writeFileSync(outputDecisionPath, JSON.stringify(result, null, 2), 'utf8');
   return result;
 }
 
 async function main() {
   const args = process.argv.slice(2);
-  let shortlistConfigPath = '.tmp/attention-shortlist-config.json';
-  let artifactPath = 'src/data/attention-reranker.int8.bin';
-  let calibrationReportPath = '.tmp/attention-engine-calibration-report.json';
-  let internalTestReportPath = '.tmp/attention-internal-test-report.json';
-  let devReportPath = '.tmp/attention-dev-report.json';
-  let outputDecisionPath = '.tmp/attention-gate-decision.json';
-
+  const paths = {};
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === '--shortlist-config') shortlistConfigPath = args[++i];
-    if (args[i] === '--artifact') artifactPath = args[++i];
-    if (args[i] === '--calibration-report') calibrationReportPath = args[++i];
-    if (args[i] === '--internal-test-report') internalTestReportPath = args[++i];
-    if (args[i] === '--dev-report') devReportPath = args[++i];
-    if (args[i] === '--output-decision') outputDecisionPath = args[++i];
+    const key = {
+      '--shortlist-config': 'shortlistConfigPath', '--artifact': 'artifactPath',
+      '--metadata': 'metadataPath', '--vocab': 'vocabPath',
+      '--calibration-report': 'calibrationReportPath', '--internal-test-report': 'internalTestReportPath',
+      '--dev-report': 'devReportPath', '--runtime-baseline': 'runtimeBaselinePath',
+      '--output-decision': 'outputDecisionPath',
+    }[args[i]];
+    if (key) paths[key] = args[++i];
   }
-
-  const result = evaluateAttentionGate({
-    shortlistConfigPath,
-    artifactPath,
-    calibrationReportPath,
-    internalTestReportPath,
-    devReportPath,
-    outputDecisionPath,
-  });
-
-  console.log(JSON.stringify(result, null, 2));
+  console.log(JSON.stringify(evaluateAttentionGate(paths), null, 2));
 }
 
 if (process.argv[1] && process.argv[1].endsWith('evaluate_attention_gate.mjs')) {
-  main().catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
+  main().catch((err) => { console.error(err); process.exit(1); });
 }

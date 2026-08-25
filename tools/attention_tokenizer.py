@@ -34,6 +34,7 @@ FIRST_LEARNED_ID = 8
 CHAR_HASH_BUCKETS = 4096
 CHAR_NGRAM_MIN = 2
 CHAR_NGRAM_MAX = 4
+MAX_CHAR_NGRAMS = 32
 MAX_CONTEXT_TOKENS = 32
 
 _FNV_OFFSET_BASIS = 0x811C9DC5
@@ -70,7 +71,7 @@ def char_ngram_hashes(word: str) -> List[int]:
             if g not in seen:
                 seen.add(g)
                 out.append(hash_char_ngram(g))
-    return out
+    return out[:MAX_CHAR_NGRAMS]
 
 
 def select_context_indices(
@@ -117,7 +118,12 @@ def encode_context_units(
             norm = normalize_for_model(unit["surface"])
             uid = vocab.get(norm, SPECIAL_IDS["UNK"]) if vocab else SPECIAL_IDS["UNK"]
             marker = MARKER_TARGET if is_target else MARKER_NONE
-            hashes = char_ngram_hashes(norm)
+            # Hide the surface under correction; the TARGET marker identifies
+            # the slot without leaking the misspelling into the encoder.
+            if is_target:
+                uid, hashes = SPECIAL_IDS["MASK"], []
+            else:
+                hashes = char_ngram_hashes(norm)
         if is_target:
             target_position = slot
         ids.append(uid)
@@ -138,7 +144,7 @@ def encode_context_units(
 
 def encode_option_surface(
     surface: str, vocab: Optional[Dict[str, int]] = None,
-) -> Tuple[int, List[int]]:
+) -> dict:
     """Pure per-surface option encoding (KEEP_ORIGINAL included)."""
     norm = normalize_for_model(surface)
     uid = vocab.get(norm, SPECIAL_IDS["UNK"]) if vocab else SPECIAL_IDS["UNK"]

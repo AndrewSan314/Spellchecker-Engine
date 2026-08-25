@@ -25,6 +25,10 @@ import unicodedata
 from typing import Dict, List, Optional, Sequence, Set, Tuple
 import numpy as np
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from tools.attention_tokenizer import MAX_CHAR_NGRAMS, char_ngram_hashes
+
 VOCAB_SIZE_LIMIT = 8192
 MAX_SEQ_TOKENS = 32
 SPECIAL_IDS = {
@@ -155,6 +159,17 @@ def encode_sentences(
     return rows
 
 
+def encode_char_features(sentences: Sequence[str]) -> Tuple[np.ndarray, np.ndarray]:
+    hashes = np.zeros((len(sentences), MAX_SEQ_TOKENS, MAX_CHAR_NGRAMS), dtype=np.int32)
+    counts = np.zeros((len(sentences), MAX_SEQ_TOKENS), dtype=np.int32)
+    for row, sentence in enumerate(sentences):
+        for col, token in enumerate(tokenize_words(sentence)[:MAX_SEQ_TOKENS]):
+            grams = char_ngram_hashes(token)[:MAX_CHAR_NGRAMS]
+            if grams:
+                hashes[row, col, :len(grams)] = grams
+                counts[row, col] = len(grams)
+    return hashes, counts
+
 def sha256_file(path: str) -> str:
     h = hashlib.sha256()
     with open(path, "rb") as fh:
@@ -222,6 +237,7 @@ def write_artifacts(
 
     # Encode sentences
     encoded = encode_sentences(accepted_sentences, vocab["wordToId"])
+    encoded_char_hashes, encoded_char_counts = encode_char_features(accepted_sentences)
 
     # Deterministic order with seed
     rng = np.random.default_rng(seed)
@@ -231,6 +247,8 @@ def write_artifacts(
     all_ids = np.array([encoded[i][0] for i in indices], dtype=np.int32)
     all_mask = np.array([encoded[i][1] for i in indices], dtype=np.uint8)
     all_hashes = np.array([sentence_hashes[i] for i in indices], dtype=object)
+    all_char_hashes = encoded_char_hashes[indices]
+    all_char_counts = encoded_char_counts[indices]
 
     # Write shards
     total_rows = len(encoded)
@@ -248,6 +266,8 @@ def write_artifacts(
             ids=all_ids[start:end],
             mask=all_mask[start:end],
             hashes=all_hashes[start:end],
+            char_hashes=all_char_hashes[start:end],
+            char_counts=all_char_counts[start:end],
         )
 
         shards_meta.append({

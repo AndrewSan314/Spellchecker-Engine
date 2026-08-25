@@ -11,7 +11,8 @@
 // ============================================================
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, mkdtempSync, writeFileSync } from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -41,6 +42,18 @@ test('handles corrupt or missing artifact gracefully', () => {
   assert.throws(
     () => loadAttentionReranker({ binPath: 'non-existent.bin', metaPath: META_PATH }),
     /not found|ENOENT/i,
+  );
+});
+
+test('present-but-stale metadata fails closed on binary hash mismatch', () => {
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'attention-loader-'));
+  const stale = JSON.parse(readFileSync(META_PATH, 'utf8'));
+  stale.binHash = '0'.repeat(64);
+  const staleMeta = path.join(dir, 'stale.json');
+  writeFileSync(staleMeta, JSON.stringify(stale));
+  assert.throws(
+    () => loadAttentionReranker({ binPath: BIN_PATH, metaPath: staleMeta }),
+    /hash mismatch/i,
   );
 });
 

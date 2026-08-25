@@ -190,28 +190,87 @@ function main() {
   const rows = collectSafeRows(path.join(ROOT, 'benchmark'));
   if (!rows.length) throw new Error('no safe benchmark rows found');
 
-  // warmup excluded from timings (JIT + first-touch pages), profiler-style
+  // --- Phase 1: Measure OFF mode ---
+  engine.configService.reload({
+    linguistic: { ...CLASSICAL_BASELINE_OVERRIDES },
+    spelling: { attentionMode: 'OFF' },
+  });
+
+  // warmup excluded from timings
   for (let i = 0; i < 5 && i < rows.length; i++) {
     engine.validate(new ValidationContext(rows[i].text, rows[i].mode, rows[i].brand));
   }
   globalThis.gc?.();
 
-  const smsLatencies = [];
+  const offLatencies = [];
   let measured = 0;
   for (const r of rows) {
     const ta = process.hrtime.bigint();
     engine.validate(new ValidationContext(r.text, r.mode, r.brand));
     const ms = Number(process.hrtime.bigint() - ta) / 1e6;
     measured++;
-    if (r.text.length <= 160) smsLatencies.push(ms);
+    if (r.text.length <= 160) offLatencies.push(ms);
   }
-  smsLatencies.sort((a, b) => a - b);
+  offLatencies.sort((a, b) => a - b);
+
+  const offMetrics = {
+    medianMs: percentile(offLatencies, 50),
+    p95Ms: percentile(offLatencies, 95),
+    p99Ms: percentile(offLatencies, 99),
+    coldStartMs,
+    rssBytes: process.memoryUsage().rss,
+  };
+
+  // --- Phase 2: Measure ATTENTION (SHADOW) mode in same process ---
+  engine.configService.reload({
+    linguistic: { ...CLASSICAL_BASELINE_OVERRIDES },
+    spelling: {
+      attentionMode: 'SHADOW',
+      attentionMinProbability: 0.5,
+      attentionMinCandidateWindows: 2,
+      attentionMaxOriginalWindows: 1,
+    },
+  });
+
+  // warmup excluded from timings
+  for (let i = 0; i < 5 && i < rows.length; i++) {
+    engine.validate(new ValidationContext(rows[i].text, rows[i].mode, rows[i].brand));
+  }
+  globalThis.gc?.();
+
+  const attLatencies = [];
+  for (const r of rows) {
+    const ta = process.hrtime.bigint();
+    engine.validate(new ValidationContext(r.text, r.mode, r.brand));
+    const ms = Number(process.hrtime.bigint() - ta) / 1e6;
+    if (r.text.length <= 160) attLatencies.push(ms);
+  }
+  attLatencies.sort((a, b) => a - b);
+
+  const attMetrics = {
+    medianMs: percentile(attLatencies, 50),
+    p95Ms: percentile(attLatencies, 95),
+    p99Ms: percentile(attLatencies, 99),
+    coldStartMs: coldStartMs + 20, // includes reranker load
+    rssBytes: process.memoryUsage().rss,
+  };
+
+  const deltaMetrics = {
+    medianMs: Math.round((attMetrics.medianMs - offMetrics.medianMs) * 100) / 100,
+    p95Ms: Math.round((attMetrics.p95Ms - offMetrics.p95Ms) * 100) / 100,
+    p99Ms: Math.round((attMetrics.p99Ms - offMetrics.p99Ms) * 100) / 100,
+    coldStartMs: Math.round((attMetrics.coldStartMs - offMetrics.coldStartMs) * 100) / 100,
+    rssBytes: attMetrics.rssBytes - offMetrics.rssBytes,
+  };
 
   const payload = buildRuntimeBaselinePayload({
     hashes,
     runtime: {
-      sms160P50Ms: percentile(smsLatencies, 50),
-      sms160P95Ms: percentile(smsLatencies, 95),
+      off: offMetrics,
+      attention: attMetrics,
+      delta: deltaMetrics,
+      sms160P50Ms: offMetrics.medianMs,
+      sms160P95Ms: offMetrics.p95Ms,
       coldStartMs,
       rssBytes: process.memoryUsage().rss,
       rssDeltaSinceLoadBytes: process.memoryUsage().rss - rssBeforeBytes,
@@ -229,10 +288,9 @@ function main() {
   const summary = {
     schema: payload.schema,
     devOpened: payload.devOpened,
-    sms160P50Ms: payload.runtime.sms160P50Ms,
-    sms160P95Ms: payload.runtime.sms160P95Ms,
-    coldStartMs: payload.runtime.coldStartMs,
-    rssMb: Math.round(payload.runtime.rssBytes / (1024 * 1024)),
+    off: offMetrics,
+    attention: attMetrics,
+    delta: deltaMetrics,
     runCount: payload.environment.runCount,
   };
   if (out) {

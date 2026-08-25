@@ -204,9 +204,28 @@ function main() {
     const attestOf = attestMap(entries, words, idx);
     const famKey = accentKey(token.normalized);
     const order = cheapOrdered(entries, token, attestOf);
+    const rr = services.recallReranker;
+    const recallScoreOf = rr?.enabled ? (candidate) => {
+      try {
+        const rank = ranks.get(candidate.word.toLowerCase()) ?? {};
+        return rr.score(buildRecallPairwiseFeatures({
+          languageModel: lm,
+          services,
+          words,
+          idx,
+          candidateWord: candidate.word,
+          originalWord: token.normalized,
+          cheapRank: rank.cheapRank,
+          poolRank: rank.poolRank,
+        }));
+      } catch {
+        return null;
+      }
+    } : null;
     return selectDiverseShortlist(entries, {
       attestOf, famKey, size,
       cheapOrder: order,
+      recallScoreOf,
     }).map((c) => ({
       surface: c.word,
       cheapRank: ranks.get(c.word.toLowerCase())?.cheapRank ?? 0,
@@ -275,6 +294,20 @@ function main() {
     }
   }
 
+  function attachLabelOffsets(doc, labels) {
+    const words = doc.tokens.filter((t) => t.type === 'WORD');
+    const used = new Set();
+    return (labels ?? []).map((label) => {
+      const wanted = normSurface(label.value);
+      const pos = words.findIndex((word, index) => !used.has(index)
+        && (normSurface(word.original) === wanted
+          || normSurface(word.normalized) === wanted));
+      if (pos < 0) return { ...label };
+      used.add(pos);
+      return { ...label, start: words[pos].start, end: words[pos].end };
+    });
+  }
+
   function storeCase(base) {
     cases.push(base);
     return base;
@@ -334,12 +367,14 @@ function main() {
     const text = String(row.text ?? '');
     if (!text.trim()) continue;
     const groupId = normalizedSentenceHash(text);
-    putMessage(groupId, 'vsec-train', text, false,
-      (row.correction_pairs ?? []).map((p) => ({
+    const vsecLabels = (row.correction_pairs ?? []).map((p) => ({
         value: normSurface(p?.error), suggestions: [normSurface(p?.correction)],
-      })).filter((l) => l.value && l.suggestions[0]));
+      })).filter((l) => l.value && l.suggestions[0]);
+    putMessage(groupId, 'vsec-train', text, false, vsecLabels);
     const ctx = ctxOf(text);
     const doc = buildValidationDocument(ctx);
+    const storedVsec = messages.get(`${groupId}|${text}`);
+    if (storedVsec) storedVsec.labels = attachLabelOffsets(doc, storedVsec.labels);
     const words = doc.tokens.filter((t) => t.type === 'WORD');
     (row.correction_pairs ?? []).forEach((pair, expIdx) => {
       const errValue = pair?.error;
@@ -528,8 +563,11 @@ function main() {
       unitsCount: units.length,
     });
     stats.syntheticRows++;
-    putMessage(groupId, 'synthetic-clean-train', newText, false,
-      [{ value: normSurface(tok2.original), suggestions: [primary] }]);
+    const syntheticLabels = [{
+      value: normSurface(tok2.original), suggestions: [primary],
+      start: tok2.start, end: tok2.end,
+    }];
+    putMessage(groupId, 'synthetic-clean-train', newText, false, syntheticLabels);
   });
 
   function corruptToken(token, operator, seed) {
@@ -721,6 +759,9 @@ function main() {
     hashes: {
       ...headerHashes,
       extractor: sha256File(path.join(HERE, 'extract_attention_ranking_rows.mjs')),
+      engine: sha256File(path.join(root, 'src', 'engine.mjs')),
+      linguisticRules: sha256File(path.join(root, 'src', 'rules', 'linguistic-rules.mjs')),
+      config: sha256File(path.join(root, 'src', 'config.mjs')),
     },
     counts: {
       ...counts,
@@ -734,13 +775,22 @@ function main() {
       widePoolOracle: oracleStats.widePoolOracle,
       shortlistRetention: oracleStats.shortlistRetention,
       absoluteOracle: oracleStats.absoluteOracle,
+      numerators: oracleStats.numerators,
+      denominators: oracleStats.denominators,
     },
     frozenK: K,
     selectionReason: selection.reason,
     denyList,
   };
-  writeFileSync(outP('attention-ranking-split-manifest.json'),
-    `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+  const manifestPath = outP('attention-ranking-split-manifest.json');
+  manifest.hashes.generated = {};
+  for (const splitName of Object.keys(rowsBySplit)) {
+    manifest.hashes.generated[`ranking${splitName}`] = sha256File(
+      outP(`attention-ranking-${splitName}.jsonl`));
+    manifest.hashes.generated[`messages${splitName}`] = sha256File(
+      outP(`attention-messages-${splitName}.jsonl`));
+  }
+  writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
 
   const shortlistConfig = {
     schema: ATTENTION_SHORTLIST_CONFIG_SCHEMA,
@@ -753,6 +803,7 @@ function main() {
       generatorConfig: generatorConfigHash,
       extractor: sha256File(path.join(HERE, 'extract_attention_ranking_rows.mjs')),
       inputs: headerHashes,
+      manifest: sha256File(manifestPath),
     },
     note: 'All later tasks MUST load K from this file; never hard-code 4.',
   };

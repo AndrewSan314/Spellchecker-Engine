@@ -1,6 +1,6 @@
 {
   "schema": "attention-classical-runtime-baseline-v2",
-  "createdAt": "2026-08-25T04:19:40.982Z",
+  "createdAt": "2026-08-25T10:57:19.572Z",
   "plan": "docs/plans/2026-08-25-tiny-attention-spelling-reranker-FIXED.md#task-0",
   "devOpened": false,
   "overrides": {
@@ -11,23 +11,44 @@
     "wordBoundaryCorrectionMode": "SHADOW"
   },
   "hashes": {
-    "configDotMjs": "b6b98331c6fc4770a3de2e27587035c4a2e172ae0d104b9fb4891cb3b9abe573",
-    "engineDotMjs": "e59e8eaf92703175772c6038efa2db4fd870c8a4f071a6a4a1cc518284d6f69b",
+    "configDotMjs": "d20f667f42bb88eb9a6763b8a21237a5e94fced4918ce483046462cb4f252ea3",
+    "engineDotMjs": "caf2a2379ade656c27717c74a9ee7aa6784c506a630efa3c17682e77e9a769ba",
     "languageDotMjs": "e7f150f3d6d36c68a1778af14fb0cc0757cc13cd7be9775e57eb7cc2d3629e7d",
-    "linguisticRulesDotMjs": "5744c59fec0292cc6a2ae05845192a677aa236abe715fe5ac3e4205f25c271ea",
+    "linguisticRulesDotMjs": "ddef1b5950ca6b76f1a32f72d6d0cbdb0069a138242bab00fa995d4202361202",
     "recallRerankerDotMjs": "719e2000903f5849baa2be71fac7abff95e3359e73ca86773e4d41572a3e802b",
-    "spellingTuningJson": "e48871ae4ce3312a1331192286efb171739fca71d42756b604c78307a434e918",
+    "spellingTuningJson": "3386ab645f138a932aba9629e82c31af162894d074b425722089aebaf723c4b4",
     "lmNgramsTsv": "791f4525653489ef98dae1ed23e238ab4aac4af90df2f8a4378e09ae78560ce6",
     "lmManifestJson": "b96abc3010ad97ec3c97389c51e1a336a15ae67ce90f444fe89dc6b1cb62c0b3",
     "recallRerankerModelJson": "583d3ae722539d6b758bba999e034eb7066735480472372be1953563816a0725",
     "lexiconTxt": "d16aacc3815a72456788b209b8c113c6f68e36375bed13ff9855c7aab1c6f9ac"
   },
   "runtime": {
-    "sms160P50Ms": 1.51,
-    "sms160P95Ms": 3.28,
-    "coldStartMs": 4058.64,
-    "rssBytes": 914350080,
-    "rssDeltaSinceLoadBytes": 843440128
+    "off": {
+      "medianMs": 2.97,
+      "p95Ms": 7.05,
+      "p99Ms": 9.48,
+      "coldStartMs": 8327.39,
+      "rssBytes": 873897984
+    },
+    "attention": {
+      "medianMs": 2.43,
+      "p95Ms": 6.26,
+      "p99Ms": 9.99,
+      "coldStartMs": 8347.39,
+      "rssBytes": 873988096
+    },
+    "delta": {
+      "medianMs": -0.54,
+      "p95Ms": -0.79,
+      "p99Ms": 0.51,
+      "coldStartMs": 20,
+      "rssBytes": 90112
+    },
+    "sms160P50Ms": 2.97,
+    "sms160P95Ms": 7.05,
+    "coldStartMs": 8327.39,
+    "rssBytes": 873988096,
+    "rssDeltaSinceLoadBytes": 802484224
   },
   "attentionContributionMs": 0,
   "environment": {

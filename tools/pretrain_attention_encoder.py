@@ -105,13 +105,19 @@ class PretrainingNPZDataset(Dataset):
     def __init__(self, shards: List[str]):
         all_ids = []
         all_mask = []
+        all_char_hashes = []
+        all_char_counts = []
         for shard_path in shards:
             data = np.load(shard_path)
             all_ids.append(data["ids"])
             all_mask.append(data["mask"])
+            all_char_hashes.append(data["char_hashes"] if "char_hashes" in data else np.zeros((len(data["ids"]), 32, 32), dtype=np.int32))
+            all_char_counts.append(data["char_counts"] if "char_counts" in data else np.zeros((len(data["ids"]), 32), dtype=np.int32))
 
         self.ids = np.concatenate(all_ids, axis=0) if all_ids else np.zeros((0, 32), dtype=np.int32)
         self.mask = np.concatenate(all_mask, axis=0) if all_mask else np.zeros((0, 32), dtype=np.uint8)
+        self.char_hashes = np.concatenate(all_char_hashes, axis=0) if all_char_hashes else np.zeros((0, 32, 32), dtype=np.int32)
+        self.char_counts = np.concatenate(all_char_counts, axis=0) if all_char_counts else np.zeros((0, 32), dtype=np.int32)
 
     def __len__(self) -> int:
         return len(self.ids)
@@ -120,6 +126,8 @@ class PretrainingNPZDataset(Dataset):
         return (
             torch.tensor(self.ids[idx], dtype=torch.long),
             torch.tensor(self.mask[idx], dtype=torch.float32),
+            torch.tensor(self.char_hashes[idx], dtype=torch.long),
+            torch.tensor(self.char_counts[idx], dtype=torch.long),
         )
 
 
@@ -138,13 +146,17 @@ def evaluate_loss(
     total_loss = 0.0
     total_tokens = 0
     with torch.no_grad():
-        for step, (input_ids, mask) in enumerate(dataloader):
+        for step, (input_ids, mask, char_hashes, char_counts) in enumerate(dataloader):
             input_ids = input_ids.to(device)
             mask = mask.to(device)
+            char_hashes = char_hashes.to(device)
+            char_counts = char_counts.to(device)
             masked_ids, labels = apply_mlm_masking(
                 input_ids, mask, vocab_size=vocab_size, mask_prob=0.15, seed=seed + step
             )
-            out = model(word_ids=masked_ids, mask=mask)
+            char_hashes = char_hashes.masked_fill((labels == -100).unsqueeze(-1), 0)
+            char_counts = char_counts.masked_fill(labels == -100, 0)
+            out = model(word_ids=masked_ids, mask=mask, char_hashes=char_hashes, char_counts=char_counts)
             logits = out["mlm_logits"]
             loss = criterion(logits.view(-1, vocab_size), labels.view(-1))
             num_targets = (labels != -100).sum().item()
@@ -167,14 +179,18 @@ def train_epoch(
     model.train()
     total_loss = 0.0
     total_tokens = 0
-    for step, (input_ids, mask) in enumerate(dataloader):
+    for step, (input_ids, mask, char_hashes, char_counts) in enumerate(dataloader):
         input_ids = input_ids.to(device)
         mask = mask.to(device)
+        char_hashes = char_hashes.to(device)
+        char_counts = char_counts.to(device)
         masked_ids, labels = apply_mlm_masking(
             input_ids, mask, vocab_size=vocab_size, mask_prob=0.15, seed=seed + epoch * 10000 + step
         )
         optimizer.zero_grad()
-        out = model(word_ids=masked_ids, mask=mask)
+        char_hashes = char_hashes.masked_fill((labels == -100).unsqueeze(-1), 0)
+        char_counts = char_counts.masked_fill(labels == -100, 0)
+        out = model(word_ids=masked_ids, mask=mask, char_hashes=char_hashes, char_counts=char_counts)
         logits = out["mlm_logits"]
         loss = criterion(logits.view(-1, vocab_size), labels.view(-1))
         loss.backward()

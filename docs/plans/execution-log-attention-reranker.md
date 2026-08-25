@@ -472,3 +472,107 @@ no new runtime npm dependencies; modes are OFF/SHADOW/EXPERIMENTAL_ACTIVE.
 - Next task allowed: no (plan fully completed)
 
 ---
+
+### Post-fix correction checkpoint (2026-08-25)
+
+- Status: STOPPED at truthful `SHADOW` / gate `REJECT`; earlier Task 10-12
+  PASS/ACTIVE claims are superseded because their artifacts used stale schemas.
+- Files changed: oracle schema, production shortlist/extractor, evaluator,
+  calibration/gate tools, artifact loader/export metadata, focused tests, and
+  regenerated train/calibration/internal `.tmp` artifacts.
+- Extraction command passed using only allowed TRAIN sources; no VSEC dev,
+  old held-out, or external-test was opened or rerun.
+- Oracle after label-free recall-signal shortlist:
+  - widePoolOracle `7256/8935 = 81.21%`
+  - shortlistRetention@8 `6636/7256 = 91.46%` (prior 82.46%; threshold 90%)
+  - absoluteOracle@8 `6636/8935 = 74.27%`
+  - shortlist misses at 8: `655`; candidate misses: `1583`
+- Focused Node suites (schema, shortlist, evaluator, gate, loader, shadow
+  regression) passed. Calibration now uses strict exact span/value/suggestion
+  one-to-one matching and no tolerance; no strict winner remains `SHADOW`.
+- Current strict gate: `REJECT`. Shortlist/schema/artifact checks pass, but
+  existing calibration/internal/dev/runtime reports lack v2 provenance and
+  same-process OFF-vs-attention metrics. `config/spelling-tuning.json` remains
+  `attentionMode=SHADOW`; no ACTIVE forcing.
+- Next task allowed: no production promotion. Regenerate fresh calibration,
+  internal-test, and resource metrics before any gate decision; do not rerun dev
+  unless a newly frozen configuration authorizes the single permitted invocation.
+
+---
+
+### Rebuild and Honest Verdict v2 Checkpoint (2026-08-25)
+
+- Status: COMPLETE downstream rebuild; honest Gate v2 verdict: `REJECT` / `HOLD_SHADOW`.
+- Constraints Honored:
+  - No Git init / commit; no changes outside scope;
+  - VSEC dev is consumed and was NEVER opened or re-run;
+  - Supervised training strictly used `vsec-train.jsonl` + `clean-train.txt` (660 hard negatives);
+  - `config/spelling-tuning.json` strictly maintains `attentionMode: "SHADOW"`.
+- Execution Summary:
+  1. **Step 1 (Provenance & Data Split Verification)**:
+     - Confirmed `widePoolHits/allAttempts = 7256/8935 = 81.21%`
+     - Confirmed `shortlistRetention@8 = 6636/7256 = 91.46%` ($\ge 90\%$ gate PASS)
+     - Confirmed `absoluteOracle@8 = 6636/8935 = 74.27%` with $K=8$.
+     - Splits: 7,732 train rows, 645 calibration rows, 662 internal-test rows.
+  2. **Step 2 (Task 6 Fine-tuning Arch A, B, C)**:
+     - Arch A selected on calibration set: $F_{0.5} = 0.9544$, Precision = $0.9548$, Recall = $0.9529$.
+     - Breakdown: `HARD_NEGATIVE_KEEP` 52/52 (100%), `UNACCENTED_SAME_KEY` 11/11 (100%), KEEP accuracy $99.36\%$, inference $0.602\text{ ms/sample}$.
+  3. **Step 3 (Task 7 Model Export)**:
+     - Binary: `src/data/attention-reranker.int8.bin` (288,688 bytes, sha256: `33953ecacc17...`).
+     - Metadata: `src/data/attention-reranker.json` (12,580 bytes) containing full provenance hashes.
+     - Total artifact footprint: 333 KB $\ll 10\text{ MiB}$ budget.
+  4. **Step 4 (Task 8 Parity Verification)**:
+     - 25-case golden parity fixture `test/fixtures/attention-parity.json`.
+     - Python vs JS argmax equality: 100% agreement, max absolute score difference $< 10^{-4}$.
+  5. **Step 5 (Task 9 Shadow Pipeline)**:
+     - Exact classical emission preserved under `SHADOW` mode with zero regressions.
+  6. **Step 6 (Task 10 Shadow-Cache Replay Calibration)**:
+     - Refactored `tools/calibrate_attention_engine.mjs` to shadow-cache replay.
+     - Validation count = 2,082 for 694 calibration messages (exactly messages $\times$ 3).
+     - Replayed 450 parameter grid combinations in-memory in $<1\text{ ms}$.
+     - Added instrumentation test asserting validation count is invariant to grid points.
+     - Verified replay metrics match full-engine metrics bit-identically.
+     - Winner: $p \ge 0.50$, $\text{candWin} \ge 2$, $\text{origWin} \le 1$, Precision = $71.38\%$ ($+0.79\text{ pp}$), Recall = $27.75\%$ ($+0\text{ pp}$), $F_{0.5} = 0.5430$ ($+0.0037$), $\text{FP} = 77$ ($-3$ FPs).
+  7. **Step 7 (Internal-Test Evaluation)**:
+     - Evaluated on `.tmp/attention-messages-internal-test.jsonl` (675 messages) with 1-to-1 matching in `SHADOW` mode.
+  8. **Step 8 (Runtime Benchmark in-process)**:
+     - Same-process OFF vs ATTENTION on safe smoke corpus: OFF p95 = $7.05\text{ ms}$, ATTENTION p95 = $6.26\text{ ms}$, delta p95 = $-0.79\text{ ms}$, cold start delta = $20\text{ ms}$, RSS delta = $90\text{ KB}$.
+  9. **Step 9 (Gate Decision v2)**:
+     - Output: `.tmp/attention-gate-decision.json`.
+     - Decision: `REJECT` / `HOLD_SHADOW` (Structural, artifact, tokenizer, runtime latencies, and calibration winner pass; held in SHADOW because VSEC dev is permanently consumed and independent held-out data is required for production activation).
+  10. **Step 10 (Full Test Suites)**:
+     - Python: 62/62 unit tests passing (100% green).
+     - Node.js: 179/179 unit tests passing, 1 skipped (100% green).
+
+---
+
+### Single Internal-Test EXPERIMENTAL_ACTIVE Run & Evidence Checkpoint (2026-08-25)
+
+- Status: COMPLETE.
+- Constraints Honored:
+  - No retrain, no recalibrate, no dev set reopen.
+  - Frozen winner parameters: `attentionMinProbability=0.5, attentionMinCandidateWindows=2, attentionMaxOriginalWindows=1`.
+  - Single internal-test run executed in `EXPERIMENTAL_ACTIVE` mode alongside OFF baseline on `.tmp/attention-messages-internal-test.jsonl`.
+  - Exported report schema v2 to `.tmp/attention-internal-test-report.json`.
+  - Generated 4 independent evidence artifacts (clean set, protected/red-team, multidimensional slices, tests/determinism).
+  - Gate evaluated: 16/16 technical/evidence conditions PASS.
+  - Decision: `REJECT` with status `READY_FOR_FRESH_HELDOUT`.
+  - `config/spelling-tuning.json` strictly maintains `attentionMode: "SHADOW"`.
+- Results Summary:
+  1. **Internal-Test (675 messages)**:
+     - Baseline OFF: TP = 172, FP = 97, FN = 479, Precision = 63.94%, Recall = 26.42%, F0.5 = 0.4980, Clean FP = 8.
+     - Evaluated (ACTIVE): TP = 172, FP = 92 ($-5$ FPs), FN = 479, Precision = **65.15%** ($+1.21\text{ pp}$), Recall = 26.42% ($0\text{ pp}$), F0.5 = **0.5038** ($+0.0058$), Clean FP = 8.
+     - Transitions: new TP = 1, removed classical TP = 1, net TP = 0.
+     - Stage counters: totalTokens = 19,105, prefiltered = 6,156, evaluated = 12,949, emitted = 148, declined = 12,801.
+     - Oracle breakdown: candidateMisses = 2, shortlistMisses = 0.
+     - Decision breakdown: keepDeclines = 7, thresholdDeclines = 9, wrongCandidates = 0, attentionEmits = 0.
+  2. **Evidence Artifacts**:
+     - Clean set (`.tmp/attention-clean-evidence.json`): 500 lines, 0 new clean false positives (PASS).
+     - Protected/Red-team (`.tmp/attention-protected-redteam-evidence.json`): 8 test suites, 0 protected regressions (PASS).
+     - Multidimensional slices (`.tmp/attention-multidimensional-evidence.json`): SMS <= 160 vs SMS > 160, 0 pp drop (PASS).
+     - Tests & Determinism (`.tmp/attention-tests-determinism-evidence.json`): Python 62/62, Node 179/179, deterministic: true (PASS).
+  3. **Gate Status**:
+     - Schema: `attention-gate-decision-v2`
+     - Status: `READY_FOR_FRESH_HELDOUT`
+     - All 16 non-dev technical and safety gates PASS.
+     - Dev set gates held pending fresh independent heldout data; production configuration kept in `SHADOW`.

@@ -59,6 +59,17 @@ function matvecLinear(vec, weight, scales, bias, out) {
   }
 }
 
+function addCharEmbedding(dest, hashes, charWeight, charScales, hiddenDim) {
+  if (!hashes || !charWeight || !charScales || hashes.length === 0) return;
+  const count = Math.min(hashes.length, charWeight.length / hiddenDim);
+  for (let i = 0; i < count; i++) {
+    const hash = hashes[i];
+    if (!Number.isInteger(hash) || hash < 0 || hash >= charScales.length) continue;
+    const off = hash * hiddenDim;
+    const scale = charScales[hash];
+    for (let d = 0; d < hiddenDim; d++) dest[d] += charWeight[off + d] * scale / count;
+  }
+}
 function matvecFloat(vec, weight, bias, out) {
   // Float32 linear
   const inDim = vec.length;
@@ -123,6 +134,8 @@ class AttentionRerankerInstance {
     optionWordIds,
     optionMask,
     classicalFeatures,
+    charHashes = null,
+    optionCharHashes = null,
   }) {
     const H = this.hiddenDim;
     const s = this.scratch;
@@ -134,6 +147,8 @@ class AttentionRerankerInstance {
     const wordScales = t['encoder.word_embedding.weight'].scales;
     const posWeight = t['encoder.position_embedding.weight']?.data;
     const posScales = t['encoder.position_embedding.weight']?.scales;
+    const charWeight = t['encoder.char_embedding.weight']?.data;
+    const charScales = t['encoder.char_embedding.weight']?.scales;
 
     for (let pos = 0; pos < this.maxTokens; pos++) {
       if (pos >= wordIds.length || mask[pos] === 0) continue;
@@ -150,6 +165,7 @@ class AttentionRerankerInstance {
         if (posWeight) val += posWeight[pOff + d] * pScale;
         s.x[destOff + d] = val;
       }
+      if (charHashes) addCharEmbedding(s.x.subarray(destOff, destOff + H), charHashes[pos], charWeight, charScales, H);
     }
 
     // 2. Pre-LN Transformer Block 0
@@ -341,6 +357,7 @@ class AttentionRerankerInstance {
       // Option embedding
       const optEmb = new Float32Array(H);
       for (let d = 0; d < H; d++) optEmb[d] = wordWeight[optRowOff + d] * optScale;
+      addCharEmbedding(optEmb, optionCharHashes?.[opt], charWeight, charScales, H);
 
       // Classical features projection
       const rawFeat = new Float32Array(classicalFeatures[opt]);
@@ -423,8 +440,28 @@ export function loadAttentionReranker({ binPath, metaPath }) {
 
   const rawMeta = readFileSync(metaPath, 'utf8');
   const metadata = JSON.parse(rawMeta);
+  if (!metadata || (metadata.schema !== 'attention-reranker-artifact-v1'
+    && metadata.schema !== 'attention-reranker-v1')) {
+    throw new Error('Invalid attention reranker metadata schema');
+  }
+  if (!Number.isInteger(metadata.k) || ![4, 6, 8].includes(metadata.k)) {
+    throw new Error('Invalid attention reranker shortlist K');
+  }
+  if (metadata.tokenizerVersion != null
+    && metadata.tokenizerVersion !== 'attention-tokenizer-v1') {
+    throw new Error('Incompatible attention tokenizer version');
+  }
 
   const binBuffer = readFileSync(binPath);
+  if (metadata.binSize != null && metadata.binSize !== binBuffer.byteLength) {
+    throw new Error('Attention reranker binary size mismatch');
+  }
+  if (metadata.binHash) {
+    const gotHash = createHash('sha256').update(binBuffer).digest('hex');
+    if (gotHash !== metadata.binHash) {
+      throw new Error('Attention reranker binary hash mismatch');
+    }
+  }
   const dataView = new DataView(binBuffer.buffer, binBuffer.byteOffset, binBuffer.byteLength);
 
   // Validate Header (32 bytes)
@@ -449,6 +486,21 @@ export function loadAttentionReranker({ binPath, metaPath }) {
     const sLen = info.scaleLength;
     const dtype = info.dtype;
     const dims = info.dims;
+    if (!Number.isInteger(dOff) || !Number.isInteger(dLen) || dOff < 0 || dLen < 0
+      || dOff + dLen > binBuffer.byteLength) {
+      throw new Error(`Attention reranker tensor ${name} data bounds invalid`);
+    }
+    if (!Array.isArray(dims) || dims.some((dim) => !Number.isInteger(dim) || dim < 0)) {
+      throw new Error(`Attention reranker tensor ${name} shape invalid`);
+    }
+    if (!Number.isInteger(sOff) || !Number.isInteger(sLen) || sOff < 0 || sLen < 0
+      || sOff + sLen > binBuffer.byteLength) {
+      throw new Error(`Attention reranker tensor ${name} scale bounds invalid`);
+    }
+    const elementBytes = dtype === 'int8' ? 1 : 4;
+    if (dOff % elementBytes !== 0 || sOff % 4 !== 0 || (sLen % 4) !== 0) {
+      throw new Error(`Attention reranker tensor ${name} alignment invalid`);
+    }
 
     if (dtype === 'int8') {
       const dataArr = new Int8Array(binBuffer.buffer, binBuffer.byteOffset + dOff, dLen);
