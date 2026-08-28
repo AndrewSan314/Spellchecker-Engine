@@ -19,6 +19,7 @@ import {
   RECALL_RANK_SENTINEL, ranksForCandidates, buildRecallPairwiseFeatures,
 } from '../recall-reranker.mjs';
 import { evaluateWordBoundaryCandidates } from '../word-boundary-candidates.mjs';
+import { calibratedConfidence, DEFAULT_CONFIDENCE_TEMPERATURE } from '../calibration.mjs';
 import { unitsFromDocument, encodeContextUnits, encodeOptionSurface, normalizeForModel } from '../attention-tokenizer.mjs';
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -178,6 +179,9 @@ export function createPossibleMissingDiacriticRule(services) {
 
     validate: (ctx, doc) => {
       const snap = configService.snapshot();
+      const attentionMode = snap.get('spelling.attentionMode')
+        ?? snap.get('linguistic.attentionMode') ?? 'OFF';
+      if (attentionMode === 'EXPERIMENTAL_ACTIVE' && services.attentionReranker) return [];
       const eligible = [];
       for (let ti = 0; ti < doc.tokens.length; ti++) {
         const t = doc.tokens[ti];
@@ -271,6 +275,8 @@ export function createPossibleMissingDiacriticRule(services) {
       // client-supplied options can no longer lower confidence gates.
       const minConf = snap.get('linguistic.missingDiacriticMinConfidence');
       const minMargin = snap.get('linguistic.missingDiacriticMinMargin');
+      const confTemp = snap.get('linguistic.missingDiacriticConfidenceTemperature')
+        ?? DEFAULT_CONFIDENCE_TEMPERATURE;
       const freqWeight = snap.get('linguistic.lexicalFreqWeight') ?? 0;
 
       const positions = buildPositions(doc, eligible, services);
@@ -328,11 +334,31 @@ export function createPossibleMissingDiacriticRule(services) {
           const best = order[0];
           const bestCand = pos.candidates[best.i];
           const secondP = order[1]?.p ?? 0;
-          // plan §13 interim: raw softmax is candidate-count-sensitive
-          // (12 twins dilute p1 below thresholds). Pairwise dominance
-          // p1/(p1+p2) is count-invariant until a proper calibrator lands.
-          const conf = secondP > 0 ? best.p / (best.p + secondP) : best.p;
+          // Phase 1: raw softmax is candidate-count-sensitive (12 twins
+          // dilute p1 below thresholds), so confidence stays pairwise. But
+          // the legacy p1/(p1+p2) IS sigmoid(s1-s2) on the raw LM score
+          // scale, where the winner's lead routinely exceeds 20 nats -- it
+          // saturated at exactly 1.0 and no threshold below 1.0 could
+          // discriminate. Dividing the margin by a fitted temperature keeps
+          // the ordering and restores resolution. T=1 reproduces the legacy
+          // number bit-for-bit.
+          const orderedScores = [...scores].sort((a, b) => b - a);
+          const rawMargin = orderedScores.length > 1
+            ? orderedScores[0] - orderedScores[1] : Infinity;
+          const conf = calibratedConfidence(rawMargin, confTemp);
           const margin = best.p - secondP;
+          // Optional offline hook (tools/fit_confidence_temperature.mjs).
+          // Records the raw margin BEFORE the gates so the temperature fit
+          // sees the whole distribution, not just what survives.
+          services.confidenceSink?.({
+            rule: 'POSSIBLE_MISSING_DIACRITIC',
+            start: pos.token.start,
+            end: pos.token.end,
+            original: pos.token.original,
+            candidate: bestCand.word,
+            rawMargin,
+            changed: bestCand.word !== pos.token.normalized,
+          });
 
           // ---- precision gates -------------------------------------------
           // G1 plain-form gate: when the bare form itself is a strong
@@ -648,7 +674,14 @@ export function buildCorrectionCandidates(
       surfacesPerKey: snap.get('linguistic.spellingSurfacesPerKey') ?? 4,
     });
     let cands = pool.entries.slice(0, snap.get('linguistic.spellingPoolMax') ?? 48);
-    if (hasVietnameseAccent(original)) {
+    // The same-key merge used to require the ORIGINAL to carry an accent,
+    // which silently excluded the symmetric case: "quang"/"tao" are valid
+    // unaccented words whose intended form ("quảng"/"tạo") is same-key. With
+    // the merge skipped, SymSpell alone offered only different-key words
+    // ("quan", "vào") and those won the ranking. Membership in the accent
+    // family — not the original's accentedness — is the right condition.
+    if (hasVietnameseAccent(original)
+      || snap.get('linguistic.unaccentedRealWordMode') === 'ACTIVE') {
       const seen = new Set(cands.map((c) => c.word.toLowerCase()));
       for (const c of services.accentIndex.candidates(famKey)) {
         const lw = c.word.toLowerCase();
@@ -845,7 +878,7 @@ function provisionalPairwiseDecision(
  * window winners are sacrificed — measured cost of the p95 budget).
  */
 export function computeRealWordLaneDecision(
-  { builtEntries, services, snap, languageModel, words, idx, original },
+  { builtEntries, services, snap, languageModel, words, idx, original, instrument = false },
 ) {
   const seq = words.map((w) => (typeof w === 'string' ? w : w.normalized));
   const seenRw = new Set([original]);
@@ -857,7 +890,7 @@ export function computeRealWordLaneDecision(
     && (lm.bigram.get(`${p1} ${w}`) ?? 0) > 0)
     || (n1 !== null && (lm.bigram.get(`${w} ${n1}`) ?? 0) > 0)
     || (p1 !== null && n1 !== null && lm.trigramJoint(p1, w, n1) > 0);
-  const pool = [...builtEntries]
+  const eligible = [...builtEntries]
     .filter((c) => c.dist <= maxEditDistanceFor(original.length))
     .sort((a, b) => a.dist - b.dist
       || (b.freq ?? 0) - (a.freq ?? 0) || a.word.localeCompare(b.word))
@@ -867,6 +900,7 @@ export function computeRealWordLaneDecision(
       seenRw.add(lw);
       return true;
     })
+  const pool = eligible
     .filter((c) => quickAttested(c.word.toLowerCase()))
     .slice(0, REAL_WORD_SHADOW_EVAL_LIMIT);
   // deterministic evidence-desc order; stable sort keeps the pool's
@@ -881,7 +915,18 @@ export function computeRealWordLaneDecision(
   })).sort((a, b) => b.evidenceScore - a.evidenceScore
     || b.modelProbability - a.modelProbability);
   if (evaluated.length === 0) {
-    return { winner: null, rivals: [], evaluatedCount: 0 };
+    return {
+      winner: null, rivals: [], evaluatedCount: 0,
+      ...(instrument ? {
+        diagnostic: {
+          pool: eligible.map((c) => ({
+            word: String(c.word).toLowerCase(),
+            quickAttested: quickAttested(String(c.word).toLowerCase()),
+          })),
+          evaluated: [],
+        },
+      } : {}),
+    };
   }
   // Winner comes from the MINIMAL edit-distance tier whenever one of its
   // candidates passes the gate: a real-word typo is the smallest plausible
@@ -909,7 +954,26 @@ export function computeRealWordLaneDecision(
     .map(({ checks, candidate, evidenceScore, features, wouldEmit }) => ({
       candidate, evidenceScore, wouldEmit, checks, features,
     }));
-  return { winner, rivals, evaluatedCount: evaluated.length };
+  return {
+    winner, rivals, evaluatedCount: evaluated.length,
+    ...(instrument ? {
+      diagnostic: {
+        pool: eligible.map((c) => ({
+          word: String(c.word).toLowerCase(),
+          quickAttested: quickAttested(String(c.word).toLowerCase()),
+        })),
+        evaluated: evaluated.map((x, rank) => ({
+          rank: rank + 1,
+          candidate: String(x.candidate).toLowerCase(),
+          wouldEmit: x.wouldEmit,
+          evidenceScore: x.evidenceScore,
+          modelProbability: x.modelProbability,
+          checks: x.checks,
+          features: x.features,
+        })),
+      },
+    } : {}),
+  };
 }
 
 /** Task 9 ACTIVE light path — dictionary-valid tokens NEVER traverse the
@@ -917,15 +981,15 @@ export function computeRealWordLaneDecision(
  * function owns pool construction, the pairwise decision and calibrated
  * emission. */
 function evaluateRealWordToken(
-  { services, snap, languageModel, ctx, doc, words, idx },
+  { services, snap, languageModel, ctx, doc, words, idx, instrument = false },
 ) {
   const t = words[idx];
   const built = buildCorrectionCandidates({
     token: t, lane: 'UNKNOWN_TYPO', services, snap, ctx, doc,
   });
-  const { winner, rivals, evaluatedCount } = computeRealWordLaneDecision({
+  const { winner, rivals, evaluatedCount, diagnostic } = computeRealWordLaneDecision({
     builtEntries: built.entries ?? [],
-    services, snap, languageModel, words, idx, original: t.normalized,
+    services, snap, languageModel, words, idx, original: t.normalized, instrument,
   });
   if (winner) winner.rivals = rivals;
 
@@ -960,6 +1024,7 @@ function evaluateRealWordToken(
     emitted: pass,
     rejectionReason,
     decisionOwner: 'classical-real-word-lane',
+    ...(instrument ? { diagnostic } : {}),
   };
 
   const gates = pass
@@ -978,6 +1043,26 @@ function evaluateRealWordToken(
     ? [winner.candidate]
     : [];
   void maxSuggestions;
+  // Phase 1 unified scale. This lane's score is already a TRAINED pairwise
+  // probability, not a raw LM score gap, so its margin is that probability's
+  // log-odds -- the same log-odds axis the other two paths report on. At T=1
+  // sigmoid(logit(p)) === p, so the shipped number is unchanged; raising T
+  // damps this lane exactly as it damps the others.
+  const rwTemp = snap.get('linguistic.realWordTypoConfidenceTemperature')
+    ?? snap.get('linguistic.spellingConfidenceTemperature')
+    ?? DEFAULT_CONFIDENCE_TEMPERATURE;
+  const rwP = Math.min(1 - 1e-12, Math.max(1e-12, best?.p ?? 0));
+  const rwMargin = best ? Math.log(rwP / (1 - rwP)) : -Infinity;
+  services.confidenceSink?.({
+    rule: 'DIFFERENT_KEY_REAL_WORD',
+    start: t.start,
+    end: t.end,
+    original: t.original,
+    candidate: winner ? String(winner.candidate) : null,
+    rawMargin: rwMargin,
+    changed: Boolean(winner
+      && String(winner.candidate).toLowerCase() !== String(t.normalized).toLowerCase()),
+  });
   return {
     stage: 'decided',
     emit: pass,
@@ -989,6 +1074,8 @@ function evaluateRealWordToken(
     ranked: [],
     best,
     second: null,
+    rawMargin: rwMargin,
+    calibratedConfidence: best ? calibratedConfidence(rwMargin, rwTemp) : 0,
     suggestions,
     isRealWordTone: false,
     reason: undefined,
@@ -997,9 +1084,271 @@ function evaluateRealWordToken(
   };
 }
 
-export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
+function mergeAttentionEntries(lists, famKey) {
+  const out = [];
+  const seen = new Set();
+  for (const list of lists) {
+    for (const entry of list ?? []) {
+      const key = String(entry.word).toLowerCase();
+      if (seen.has(key)) continue;
+      seen.add(key);
+      out.push({ ...entry, sameAccentKey: entry.stripped === famKey });
+    }
+  }
+  return out;
+}
+
+/** Unified attention candidate pool across UNKNOWN, accent-family, and
+ * dictionary-valid real-word lanes. Deterministic guards stay outside. */
+export function buildUnifiedAttentionEntries({ token, cls, services, snap, ctx, doc }) {
+  const famKey = accentKey(token.normalized);
+  const lanes = [];
+  if (cls === 'UNKNOWN') lanes.push('UNKNOWN_TYPO');
+  else if (cls === 'UNACCENTED_VALID') lanes.push('UNACCENTED_SAME_KEY');
+  else if (cls === 'DICTIONARY') {
+    lanes.push(hasVietnameseAccent(token.normalized)
+      ? 'ACCENTED_SAME_KEY' : 'UNACCENTED_SAME_KEY');
+    lanes.push('DIFFERENT_KEY_REAL_WORD');
+  }
+  const pools = lanes.map((lane) => buildCorrectionCandidates({
+    token, lane, services, snap, ctx, doc,
+  }).entries ?? []);
+  return { famKey, lanes, entries: mergeAttentionEntries(pools, famKey) };
+}
+
+/** Single context encode + listwise KEEP/candidate scorer. */
+function evaluateUnifiedAttentionToken({
+  services, snap, ctx, doc, words, idx, cls, attMode, classicalWord = null,
+}) {
+  const t = words[idx];
+  const reranker = services.attentionReranker;
+  if (!reranker || !doc) {
+    return { stage: 'prefilter', reason: 'attention-unavailable', shadowAttention: null };
+  }
+  const built = buildUnifiedAttentionEntries({
+    token: t, cls, services, snap, ctx, doc,
+  });
+  const entries = built.entries;
+  const base = {
+    stage: 'decided', emit: false, gates: {},
+    decision: {
+      generatedWords: entries.map((c) => String(c.word).toLowerCase()),
+      consideredWords: 0, selectedWord: null, emitted: false,
+      rejectionReason: null, decisionOwner: 'attention-unified',
+    },
+    poolWideCount: entries.length,
+    wideRankedWords: entries.map((c) => c.word), cheapKept: [], ranked: [],
+    best: null, second: null, suggestions: [], isRealWordTone: false,
+    shadowWrongDiacritic: null, shadowRealWordTypo: null, shadowAttention: null,
+  };
+  if (entries.length === 0) {
+    base.stage = 'no-candidates';
+    base.reason = 'empty-pool';
+    base.decision.rejectionReason = 'no-candidates';
+    return base;
+  }
+
+  const languageModel = services.languageModel;
+  const normalizedWords = words.map((word) => word.normalized);
+  const famKey = built.famKey;
+  const prevFam = idx > 0
+    ? neighbourSurfaces(languageModel, services.accentIndex,
+      words[idx - 1].normalized.toLowerCase()) : [];
+  const nextFam = idx + 1 < words.length
+    ? neighbourSurfaces(languageModel, services.accentIndex,
+      words[idx + 1].normalized.toLowerCase()) : [];
+  const cw = {
+    dist: snap.get('linguistic.cheapDistWeight') ?? 1.0,
+    freq: snap.get('linguistic.cheapFreqWeight') ?? 0.5,
+    family: snap.get('linguistic.cheapFamilyBonus') ?? 0.75,
+    attest: snap.get('linguistic.cheapAttestBonus') ?? 0.25,
+  };
+  const telexTok = applyTelexHints(t.normalized);
+  const attestSide = nextFam.length >= prevFam.length
+    ? { surfs: nextFam, side: 'right' } : { surfs: prevFam, side: 'left' };
+  const attestOf = new Map();
+  for (const c of entries) {
+    attestOf.set(c.word.toLowerCase(), attestSide.surfs.length > 0
+      && languageModel.bestJointOverSurfaces(
+        c.word.toLowerCase(), attestSide.surfs, attestSide.side) > 0);
+  }
+  const cheapScore = (c) => {
+    let score = -cw.dist * damerauOsaDistance(
+      telexTok, applyTelexHints(c.stripped ?? accentKey(c.word)));
+    score += cw.freq * Math.log10(1 + (c.freq || 1));
+    if (c.stripped === famKey) score += cw.family;
+    if (attestOf.get(c.word.toLowerCase())) score += cw.attest;
+    return score;
+  };
+  const cheapOrder = [...entries].sort((a, b) => cheapScore(b) - cheapScore(a)
+    || a.word.localeCompare(b.word));
+  const poolRanks = ranksForCandidates(entries);
+  const recallScoreOf = services.recallReranker?.enabled ? (candidate) => {
+    try {
+      const rank = poolRanks.get(candidate.word.toLowerCase()) ?? {};
+      return services.recallReranker.score(buildRecallPairwiseFeatures({
+        languageModel, services, words, idx,
+        candidateWord: candidate.word, originalWord: t.normalized,
+        cheapRank: rank.cheapRank, poolRank: rank.poolRank,
+      }));
+    } catch {
+      return null;
+    }
+  } : null;
+  const k = Math.min(8, Math.max(1, reranker.k || 8));
+  const attentionCands = selectDiverseShortlist(entries, {
+    attestOf, famKey, size: k, cheapOrder, recallScoreOf,
+  });
+  if (attentionCands.length === 0) {
+    base.stage = 'no-candidates';
+    base.reason = 'empty-shortlist';
+    base.decision.rejectionReason = 'no-candidates';
+    return base;
+  }
+
+  const vocab = getAttentionVocab();
+  const units = unitsFromDocument(doc);
+  const targetUnitIdx = units.findIndex((u) => u.start === t.start && u.end === t.end);
+  if (targetUnitIdx < 0) {
+    base.stage = 'prefilter';
+    base.reason = 'target-not-selected';
+    return base;
+  }
+  const t0 = performance.now();
+  reranker.evaluatedCount = (reranker.evaluatedCount || 0) + 1;
+  const enc = encodeContextUnits(units, targetUnitIdx, vocab);
+  const ctxIds = [...enc.ids];
+  const ctxMask = [...enc.mask];
+  const ctxMarkers = [...enc.markers];
+  const ctxCharHashes = enc.charHashes.map((hashes) => [...hashes]);
+  while (ctxIds.length < 32) {
+    ctxIds.push(0); ctxMask.push(0); ctxMarkers.push(0); ctxCharHashes.push([]);
+  }
+
+  const originalOption = encodeOptionSurface(t.normalized, vocab);
+  const optIds = [originalOption.id];
+  const optMask = [1];
+  const optionCharHashes = [originalOption.charHashes];
+  const originalEvidence = extractContextEvidence({
+    languageModel, words: normalizedWords, idx,
+    candidateWord: t.normalized, originalWord: t.normalized,
+  });
+  const originalIsDictionary = services.lexicon.contains(t.normalized) ? 1 : 0;
+  const classicalFeats = [new Array(15).fill(0)];
+  classicalFeats[0][1] = 1.0;
+  classicalFeats[0][8] = originalEvidence.originalAttestedWindows ?? 0;
+  classicalFeats[0][9] = originalEvidence.originalAttestedWindows ?? 0;
+  classicalFeats[0][10] = t.normalized.length;
+  classicalFeats[0][11] = originalIsDictionary;
+  classicalFeats[0][14] = originalIsDictionary;
+
+  for (const c of attentionCands) {
+    const option = encodeOptionSurface(c.word, vocab);
+    optIds.push(option.id); optionCharHashes.push(option.charHashes); optMask.push(1);
+    const cf = services.lexicon.frequency(c.word) || 0;
+    const ofq = services.lexicon.frequency(t.normalized) || 0;
+    const feats = extractContextEvidence({
+      languageModel, words: normalizedWords, idx,
+      candidateWord: c.word, originalWord: t.normalized,
+    });
+    const rank = poolRanks.get(c.word.toLowerCase()) ?? {};
+    classicalFeats.push([
+      feats.editDistance, feats.sameAccentKey ? 1 : 0,
+      Math.log(1 + cf) - Math.log(1 + ofq),
+      feats.leftBigramLogRatio, feats.rightBigramLogRatio,
+      feats.centeredTrigramLogRatio, feats.forwardTrigramLogRatio,
+      feats.backwardTrigramLogRatio, feats.candidateAttestedWindows,
+      feats.originalAttestedWindows, t.normalized.length, originalIsDictionary,
+      rank.cheapRank ?? RECALL_RANK_SENTINEL,
+      rank.poolRank ?? RECALL_RANK_SENTINEL,
+      services.lexicon.contains(c.word) ? 1 : 0,
+    ]);
+  }
+  while (optIds.length < k + 1) {
+    optIds.push(0); optMask.push(0); optionCharHashes.push([]);
+    classicalFeats.push(new Array(15).fill(0));
+  }
+
+  const attRes = reranker.scoreOptions({
+    wordIds: ctxIds, mask: ctxMask, markers: ctxMarkers,
+    targetPosition: enc.targetPosition, optionWordIds: optIds,
+    optionMask: optMask, optionCharHashes, charHashes: ctxCharHashes,
+    classicalFeatures: classicalFeats,
+  });
+  const elapsed = performance.now() - t0;
+  const selIdx = attRes.selectedIndex;
+  const selectedWord = selIdx === 0
+    ? t.normalized : (attentionCands[selIdx - 1]?.word ?? null);
+  const selected = selIdx > 0 ? attentionCands[selIdx - 1] : null;
+  const selectedEvidence = selected
+    ? extractContextEvidence({
+      languageModel, words: normalizedWords, idx,
+      candidateWord: selected.word, originalWord: t.normalized,
+    }) : originalEvidence;
+  const candidateAttestedWindows = selected
+    ? selectedEvidence.candidateAttestedWindows ?? 0 : 0;
+  const originalAttestedWindows = selected
+    ? selectedEvidence.originalAttestedWindows ?? 0
+    : originalEvidence.originalAttestedWindows ?? 0;
+  const confidence = attRes.probabilities[selIdx] ?? 0;
+  const ranked = attRes.logits.map((logit, i) => ({
+    word: i === 0 ? t.normalized : attentionCands[i - 1]?.word,
+    p: attRes.probabilities[i] ?? 0, final: logit, isOriginal: i === 0,
+  })).filter((r) => r.word != null);
+  base.shadowAttention = {
+    evaluated: true, mode: attMode, lane: cls, lanes: built.lanes,
+    generatedCount: entries.length, shortlistSize: attentionCands.length,
+    selectedOptionIndex: selIdx, selectedWord,
+    chosenCandidateWord: selected?.word ?? null,
+    probabilities: attRes.probabilities, logits: attRes.logits, confidence,
+    agreementWithClassical: classicalWord == null ? null : selectedWord === classicalWord,
+    candidateAttestedWindows, originalAttestedWindows,
+    tokenStart: t.start, tokenEnd: t.end, tokenOriginal: t.original,
+    tokenNormalized: t.normalized, latencyMs: elapsed,
+  };
+  base.cheapKept = attentionCands.map((c) => c.word);
+  base.decision.consideredWords = attentionCands.length;
+  base.decision.selectedWord = selectedWord?.toLowerCase() ?? null;
+  base.ranked = ranked;
+  base.suggestions = attentionCands.map((c) => c.word)
+    .slice(0, snap.get('linguistic.maxSpellingSuggestions'));
+  if (attMode !== 'EXPERIMENTAL_ACTIVE') {
+    base.decision.rejectionReason = selIdx === 0
+      ? 'attention-kept-original' : 'attention-shadow-only';
+    return base;
+  }
+
+  const minProb = snap.get('spelling.attentionMinProbability')
+    ?? snap.get('linguistic.attentionMinProbability') ?? 0.80;
+  // Unified active mode owns KEEP_ORIGINAL vs candidate selection. The
+  // classical LM attestation gates above remain diagnostics/features only;
+  // they must not veto a listwise attention decision.
+  if (selIdx > 0 && selected && confidence >= minProb) {
+    base.emit = true;
+    base.best = {
+      word: selected.word, p: confidence,
+      freq: services.lexicon.frequency(selected.word) || 1, isOriginal: false,
+    };
+    base.suggestions = [selected.word,
+      ...base.suggestions.filter((s) => s.toLowerCase() !== selected.word.toLowerCase())]
+      .slice(0, snap.get('linguistic.maxSpellingSuggestions'));
+    base.gates.attentionEmit = true;
+    base.decision.emitted = true;
+  } else if (selIdx === 0) {
+    base.gates.attentionKeepOriginal = true;
+    base.decision.rejectionReason = 'attention-kept-original';
+  } else {
+    base.gates.attentionDeclined = true;
+    base.decision.rejectionReason = 'attention-threshold';
+  }
+  return base;
+}
+export function evaluateSpellingToken(services, snap, ctx, doc, words, idx,
+  { instrumentRealWord = false } = {}) {
   const { languageModel, typoCandidateProvider } = services;
   const t = words[idx];
+  const attMode = snap.get('spelling.attentionMode')
+    ?? snap.get('linguistic.attentionMode') ?? 'OFF';
 
   let cls = classifyToken(t, ctx, doc, services);
   // Task 4: wrong-diacritic lane mode (OFF | SHADOW | ACTIVE). In SHADOW the
@@ -1024,6 +1373,23 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
     if (top && top.word.toLowerCase() !== t.normalized) {
       isRealWordTone = true;
     }
+  } else if (cls === 'UNACCENTED_VALID'
+    && snap.get('linguistic.unaccentedRealWordMode') === 'ACTIVE') {
+    // Symmetric case of the wrong-diacritic lane. "quang"/"tao"/"khi" are
+    // themselves valid unaccented words, so classified-UNACCENTED_VALID
+    // prefilters them out — yet they are the intended "quảng"/"tạo"/"khí"
+    // often enough to be the second-largest blocked bucket on dev. They are
+    // same-key by construction, so the identical trigram/bigram proof the
+    // wrong-diacritic lane already enforces applies unchanged.
+    // NOT "top surface != original" here: for an unaccented word the
+    // unaccented surface is frequently the family's most frequent one
+    // ("khi" outranks "khí"), which would close the lane on exactly the
+    // tokens it exists for. Any sibling at all is enough to enter; the
+    // trigram and bigram proofs downstream decide whether it wins.
+    const fam = services.accentIndex.candidates(accentKey(t.normalized));
+    if (fam.some((c) => c.word.toLowerCase() !== t.normalized)) {
+      isRealWordTone = true;
+    }
   }
   // Task 5/9: DIFFERENT_KEY_REAL_WORD lane. SHADOW computes + reports the
   // decision without emitting; ACTIVE (post-calibration only) may emit when
@@ -1033,7 +1399,10 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
   if (rwMode !== 'OFF' && cls === 'DICTIONARY') {
     isRealWordTypo = true;
   }
-  if (cls !== 'UNKNOWN' && !isRealWordTone && !isRealWordTypo) {
+  const attentionEligible = attMode !== 'OFF'
+    && (cls === 'DICTIONARY' || cls === 'UNACCENTED_VALID');
+  if (cls !== 'UNKNOWN' && !isRealWordTone && !isRealWordTypo
+    && !attentionEligible) {
     return { stage: 'prefilter', reason: `classified-${cls}` };
   }
   if (t.normalized.length < snap.get('linguistic.spellingMinTokenLength')) {
@@ -1047,6 +1416,20 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
   if (idx > 0 && /^[A-Z][a-zà-ỹ]/.test(t.original)) {
     return { stage: 'prefilter', reason: 'capitalized-proper-noun' };
   }
+  // EXPERIMENTAL_ACTIVE uses one KEEP/candidate scorer for all lexical lanes.
+  if (attMode === 'EXPERIMENTAL_ACTIVE'
+    && (cls === 'DICTIONARY' || cls === 'UNACCENTED_VALID')) {
+    return evaluateUnifiedAttentionToken({
+      services, snap, ctx, doc, words, idx, cls, attMode,
+    });
+  }
+  if (attMode === 'SHADOW'
+    && (cls === 'DICTIONARY' || cls === 'UNACCENTED_VALID')
+    && !isRealWordTypo && services.attentionReranker) {
+    return evaluateUnifiedAttentionToken({
+      services, snap, ctx, doc, words, idx, cls, attMode,
+    });
+  }
   const prevWord = idx > 0 ? words[idx - 1].normalized : null;
   const nextWord = idx + 1 < words.length ? words[idx + 1].normalized : null;
   // plan §22 "context score đủ": require at least one usable neighbour —
@@ -1057,14 +1440,79 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
     && (languageModel.knows(w)
       || services.accentIndex.candidates(accentKey(w)).length > 0);
   if (!anchorable(prevWord) && !anchorable(nextWord)) {
+    if (attMode === 'SHADOW' && cls === 'UNKNOWN' && services.attentionReranker) {
+      return evaluateUnifiedAttentionToken({
+        services, snap, ctx, doc, words, idx, cls, attMode,
+      });
+    }
     return { stage: 'prefilter', reason: 'no-context-anchor' };
+  }
+  if (attMode === 'EXPERIMENTAL_ACTIVE' && cls === 'UNKNOWN') {
+    return evaluateUnifiedAttentionToken({
+      services, snap, ctx, doc, words, idx, cls, attMode,
+    });
   }
 
   // Task 9: ACTIVE dictionary tokens take the dedicated LIGHT path — they
   // never traverse the legacy unknown-token cascade (latency + precision).
-  if (isRealWordTypo && rwMode === 'ACTIVE') {
-    return evaluateRealWordToken(
-      { services, snap, languageModel, ctx, doc, words, idx });
+  // EXCEPTION: a token the wrong-diacritic lane also claims (isRealWordTone)
+  // runs the cascade first — that lane carries the same-key tone evidence the
+  // DIFFERENT_KEY light path has no features for. It falls back to this light
+  // path below if the cascade declines, so the two lanes compose instead of
+  // one silently shadowing the other.
+  // Latency guard. A token whose ONLY ticket into the heavy cascade is the
+  // wrong-diacritic lane must clear that lane's own terminal veto, which
+  // demands a trigram-attested same-key candidate. Testing that up front
+  // costs <=12 candidates x 3 windows of hash lookups; the cascade it skips
+  // costs orders of magnitude more, and the verdict is identical because the
+  // veto below would reject anyway.
+  // SHADOW is exempt: that mode exists to REPORT headroom, including for
+  // tokens the terminal veto will refuse, so it must reach the shadow
+  // decision below rather than being short-circuited here.
+  if (isRealWordTone && cls === 'DICTIONARY' && wdMode !== 'SHADOW') {
+    const p1c = idx > 0 ? words[idx - 1].normalized : null;
+    const p2c = idx > 1 ? words[idx - 2].normalized : null;
+    const n1c = idx + 1 < words.length ? words[idx + 1].normalized : null;
+    const n2c = idx + 2 < words.length ? words[idx + 2].normalized : null;
+    // Windows MUST mirror the terminal veto below exactly, or this guard
+    // rejects tokens that veto would have kept.
+    const winsC = [];
+    if (p1c && n1c) winsC.push([p1c, n1c]);
+    if (n1c && n2c) winsC.push([n1c, n2c]);
+    if (p2c && p1c) winsC.push([null, p1c, p2c]);
+    let anyCandAttested = false;
+    if (winsC.length) {
+      for (const cand of services.accentIndex.candidates(accentKey(t.normalized))) {
+        const w = String(cand.word).toLowerCase();
+        if (w === t.normalized) continue;
+        for (const win of winsC) {
+          const v = win.length === 3
+            ? languageModel.trigramJoint(win[2], win[1], w)
+            : languageModel.trigramJoint(win[0], w, win[1]);
+          if (v > 0) { anyCandAttested = true; break; }
+        }
+        if (anyCandAttested) break;
+      }
+    }
+    if (!anyCandAttested) {
+      isRealWordTone = false;
+      if (!isRealWordTypo && !attentionEligible && cls !== 'UNKNOWN') {
+        return { stage: 'prefilter', reason: 'real-word-tone-unattested' };
+      }
+    }
+  }
+  if (isRealWordTypo && rwMode === 'ACTIVE' && !isRealWordTone) {
+    const legacyDecision = evaluateRealWordToken(
+      { services, snap, languageModel, ctx, doc, words, idx,
+        instrument: instrumentRealWord });
+    if (attMode === 'SHADOW' && services.attentionReranker) {
+      const shadow = evaluateUnifiedAttentionToken({
+        services, snap, ctx, doc, words, idx, cls, attMode,
+        classicalWord: legacyDecision.best?.word ?? t.normalized,
+      });
+      legacyDecision.shadowAttention = shadow.shadowAttention;
+    }
+    return legacyDecision;
   }
 
   // Task 3: generation goes through the shared pure builder (UNKNOWN_TYPO
@@ -1094,6 +1542,8 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
   const origPrior = snap.get('linguistic.originalPriorBonusSpelling');
   const minConf = snap.get('linguistic.spellingMinConfidence');
   const minMargin = snap.get('linguistic.spellingMinMargin');
+  const confTempSp = snap.get('linguistic.spellingConfidenceTemperature')
+    ?? DEFAULT_CONFIDENCE_TEMPERATURE;
   const minFreq = snap.get('linguistic.spellingMinFrequency');
 
   // anchored family context (same machinery as PMD §12) so sibling
@@ -1200,6 +1650,24 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
     .sort((x, y) => y.final - x.final);
   const best = ranked[0];
   const second = ranked[1];
+  // Phase 1 unified scale: this lane historically reported RAW softmax p1
+  // while POSSIBLE_MISSING_DIACRITIC reported pairwise dominance -- two
+  // different meanings in the same ValidationIssue.confidence field, so a
+  // threshold could not be compared across rules. Both now report
+  // sigmoid((s1-s2)/T) over the same raw score margin. `p` is left untouched
+  // because the legacy softmax gates below (and the shadow lanes) are
+  // calibrated against it.
+  const rawMarginSp = second ? best.final - second.final : Infinity;
+  const confCal = best ? calibratedConfidence(rawMarginSp, confTempSp) : 0;
+  services.confidenceSink?.({
+    rule: 'POSSIBLE_SPELLING_ERROR',
+    start: t.start,
+    end: t.end,
+    original: t.original,
+    candidate: best?.word ?? null,
+    rawMargin: rawMarginSp,
+    changed: Boolean(best && !best.isOriginal),
+  });
 
   const gates = {};
   let shadowWrongDiacritic = null;
@@ -1262,6 +1730,28 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
       emit = false;
       gates.realWordProofFail = true;
     }
+    // Trigram proof alone is not enough when the ORIGINAL owns a strong
+    // adjacent collocation the candidate does not: "chính hãng" (547) is the
+    // correct phrase, yet only "hành chính hàng" happens to be trigram
+    // -attested, so the trigram test above votes to rewrite it. A directly
+    // attested original bigram that beats the candidate's is decisive
+    // counter-evidence at exactly the sparsity where trigrams go quiet.
+    if (emit) {
+      const pairs = [];
+      if (p1i) pairs.push([p1i, null]);
+      if (n1i) pairs.push([null, n1i]);
+      for (const [l, r] of pairs) {
+        const ob = l ? languageModel.bigram.get(`${l} ${t.normalized}`)
+          : languageModel.bigram.get(`${t.normalized} ${r}`);
+        const cb = l ? languageModel.bigram.get(`${l} ${best.word}`)
+          : languageModel.bigram.get(`${best.word} ${r}`);
+        if ((ob ?? 0) > 0 && (ob ?? 0) >= (cb ?? 0)) {
+          emit = false;
+          gates.realWordBigramProofFail = true;
+          break;
+        }
+      }
+    }
   }
   // Task 5: dictionary-valid tokens pulled INTO the cascade by the real-word
   // lane NEVER emit from the legacy unknown-token gates — SHADOW measures
@@ -1269,9 +1759,24 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
   // emission from that same calibrated decision. Without this suppression
   // every dictionary token bypasses the classified-DICTIONARY prefilter and
   // floods users with spelling warnings.
-  if (emit && isRealWordTypo && rwMode !== 'OFF') {
+  // isRealWordTone tokens are exempt: they reached this cascade deliberately
+  // (see the light-path exception above) and already passed the strict
+  // symmetric trigram proof, which is stronger than the gates this
+  // suppression exists to compensate for.
+  if (emit && isRealWordTypo && rwMode !== 'OFF' && !isRealWordTone) {
     emit = false;
     gates.realWordLegacySuppressed = true;
+  }
+  // Cascade declined a token the DIFFERENT_KEY lane also owns — give that
+  // lane its own decision rather than dropping the token entirely.
+  if (!emit && isRealWordTypo && rwMode === 'ACTIVE' && isRealWordTone) {
+    const laneDecision = evaluateRealWordToken(
+      { services, snap, languageModel, ctx, doc, words, idx,
+        instrument: instrumentRealWord });
+    if (laneDecision.emit) {
+      laneDecision.isRealWordTone = true;
+      return laneDecision;
+    }
   }
 
   // Task 5/9: DIFFERENT_KEY_REAL_WORD shadow decision via the SHARED lane
@@ -1292,176 +1797,14 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
     .slice(0, maxSuggestions)
     .map((r) => r.word);
 
-  const attMode = snap.get('spelling.attentionMode')
-    ?? snap.get('linguistic.attentionMode') ?? 'OFF';
   let shadowAttention = null;
-
-  if (attMode !== 'OFF' && services.attentionReranker && doc && cands.length > 0) {
-    try {
-      const t0 = performance.now();
-      const reranker = services.attentionReranker;
-      reranker.evaluatedCount = (reranker.evaluatedCount || 0) + 1;
-      const vocab = getAttentionVocab();
-      const units = unitsFromDocument(doc);
-      const targetUnitIdx = units.findIndex((u) => u.start === t.start && u.end === t.end);
-      if (targetUnitIdx >= 0) {
-        const enc = encodeContextUnits(units, targetUnitIdx, vocab);
-        const ctxIds = [...enc.ids];
-        const ctxMask = [...enc.mask];
-        const ctxCharHashes = enc.charHashes.map((hashes) => [...hashes]);
-        while (ctxIds.length < 32) {
-          ctxIds.push(0);
-          ctxMask.push(0);
-          ctxCharHashes.push([]);
-        }
-
-        const k = reranker.k || 8;
-        attentionCands = selectDiverseShortlist(built.entries, {
-          attestOf, famKey, size: k, cheapOrder: wideRanked, recallScoreOf,
-        });
-        const originalOption = encodeOptionSurface(t.normalized, vocab);
-        const optIds = [originalOption.id];
-        const optMask = [1];
-        const optionCharHashes = [originalOption.charHashes];
-        const classicalFeats = [new Array(15).fill(0)];
-        classicalFeats[0][1] = 1.0;
-        classicalFeats[0][10] = t.normalized.length;
-        classicalFeats[0][11] = services.lexicon.contains(t.normalized) ? 1 : 0;
-        classicalFeats[0][14] = classicalFeats[0][11];
-
-        const rankMap = ranksForCandidates(attentionCands);
-        for (let ci = 0; ci < Math.min(attentionCands.length, k); ci++) {
-          const c = attentionCands[ci];
-          const option = encodeOptionSurface(c.word, vocab);
-          optIds.push(option.id);
-          optionCharHashes.push(option.charHashes);
-          optMask.push(1);
-
-          const fVec = new Array(15).fill(0);
-          const cf = services.lexicon.frequency(c.word) || 0;
-          const ofq = services.lexicon.frequency(t.normalized) || 0;
-          const feats = extractContextEvidence({
-            languageModel: services.languageModel,
-            words: words.map((w) => (typeof w === 'string' ? w : w.normalized)),
-            idx,
-            candidateWord: c.word,
-            originalWord: t.normalized,
-          });
-          fVec[0] = feats.editDistance;
-          fVec[1] = feats.sameAccentKey ? 1 : 0;
-          fVec[2] = Math.log(1 + cf) - Math.log(1 + ofq);
-          fVec[3] = feats.leftBigramLogRatio;
-          fVec[4] = feats.rightBigramLogRatio;
-          fVec[5] = feats.centeredTrigramLogRatio;
-          fVec[6] = feats.forwardTrigramLogRatio;
-          fVec[7] = feats.backwardTrigramLogRatio;
-          fVec[8] = feats.candidateAttestedWindows;
-          fVec[9] = feats.originalAttestedWindows;
-          fVec[10] = t.normalized.length;
-          fVec[11] = services.lexicon.contains(t.normalized) ? 1 : 0;
-          fVec[12] = rankMap.get(c.word.toLowerCase())?.cheapRank ?? (ci + 1);
-          fVec[13] = rankMap.get(c.word.toLowerCase())?.poolRank ?? (ci + 1);
-          fVec[14] = services.lexicon.contains(c.word) ? 1 : 0;
-          classicalFeats.push(fVec);
-        }
-
-        while (optIds.length < k + 1) {
-          optIds.push(0);
-          optMask.push(0);
-          classicalFeats.push(new Array(15).fill(0));
-          optionCharHashes.push([]);
-        }
-
-        const attRes = reranker.scoreOptions({
-          wordIds: ctxIds,
-          mask: ctxMask,
-          targetPosition: enc.targetPosition,
-          optionWordIds: optIds,
-          optionMask: optMask,
-          optionCharHashes,
-          charHashes: ctxCharHashes,
-          classicalFeatures: classicalFeats,
-        });
-
-        const elapsed = performance.now() - t0;
-        const selIdx = attRes.selectedIndex;
-        const selWord = selIdx === 0 ? t.normalized : (attentionCands[selIdx - 1]?.word ?? null);
-        const classWord = (best && !best.isOriginal) ? best.word : t.normalized;
-
-        let candWin = 0;
-        let origWin = 0;
-        let chosenWord = null;
-        if (selIdx > 0 && attentionCands[selIdx - 1]) {
-          const chosenCand = attentionCands[selIdx - 1];
-          chosenWord = chosenCand.word;
-          const feats = extractContextEvidence({
-            languageModel: services.languageModel,
-            words: words.map((w) => (typeof w === 'string' ? w : w.normalized)),
-            idx,
-            candidateWord: chosenCand.word,
-            originalWord: t.normalized,
-          });
-          candWin = feats.candidateAttestedWindows ?? 0;
-          origWin = feats.originalAttestedWindows ?? 0;
-        }
-
-        shadowAttention = {
-          evaluated: true,
-          mode: attMode,
-          selectedOptionIndex: selIdx,
-          selectedWord: selWord,
-          chosenCandidateWord: chosenWord,
-          probabilities: attRes.probabilities,
-          logits: attRes.logits,
-          confidence: attRes.probabilities[selIdx],
-          agreementWithClassical: selWord === classWord,
-          candidateAttestedWindows: candWin,
-          originalAttestedWindows: origWin,
-          tokenStart: t.start,
-          tokenEnd: t.end,
-          tokenOriginal: t.original,
-          tokenNormalized: t.normalized,
-          latencyMs: elapsed,
-        };
-
-        if (attMode === 'EXPERIMENTAL_ACTIVE') {
-          const attMinProb = snap.get('spelling.attentionMinProbability')
-            ?? snap.get('linguistic.attentionMinProbability') ?? 0.80;
-          const attMinCandWin = snap.get('spelling.attentionMinCandidateWindows')
-            ?? snap.get('linguistic.attentionMinCandidateWindows') ?? 1;
-          const attMaxOrigWin = snap.get('spelling.attentionMaxOriginalWindows')
-            ?? snap.get('linguistic.attentionMaxOriginalWindows') ?? 3;
-
-          if (selIdx > 0) {
-            const chosenCand = attentionCands[selIdx - 1];
-            if (shadowAttention.confidence >= attMinProb && candWin >= attMinCandWin && origWin <= attMaxOrigWin) {
-              emit = true;
-              best = {
-                word: chosenCand.word,
-                p: shadowAttention.confidence,
-                freq: services.lexicon.frequency(chosenCand.word) || 1,
-                isOriginal: false,
-              };
-              suggestions = [
-                chosenCand.word,
-                ...suggestions.filter((s) => s.toLowerCase() !== chosenCand.word.toLowerCase()),
-              ].slice(0, maxSuggestions);
-              gates.attentionEmit = true;
-            } else {
-              emit = false;
-              gates.attentionDeclined = true;
-            }
-          } else {
-            emit = false;
-            gates.attentionKeepOriginal = true;
-          }
-        }
-      }
-    } catch (err) {
-      shadowAttention = { evaluated: false, error: err?.message ?? String(err) };
-    }
+  if (attMode === 'SHADOW' && services.attentionReranker && doc && built.entries.length > 0) {
+    const shadow = evaluateUnifiedAttentionToken({
+      services, snap, ctx, doc, words, idx, cls: 'UNKNOWN', attMode,
+      classicalWord: best?.isOriginal ? t.normalized : best?.word ?? t.normalized,
+    });
+    shadowAttention = shadow.shadowAttention;
   }
-
   const rejectionReason = emit ? null
     : (gates.attentionDeclined ? 'attention-threshold'
       : gates.attentionKeepOriginal ? 'attention-kept-original'
@@ -1489,6 +1832,8 @@ export function evaluateSpellingToken(services, snap, ctx, doc, words, idx) {
     ranked,
     best: best ?? null,
     second: second ?? null,
+    rawMargin: rawMarginSp,
+    calibratedConfidence: confCal,
     suggestions,
     isRealWordTone,
     shadowWrongDiacritic,
@@ -1509,18 +1854,55 @@ export function createPossibleSpellingErrorRule(services) {
       const snap = configService.snapshot();
       const issues = [];
       const words = doc.tokens.filter((t) => t.type === 'WORD');
+      const wordSurfaces = words.map((t) => t.normalized);
+      const channel = services.errorChannel;
 
       for (let idx = 0; idx < words.length; idx++) {
         const d = evaluateSpellingToken(services, snap, ctx, doc, words, idx);
-        if (d.stage !== 'decided' || !d.emit) continue;
         const t = words[idx];
+        const target = d.best?.word?.toLowerCase();
+        const pairProven = channel?.hasPair(t.normalized, target);
+        // Unknown forms have no lexicon prior. Require the candidate to win
+        // an attested context window unless the train-only pair is known.
+        // A Telex tone suffix is direct input evidence (e.g. "hangf"), but
+        // only when dropping it yields the candidate's accent key.
+        const telexProven = Boolean(target) && /[sfrxj]$/iu.test(t.normalized)
+          && accentKey(t.normalized.slice(0, -1)) === accentKey(target);
+        let contextProven = pairProven || services.lexicon.contains(t.normalized)
+          || telexProven;
+        if (!contextProven && target) {
+          const evidence = extractContextEvidence({ languageModel: services.languageModel,
+            words: wordSurfaces, idx, candidateWord: target, originalWord: t.normalized });
+          contextProven = evidence.candidateAttestedWindows > evidence.originalAttestedWindows;
+        }
+        if (d.stage !== 'decided' || !d.emit || !((!services.lexicon.contains(t.normalized) && contextProven)
+          || pairProven
+          || (d.calibratedConfidence ?? 0) >= 0.96)) continue;
         issues.push(new ValidationIssue(
           RuleIds.POSSIBLE_SPELLING_ERROR, Severity.WARNING,
           t.start, t.end, t.original,
           `Từ "${t.original}" có thể là lỗi chính tả (gợi ý: "${d.best.word}").`,
           d.suggestions,
-          Math.round(d.best.p * 100) / 100,
+          Math.round(d.calibratedConfidence * 100) / 100,
         ));
+      }
+      if (ctx.messageMode === MessageMode.NON_ACCENTED) return issues;
+      for (let idx = 0; idx < words.length; idx++) {
+        const t = words[idx];
+        if (issues.some((i) => i.start === t.start && i.end === t.end)) continue;
+        const proof = channel?.lookup(t.normalized);
+        if (!proof) continue;
+        const oneShot = proof.count === 1 && accentKey(t.normalized) === accentKey(proof.target)
+          && t.normalized.length >= 3;
+        if (proof.count < 2 && !oneShot) continue;
+        const ev = extractContextEvidence({ languageModel: services.languageModel,
+          words: words.map((w) => w.normalized), idx, candidateWord: proof.target, originalWord: t.normalized });
+        const windowGap = ev.candidateAttestedWindows - ev.originalAttestedWindows;
+        // OOF: low-frequency direct pairs need two independent context wins;
+        // one window was 32 TP / 48 FP, while >=2 was 116 TP / 23 FP.
+        if (windowGap < (proof.count <= 2 ? 2 : 1)) continue;
+        issues.push(new ValidationIssue(RuleIds.POSSIBLE_SPELLING_ERROR, Severity.WARNING,
+          t.start, t.end, t.original, `Spelling suggestion: "${proof.target}".`, [proof.target], 0.96));
       }
       return issues;
     },

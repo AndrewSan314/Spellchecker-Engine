@@ -22,9 +22,12 @@ from tools.attention_model import (
     create_model,
 )
 from tools.attention_tokenizer import (
+    CHAR_HASH_BUCKETS,
+    MAX_CHAR_NGRAMS,
     MAX_CONTEXT_TOKENS,
     SPECIAL_IDS,
     VOCAB_SIZE,
+    char_ngram_hashes,
     encode_context_units,
     normalize_for_model,
 )
@@ -111,10 +114,19 @@ def generate_parity_cases(
         word_ids = [vocab.get(w, SPECIAL_IDS["UNK"]) for w in chosen_words]
         mask = [1] * len(word_ids)
 
+        markers = [0] * len(word_ids)
+        markers[target_pos] = 1
+        char_rows = [
+            [] if idx == target_pos else char_ngram_hashes(word)
+            for idx, word in enumerate(chosen_words)
+        ]
+
         # Pad context to 32
         while len(word_ids) < 32:
             word_ids.append(SPECIAL_IDS["PAD"])
             mask.append(0)
+            markers.append(0)
+            char_rows.append([])
 
         # Candidates
         orig_word = chosen_words[target_pos]
@@ -124,10 +136,30 @@ def generate_parity_cases(
             vocab.get(w, SPECIAL_IDS["UNK"]) for w in cand_words
         ]
         opt_mask = [1] * (1 + num_cands)
+        option_char_rows = [char_ngram_hashes(orig_word)] + [
+            char_ngram_hashes(word) for word in cand_words
+        ]
 
         while len(opt_ids) < k + 1:
             opt_ids.append(SPECIAL_IDS["PAD"])
             opt_mask.append(0)
+            option_char_rows.append([])
+
+        char_hashes = np.zeros((MAX_CONTEXT_TOKENS, MAX_CHAR_NGRAMS), dtype=np.int64)
+        char_counts = np.zeros(MAX_CONTEXT_TOKENS, dtype=np.int64)
+        for idx, hashes in enumerate(char_rows[:MAX_CONTEXT_TOKENS]):
+            clipped = hashes[:MAX_CHAR_NGRAMS]
+            if clipped:
+                char_hashes[idx, :len(clipped)] = clipped
+                char_counts[idx] = len(clipped)
+
+        option_char_hashes = np.zeros((k + 1, MAX_CHAR_NGRAMS), dtype=np.int64)
+        option_char_counts = np.zeros(k + 1, dtype=np.int64)
+        for idx, hashes in enumerate(option_char_rows[:k + 1]):
+            clipped = hashes[:MAX_CHAR_NGRAMS]
+            if clipped:
+                option_char_hashes[idx, :len(clipped)] = clipped
+                option_char_counts[idx] = len(clipped)
 
         # Classical features
         classical_features = np.random.randn(k + 1, 15).astype(np.float32)
@@ -142,8 +174,13 @@ def generate_parity_cases(
         w_t = torch.tensor([word_ids], dtype=torch.long)
         m_t = torch.tensor([mask], dtype=torch.float32)
         tp_t = torch.tensor([target_pos], dtype=torch.long)
+        markers_t = torch.tensor([markers], dtype=torch.long)
+        char_hashes_t = torch.tensor([char_hashes], dtype=torch.long)
+        char_counts_t = torch.tensor([char_counts], dtype=torch.long)
         opt_w_t = torch.tensor([opt_ids], dtype=torch.long)
         opt_m_t = torch.tensor([opt_mask], dtype=torch.float32)
+        option_char_hashes_t = torch.tensor([option_char_hashes], dtype=torch.long)
+        option_char_counts_t = torch.tensor([option_char_counts], dtype=torch.long)
         cf_t = torch.tensor([classical_features], dtype=torch.float32)
 
         reranker.eval()
@@ -155,6 +192,11 @@ def generate_parity_cases(
                 option_word_ids=opt_w_t,
                 option_mask=opt_m_t,
                 classical_features=cf_t,
+                markers=markers_t,
+                char_hashes=char_hashes_t,
+                char_counts=char_counts_t,
+                option_char_hashes=option_char_hashes_t,
+                option_char_counts=option_char_counts_t,
             )
 
         logits = out["logits"][0].cpu().numpy().tolist()
@@ -167,8 +209,11 @@ def generate_parity_cases(
             "numCandidates": num_cands,
             "wordIds": word_ids,
             "mask": mask,
+            "markers": markers,
+            "charHashes": char_rows,
             "optionWordIds": opt_ids,
             "optionMask": opt_mask,
+            "optionCharHashes": option_char_rows,
             "classicalFeatures": classical_features.tolist(),
             "expectedLogits": logits,
             "expectedProbabilities": probs,

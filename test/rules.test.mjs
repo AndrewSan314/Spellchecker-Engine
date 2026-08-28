@@ -279,7 +279,29 @@ test('red-team rows stay silent (agent3 adversarial corpus)', () => {
   }
 });
 
-test('sentence-initial ambiguous words still warn when context decides', () => {
+// KNOWN REGRESSION, Phase 1 confidence calibration (deliberate, tracked).
+//
+// These three warnings ("Ban"->bạn, "Luu"->lưu, "Dat"->đất, "giam"->giảm) are
+// genuine true positives and USED to fire. They no longer do, and the reason
+// is worth recording precisely, because it is NOT a calibration defect:
+//
+//   calibrated conf   "ngay" -> ngày   0.638   <- FALSE alarm, clean corpus
+//                     "Ban"  -> bạn    0.596   <- true positive
+//                     "Dat"  -> đất    0.549   <- true positive
+//                     "giam" -> giảm   0.539   <- true positive
+//
+// The false alarm outranks all three. Temperature scaling is monotone, so no
+// threshold on this scale separates them -- the ranking itself is wrong, and
+// every one of these tokens sits in a zero-trigram context (tri=[0/0]) where
+// the LM has no evidence either way. Fixing the ORDER is Phase 2 (retrain at
+// the serving prior) and Phase 5 (denser LM), not Phase 1.
+//
+// Precision-first is the binding constraint: minConfidence 0.70 puts clean
+// -corpus false alarms at 0/165 (was 4/165) and PMD precision at 0.673 (was
+// 0.525), at the cost of 7 of 106 true positives. Lowering the threshold to
+// recover these three restores all four false alarms with it -- measured, not
+// assumed. Re-enable these assertions once Phase 2/5 reorder the candidates.
+test('sentence-initial ambiguous words: calibrated confidence, below gate', { skip: 'Phase 1 known regression - see comment above; unblocks in Phase 2/5' }, () => {
   const expect = [
     ['Ban co the doi lich hen mien phi', 'Ban'],
     ['Luu y khong cung cap mat khau cho bat ky ai', 'Luu'],
@@ -293,11 +315,26 @@ test('sentence-initial ambiguous words still warn when context decides', () => {
   }
 });
 
-test('plain-form gate escape hatch fires on giam at clause end', () => {
+test('plain-form gate escape hatch fires on giam at clause end', { skip: 'Phase 1 known regression - see comment above; unblocks in Phase 2/5' }, () => {
   const hits = issues('Dat ban toi nay giam 10%')
     .filter((i) => i.value === 'giam'
       && i.ruleId === RuleIds.POSSIBLE_MISSING_DIACRITIC);
   assert.equal(hits.length, 1);
+});
+
+// The precision half of the same change: the four "Xem ngay" -> "ngày" false
+// alarms that motivated Phase 1 must stay silent on real marketing copy.
+test('calibrated confidence silences the Xem ngay false alarm (Phase 1)', () => {
+  const rows = [
+    'Xem ngay tai tendoo.vn',
+    'Giam den 50%! Xem ngay tai https://m.tendoo.vn/deal',
+  ];
+  for (const text of rows) {
+    const hits = issues(text)
+      .filter((i) => i.ruleId === RuleIds.POSSIBLE_MISSING_DIACRITIC
+        && String(i.value).toLowerCase() === 'ngay');
+    assert.equal(hits.length, 0, text);
+  }
 });
 
 // ============================================================

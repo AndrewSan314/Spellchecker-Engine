@@ -151,6 +151,14 @@ test('SHADOW issue set is IDENTICAL to OFF across dictionary-heavy lines', () =>
 test('explicit OFF mode keeps everything exactly as before', () => {
   for (const mode of ['OFF']) {
     const engine = makeEngine(mode);
+    // This asserts the DIFFERENT_KEY_REAL_WORD lane in isolation. "đen" is
+    // also same-key eligible ("đến"), so the wrong-diacritic lane — ACTIVE by
+    // default since the ACCENTED_SAME_KEY breakthrough — would legitimately
+    // pull it past the prefilter. Pin that lane OFF so this test measures the
+    // one lane it names.
+    engine.configService.reload({
+      linguistic: { realWordTypoMode: mode, wrongDiacriticMode: 'OFF' },
+    });
     const snap = engine.configService.snapshot();
     const { ctx, doc, words, idx } = tokenIndex(
       engine, 'Đen rồi mà', 'đen');

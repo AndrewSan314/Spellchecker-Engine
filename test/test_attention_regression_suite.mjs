@@ -20,6 +20,7 @@ import { evaluateAttentionGate } from '../tools/evaluate_attention_gate.mjs';
 import { SmsValidationEngine } from '../src/engine.mjs';
 import { ValidationConfigService } from '../src/config.mjs';
 import { ValidationContext, MessageMode } from '../src/core.mjs';
+import { classifyToken, evaluateSpellingToken } from '../src/rules/linguistic-rules.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(HERE, '..');
@@ -91,4 +92,51 @@ test('Regression: Mechanical Gating fails closed on stale/incomplete evidence', 
   assert.equal(gateRes.decision, 'REJECT');
   assert.ok(gateRes.gatesCount >= 10);
   assert.ok(gateRes.failedGates.length > 0);
+});
+test('Regression: EXPERIMENTAL_ACTIVE routes dictionary lanes through unified attention', () => {
+  const calls = [];
+  const fakeReranker = {
+    k: 8,
+    scoreOptions(args) {
+      calls.push(args);
+      const n = args.optionWordIds.length;
+      return {
+        logits: new Array(n).fill(0),
+        probabilities: [1, ...new Array(n - 1).fill(0)],
+        selectedIndex: 0,
+      };
+    },
+  };
+  const config = new ValidationConfigService();
+  config.reload({
+    spelling: { attentionMode: 'EXPERIMENTAL_ACTIVE' },
+    linguistic: { realWordTypoMode: 'OFF', wrongDiacriticMode: 'OFF' },
+  });
+  const engine = new SmsValidationEngine({
+    configService: config, attentionReranker: fakeReranker,
+  });
+
+  for (const text of ['Các anh']) {
+    const ctx = new ValidationContext(text, MessageMode.ACCENTED, 'TEST');
+    const doc = engine.documentBuilder.build(ctx);
+    const words = doc.tokens.filter((t) => t.type === 'WORD');
+    const target = words[0];
+    assert.equal(classifyToken(target, ctx, doc, engine.services), 'DICTIONARY', text);
+    const decision = evaluateSpellingToken(
+      engine.services, config.snapshot(), ctx, doc, words, 0,
+    );
+    assert.equal(decision.shadowAttention?.evaluated, true, text);
+    assert.equal(decision.shadowAttention?.lane, 'DICTIONARY', text);
+  }
+
+  assert.equal(calls.length, 1);
+  for (const args of calls) {
+    assert.ok(args.optionWordIds.length >= 2);
+    assert.ok(args.optionWordIds.length <= 9);
+    assert.equal(args.optionWordIds.length, args.optionMask.length);
+    assert.equal(args.optionWordIds.length, args.optionCharHashes.length);
+    assert.ok(args.optionCharHashes.slice(1).some((row) => row.length > 0));
+    assert.ok(args.charHashes.some((row) => row.length > 0));
+    assert.ok(args.markers.includes(1));
+  }
 });

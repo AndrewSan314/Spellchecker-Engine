@@ -27,7 +27,7 @@ import { fileURLToPath } from 'node:url';
 import { createDefaultEngine, ValidationContext } from '../src/engine.mjs';
 import { buildValidationDocument } from '../src/document-builder.mjs';
 import {
-  classifyToken, buildCorrectionCandidates, selectDiverseShortlist,
+  classifyToken, buildCorrectionCandidates, buildUnifiedAttentionEntries, selectDiverseShortlist,
 } from '../src/rules/linguistic-rules.mjs';
 import {
   ranksForCandidates, buildRecallPairwiseFeatures, RECALL_FEATURE_CONTRACT,
@@ -158,11 +158,10 @@ function main() {
    * capped by the builder itself), deduplicated, WITHOUT an extra distance
    * cut — the diversity shortlist and downstream gates own that policy.
    */
-  function buildWidePool(token) {
-    const built = buildCorrectionCandidates({
-      token, lane: 'UNKNOWN_TYPO', services, snap,
-    });
-    const seen = new Set([token.normalized]);
+  function buildWidePool(token, ctx = null, doc = null) {
+    const cls = ctx && doc ? classifyToken(token, ctx, doc, services) : 'UNKNOWN';
+    const built = buildUnifiedAttentionEntries({ token, cls, services, snap, ctx, doc });
+    const seen = new Set([token.normalized.toLowerCase()]);
     const entries = [];
     for (const c of built.entries ?? []) {
       const lw = c.word.toLowerCase();
@@ -172,10 +171,8 @@ function main() {
     }
     entries.sort((a, b) => a.dist - b.dist
       || (b.freq ?? 0) - (a.freq ?? 0) || a.word.localeCompare(b.word));
-    const ranks = ranksForCandidates(built.entries ?? []);
-    return { entries, ranks };
+    return { entries, ranks: ranksForCandidates(built.entries ?? []) };
   }
-
   /** production-style cheap ordering for the diversity shortlist fill */
   function cheapOrdered(entries, token, attestOf) {
     const cw = {
@@ -321,7 +318,7 @@ function main() {
       stats.unlabeledNoSuggestion++;
       return null;
     }
-    const { entries, ranks } = buildWidePool(token);
+    const { entries, ranks } = buildWidePool(token, ctx, doc);
     const wideSet = new Set(entries.map((c) => c.word.toLowerCase()));
     if (!wideSet.has(primary)) {
       stats.candidateMiss++;
@@ -410,7 +407,7 @@ function main() {
 
   function addKeepRow({ source, lane, groupId, text, ctx, doc, words, idx, cleanFlag }) {
     const token = words[idx];
-    const { entries, ranks } = buildWidePool(token);
+    const { entries, ranks } = buildWidePool(token, ctx, doc);
     const sl = shortlistPrefix(entries, ranks, token, words, idx, 8);
     const units = unitsFromDocument(doc);
     const targetUnitIdx = units.findIndex((u) => u.kind === 'word'
@@ -530,7 +527,7 @@ function main() {
 
     // the ANSWER is the ORIGINAL clean surface; production generation must
     // return it — never inject.
-    const { entries, ranks } = buildWidePool(tok2);
+    const { entries, ranks } = buildWidePool(tok2, ctx2, doc2);
     const primary = tok.normalized;
     if (!entries.some((c) => c.word.toLowerCase() === primary)) {
       stats.syntheticCandidateMiss++;

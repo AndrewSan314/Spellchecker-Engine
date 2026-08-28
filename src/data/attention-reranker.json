@@ -19,12 +19,12 @@
   },
   "k": 8,
   "tokenizerVersion": "attention-tokenizer-v1",
-  "tokenizerHash": "9a82d2b1525442495332079f197d4570623ccde35515b94235e40d6b6dc9f8da",
+  "tokenizerHash": "e4ab05a9d7eb6332517cb0ee9e7d44f999abdf7343bdc368e14a27185b6677d7",
   "vocabHash": "7704b282811d497b9c293b885374aaff16b8b0dced1fdf4825743f58c56cb724",
-  "shortlistConfigHash": "43d0e0358ea0981169251a6c1e71b13fc4c4ba8a2157c4716aa7ecf4388ce1a0",
-  "rankingSplitManifestHash": "18e763d51af7fcdbedee1023cc68442ec15c6e98e438ef1637b8a80ed2619d92",
-  "checkpointHash": "9afd0ae7a4f8dc41416b1d368f92017523c179accd26d926305a769cf955f182",
-  "binHash": "33953ecacc1766e8222e0da4cc9a2247a287ee5daaac7de1adec07f974abad3f",
+  "shortlistConfigHash": "81c8b2d12d5af2e816814419e81a550361f9bc760e9f5438e5e852124308685b",
+  "rankingSplitManifestHash": "5605a30c854568ef5c5722eeef7eaecd74b2952f4e075282ee3ad08ad002343c",
+  "checkpointHash": "f38ca1a8d867b26eb9720646485ac7782629d426dcb21fe220ec36e502dcd0a9",
+  "binHash": "44c44a3ea756c87f11ea896d53aedc075a09de7298e590e3748812a792a5bd39",
   "binSize": 288688,
   "tensorCount": 29,
   "tensors": {
@@ -39,7 +39,7 @@
       "dataLength": 64,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 3926303188
+      "checksum": 1394403308
     },
     "model.classical_proj.weight": {
       "nameId": 60,
@@ -53,7 +53,7 @@
       "dataLength": 240,
       "scaleOffset": 2192,
       "scaleLength": 64,
-      "checksum": 3971645620
+      "checksum": 1982969810
     },
     "encoder.blocks.0.attn.k_proj.bias": {
       "nameId": 15,
@@ -66,7 +66,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 1044811592
+      "checksum": 2607363643
     },
     "encoder.blocks.0.attn.k_proj.weight": {
       "nameId": 14,
@@ -80,7 +80,7 @@
       "dataLength": 2304,
       "scaleOffset": 4752,
       "scaleLength": 192,
-      "checksum": 2821916336
+      "checksum": 3612507552
     },
     "encoder.blocks.0.attn.out_proj.bias": {
       "nameId": 19,
@@ -93,7 +93,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 177448276
+      "checksum": 1983572153
     },
     "encoder.blocks.0.attn.out_proj.weight": {
       "nameId": 18,
@@ -107,7 +107,7 @@
       "dataLength": 2304,
       "scaleOffset": 7440,
       "scaleLength": 192,
-      "checksum": 4002464368
+      "checksum": 1735698519
     },
     "encoder.blocks.0.attn.q_proj.bias": {
       "nameId": 13,
@@ -120,7 +120,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 497491778
+      "checksum": 2941386021
     },
     "encoder.blocks.0.attn.q_proj.weight": {
       "nameId": 12,
@@ -134,7 +134,7 @@
       "dataLength": 2304,
       "scaleOffset": 10128,
       "scaleLength": 192,
-      "checksum": 1350027045
+      "checksum": 2191820186
     },
     "encoder.blocks.0.attn.v_proj.bias": {
       "nameId": 17,
@@ -147,7 +147,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 963682946
+      "checksum": 1474317641
     },
     "encoder.blocks.0.attn.v_proj.weight": {
       "nameId": 16,
@@ -161,7 +161,7 @@
       "dataLength": 2304,
       "scaleOffset": 12816,
       "scaleLength": 192,
-      "checksum": 2319359785
+      "checksum": 1547006585
     },
     "encoder.blocks.0.ffn.0.bias": {
       "nameId": 23,
@@ -174,7 +174,7 @@
       "dataLength": 384,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 3046223694
+      "checksum": 3149594482
     },
     "encoder.blocks.0.ffn.0.weight": {
       "nameId": 22,
@@ -188,7 +188,7 @@
       "dataLength": 4608,
       "scaleOffset": 18000,
       "scaleLength": 384,
-      "checksum": 366757549
+      "checksum": 4115230267
     },
     "encoder.blocks.0.ffn.2.bias": {
       "nameId": 25,
@@ -201,7 +201,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 1574505296
+      "checksum": 4009537148
     },
     "encoder.blocks.0.ffn.2.weight": {
       "nameId": 24,
@@ -215,7 +215,7 @@
       "dataLength": 4608,
       "scaleOffset": 23184,
       "scaleLength": 192,
-      "checksum": 2536526902
+      "checksum": 3313398572
     },
     "encoder.blocks.0.ln1.bias": {
       "nameId": 11,
@@ -228,7 +228,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 3149334249
+      "checksum": 3139426352
     },
     "encoder.blocks.0.ln1.weight": {
       "nameId": 10,
@@ -241,7 +241,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 3455192722
+      "checksum": 2024531597
     },
     "encoder.blocks.0.ln2.bias": {
       "nameId": 21,
@@ -254,7 +254,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 3071452153
+      "checksum": 3627100416
     },
     "encoder.blocks.0.ln2.weight": {
       "nameId": 20,
@@ -267,7 +267,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 4209889261
+      "checksum": 1674653432
     },
     "encoder.char_embedding.weight": {
       "nameId": 2,
@@ -281,7 +281,7 @@
       "dataLength": 196608,
       "scaleOffset": 220752,
       "scaleLength": 16384,
-      "checksum": 3850979040
+      "checksum": 1818671239
     },
     "encoder.final_ln.bias": {
       "nameId": 51,
@@ -294,7 +294,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 3601722620
+      "checksum": 2724538329
     },
     "encoder.final_ln.weight": {
       "nameId": 50,
@@ -307,7 +307,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 2881340100
+      "checksum": 155980508
     },
     "encoder.marker_embedding.weight": {
       "nameId": 4,
@@ -321,7 +321,7 @@
       "dataLength": 192,
       "scaleOffset": 237712,
       "scaleLength": 16,
-      "checksum": 1729125242
+      "checksum": 4094560482
     },
     "encoder.position_embedding.weight": {
       "nameId": 3,
@@ -335,7 +335,7 @@
       "dataLength": 1536,
       "scaleOffset": 239264,
       "scaleLength": 128,
-      "checksum": 1293228115
+      "checksum": 1729999972
     },
     "encoder.word_embedding.weight": {
       "nameId": 1,
@@ -349,7 +349,7 @@
       "dataLength": 37776,
       "scaleOffset": 277168,
       "scaleLength": 3148,
-      "checksum": 162883844
+      "checksum": 916372637
     },
     "model.option_scorer.0.bias": {
       "nameId": 71,
@@ -362,7 +362,7 @@
       "dataLength": 192,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 2849144829
+      "checksum": 138936245
     },
     "model.option_scorer.0.weight": {
       "nameId": 70,
@@ -376,7 +376,7 @@
       "dataLength": 7872,
       "scaleOffset": 288384,
       "scaleLength": 192,
-      "checksum": 1731992203
+      "checksum": 2667522314
     },
     "model.option_scorer.2.bias": {
       "nameId": 73,
@@ -389,7 +389,7 @@
       "dataLength": 4,
       "scaleOffset": 0,
       "scaleLength": 0,
-      "checksum": 2320528613
+      "checksum": 2551188939
     },
     "model.option_scorer.2.weight": {
       "nameId": 72,
@@ -403,7 +403,7 @@
       "dataLength": 48,
       "scaleOffset": 288640,
       "scaleLength": 4,
-      "checksum": 2710165953
+      "checksum": 603454617
     },
     "model.option_type_embedding.weight": {
       "nameId": 62,
@@ -417,7 +417,7 @@
       "dataLength": 16,
       "scaleOffset": 288672,
       "scaleLength": 16,
-      "checksum": 2608387697
+      "checksum": 3859785507
     }
   },
   "nameToId": {
@@ -469,13 +469,13 @@
   },
   "provenance": {
     "hashes": {
-      "checkpoint": "9afd0ae7a4f8dc41416b1d368f92017523c179accd26d926305a769cf955f182",
-      "model": "33953ecacc1766e8222e0da4cc9a2247a287ee5daaac7de1adec07f974abad3f",
-      "tokenizer": "9a82d2b1525442495332079f197d4570623ccde35515b94235e40d6b6dc9f8da",
+      "checkpoint": "f38ca1a8d867b26eb9720646485ac7782629d426dcb21fe220ec36e502dcd0a9",
+      "model": "44c44a3ea756c87f11ea896d53aedc075a09de7298e590e3748812a792a5bd39",
+      "tokenizer": "e4ab05a9d7eb6332517cb0ee9e7d44f999abdf7343bdc368e14a27185b6677d7",
       "tokenizerVersion": "attention-tokenizer-v1",
       "vocab": "7704b282811d497b9c293b885374aaff16b8b0dced1fdf4825743f58c56cb724",
-      "shortlistConfig": "43d0e0358ea0981169251a6c1e71b13fc4c4ba8a2157c4716aa7ecf4388ce1a0",
-      "rankingSplitManifest": "18e763d51af7fcdbedee1023cc68442ec15c6e98e438ef1637b8a80ed2619d92"
+      "shortlistConfig": "81c8b2d12d5af2e816814419e81a550361f9bc760e9f5438e5e852124308685b",
+      "rankingSplitManifest": "5605a30c854568ef5c5722eeef7eaecd74b2952f4e075282ee3ad08ad002343c"
     }
   }
 }

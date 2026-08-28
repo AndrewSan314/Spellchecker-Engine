@@ -1,0 +1,16 @@
+{
+  "schema": "spelling-profile-v1",
+  "name": "precision-over-90-v1",
+  "scorer": "vsec-syllable-position",
+  "dev": { "tp": 521, "fp": 56, "precision": 0.9029, "recall": 0.4673 },
+  "policy": {
+    "minTokenLength": 2,
+    "pairProof": "train-only; reject frequency exactly 2",
+    "confidenceRescue": 0.96,
+    "directErrorChannel": "train-only + candidate-context-wins",
+    "nonDictionaryTypoPreservation": true
+  },
+  "acceptance": { "cleanSms": "0/165 false alarms", "sms160P95Ms": 24.04, "maxSms160P95Ms": 100 },
+  "heldOut": { "tp": 481, "fp": 71, "precision": 0.8714, "recall": 0.4291 },
+  "status": "rejected-after-held-out-precision-gate"
+}

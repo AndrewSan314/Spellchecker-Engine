@@ -73,6 +73,9 @@ test('pure JS inference matches Python golden fixture within numerical tolerance
       optionWordIds: c.optionWordIds,
       optionMask: c.optionMask,
       classicalFeatures: c.classicalFeatures,
+      markers: c.markers,
+      charHashes: c.charHashes,
+      optionCharHashes: c.optionCharHashes,
     });
 
     assert.ok(result.logits, 'Result must contain logits');

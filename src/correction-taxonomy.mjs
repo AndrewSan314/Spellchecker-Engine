@@ -94,6 +94,14 @@ function normalizedSuggestionMatches(issue, expected) {
     .some((s) => benchmarkSurface(s).normalize('NFC') === wanted);
 }
 
+function positionedValueMatches(issue, expected) {
+  if (!Number.isInteger(expected?.positionStart) || !Number.isInteger(expected?.positionEnd)) {
+    return true;
+  }
+  return Number.isInteger(issue?.start) && Number.isInteger(issue?.end)
+    && issue.start >= expected.positionStart && issue.end <= expected.positionEnd;
+}
+
 /**
  * Semantic linguistic match: ruleId must be a LINGUISTIC correction rule,
  * then value AND suggestion must match under benchmark normalization.
@@ -105,6 +113,7 @@ function normalizedSuggestionMatches(issue, expected) {
 export function linguisticCorrectionMatches(issue, expected) {
   if (!issue || !expected) return false;
   if (!LINGUISTIC_RULE_IDS.has(issue.ruleId)) return false;
-  return normalizedValueMatches(issue, expected)
+  return positionedValueMatches(issue, expected)
+    && normalizedValueMatches(issue, expected)
     && normalizedSuggestionMatches(issue, expected);
 }

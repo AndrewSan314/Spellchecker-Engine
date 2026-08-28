@@ -23,6 +23,11 @@ function numberSet(values) {
   return new Set((values ?? []).map((value) => Number(value)).filter(Number.isInteger));
 }
 
+function whitespaceSpans(text) {
+  return [...String(text ?? '').matchAll(/\S+/gu)]
+    .map((match) => ({ start: match.index, end: match.index + match[0].length }));
+}
+
 /**
  * Gather every annotated error position. correction_pairs is not assumed to
  * have one item per error: ambiguous rows are completed from positions and
@@ -49,6 +54,7 @@ export function collectVsecExpectations(row) {
   }
 
   const expect = [];
+  const spans = whitespaceSpans(row.text);
   for (const position of [...positions].sort((a, b) => a - b)) {
     const annotation = byPosition.get(position);
     const pairs = pairsByPosition.get(position) ?? [];
@@ -67,6 +73,13 @@ export function collectVsecExpectations(row) {
       suggestions: uniqueSuggestions,
     };
     if (uniqueSuggestions.length > 0) expected.suggestion = uniqueSuggestions[0];
+    // VSEC positions refer to whitespace-delimited source syllables, not the
+    // engine's WORD/NUMBER tokenizer. Preserve the source span so scoring
+    // cannot credit an identical token at another position.
+    if (spans[position]) {
+      expected.positionStart = spans[position].start;
+      expected.positionEnd = spans[position].end;
+    }
     expect.push(expected);
   }
   return expect;

@@ -186,14 +186,15 @@ function main() {
         // is a lower bound on shortlist survival, not an upper bound.)
         if (built.eligible) {
           const sl = stats.shortlistCoverageNoContext ??= {};
-          const s2 = sl[ownedLane] ??= { total: 0, survivedSize4: 0 };
+          const s2 = sl[ownedLane] ??= { total: 0, survivedSize4: 0, survivedSize6: 0, survivedSize8: 0 };
           s2.total++;
-          const picked = selectDiverseShortlist(built.entries, {
-            attestOf: new Map(), famKey: accentKey(builderToken.normalized),
-            size: 4,
-          });
-          if (picked.some((c) => c.word.toLowerCase() === targetLower)) {
-            s2.survivedSize4++;
+          for (const size of [4, 6, 8]) {
+            const picked = selectDiverseShortlist(built.entries, {
+              attestOf: new Map(), famKey: accentKey(builderToken.normalized), size,
+            });
+            if (picked.some((c) => c.word.toLowerCase() === targetLower)) {
+              s2[`survivedSize${size}`]++;
+            }
           }
         }
       }

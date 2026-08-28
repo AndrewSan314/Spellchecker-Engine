@@ -33,10 +33,17 @@ const DEFAULT_SNAPSHOT = Object.freeze({
     minTokenLength: 2,                    // §16.4
     missingDiacriticMinConfidence: 0.7,   // §19 tuned on POC bench (seed was 0.85)
     missingDiacriticMinMargin: 0.20,
+    // Phase 1 (calibration plan) — temperature for the unified confidence
+    // scale sigmoid((s1-s2)/T). Both linguistic rules share the semantics;
+    // T=1 reproduces the legacy pre-calibration numbers exactly, so raising
+    // T is the only lever that changes emitted confidence. Fitted offline by
+    // tools/fit_confidence_temperature.mjs against VSEC dev.
+    missingDiacriticConfidenceTemperature: 11.7759,
+    spellingConfidenceTemperature: 18.9688,
     spellingMinConfidence: 0.70,
     spellingMinMargin: 0.15,
     spellingMinFrequency: 1000,
-    spellingMinTokenLength: 3, // <=2-letter tokens (kg, km...) too ambiguous for typo warnings
+    spellingMinTokenLength: 2, // runtime verifier below keeps short-token emissions proof-gated
     maxSpellingSuggestions: 3,            // §22
     originalPriorBonusMissingAccent: 0.8, // §18.3 preserve-original bias (tuned on POC bench)
     originalPriorBonusSpelling: 0.8,      // token already failed dictionary gate
@@ -65,7 +72,13 @@ const DEFAULT_SNAPSHOT = Object.freeze({
     //   SHADOW           compute + report wouldEmit, NEVER surface issues;
     //   ACTIVE           lane may emit (post-calibration only, Task 9).
     // Legacy mapping: absent key + wrongToneEnabled=true behaves ACTIVE.
-    wrongDiacriticMode: 'OFF',
+    // ACTIVE since the wrong-diacritic breakthrough: ACCENTED_SAME_KEY is
+    // 53% of real dev errors and this lane lifts its recall 0.145 -> 0.500.
+    wrongDiacriticMode: 'ACTIVE',
+    // Symmetric counterpart of wrongDiacriticMode for UNACCENTED_VALID
+    // tokens ("quang" -> "quảng"). Same same-key lane, same trigram/bigram
+    // proof; separate switch so the two can be measured independently.
+    unaccentedRealWordMode: 'OFF',
     // Task 5 (recall-improvement plan) — DIFFERENT_KEY_REAL_WORD lane for
     // dictionary-valid real-word typos ("đế" -> "đến", sentence-initial
     // "Các" -> "Cách"). Tighter eligibility than the wrong-diacritic lane:
@@ -78,10 +91,18 @@ const DEFAULT_SNAPSHOT = Object.freeze({
     // trained pairwise probability clears the frozen threshold. Defaults are
     // the dev-frozen accepted values (see config/spelling-tuning.json);
     // realWordTypoMode governs whether the lane can emit at all.
-    realWordTypoMinProbability: 0.95,
+    // 0.97 (was 0.95): with the wrong-diacritic lane ACTIVE the two lanes
+    // compose, so this one is tightened to hold overall precision >= 0.72.
+    realWordTypoMinProbability: 0.97,
     realWordTypoMinCandidateWindows: 1,
     realWordTypoMaxOriginalWindows: 3,
     realWordTypoMinMargin: 0.0,
+    // Phase 1: this lane reports a TRAINED pairwise probability, so its
+    // unified-scale margin is that probability's log-odds. Kept separate
+    // from spellingConfidenceTemperature because the two axes have different
+    // natural units (trained logits vs raw LM score gaps); falls back to the
+    // spelling temperature when null.
+    realWordTypoConfidenceTemperature: 6.0299,
     // Wrong-diacritic lane calibration keys (lane stays SHADOW pre-freeze;
     // recorded so Task 9 trials and the frozen file stay schema-complete).
     wrongDiacriticMinProbability: null,

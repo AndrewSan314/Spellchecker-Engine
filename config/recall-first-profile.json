@@ -1,0 +1,14 @@
+{
+  "schema": "spelling-profile-v1",
+  "name": "recall-first-v1",
+  "scorer": "vsec-syllable-position",
+  "dev": { "tp": 556, "fp": 38, "precision": 0.8968, "recall": 0.4987 },
+  "policy": {
+    "minTokenLength": 2,
+    "pairProof": true,
+    "confidenceRescue": 0.96,
+    "directErrorChannel": "train-only + candidate-context-wins",
+    "nonDictionaryTypoPreservation": true
+  },
+  "status": "experimental-recall-first"
+}

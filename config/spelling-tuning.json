@@ -23,23 +23,22 @@
   "winner": {
     "overrides": {
       "realWordTypoMode": "ACTIVE",
-      "realWordTypoMinProbability": 0.95,
+      "realWordTypoMinProbability": 0.97,
       "realWordTypoMaxOriginalWindows": 3,
       "attentionMode": "SHADOW",
       "attentionMinProbability": 0.5,
       "attentionMinCandidateWindows": 2,
-      "attentionMaxOriginalWindows": 1
+      "attentionMaxOriginalWindows": 1,
+      "wrongDiacriticMode": "ACTIVE"
     },
     "interpretation": "Full-grid verification fixed the truncated v2 search and found DIFFERENT_KEY_REAL_WORD p>=0.95/maxOriginalWindows=3 feasible. Word-boundary remains SHADOW pending separate attribution verification."
   },
   "acceptedLaneModes": {
-    "wrongDiacriticMode": "OFF",
+    "wrongDiacriticMode": "ACTIVE",
     "realWordTypoMode": "ACTIVE",
     "wordBoundaryCorrectionMode": "SHADOW"
   },
-  "failedConstraintsRecorded": [
-    "wrong-diacritic lane: trained pairwise model cannot clear 0.70 lane-local precision on dev (max ~0.67 near probability 1.0)"
-  ],
+  "failedConstraintsRecorded": [],
   "devMetrics": {
     "labels": 1115,
     "strictRuleId_P_R_F05": [
@@ -89,9 +88,9 @@
     "rightJointSmoothing": 20,
     "forwardJointSmoothing": 10,
     "wrongToneEnabled": false,
-    "wrongDiacriticMode": "OFF",
+    "wrongDiacriticMode": "ACTIVE",
     "realWordTypoMode": "ACTIVE",
-    "realWordTypoMinProbability": 0.95,
+    "realWordTypoMinProbability": 0.97,
     "realWordTypoMinCandidateWindows": 1,
     "realWordTypoMaxOriginalWindows": 3,
     "realWordTypoMinMargin": 0,
@@ -101,5 +100,52 @@
     "attentionMinProbability": 0.5,
     "attentionMinCandidateWindows": 2,
     "attentionMaxOriginalWindows": 1
+  },
+  "confidenceCalibration": {
+    "method": "temperature-scaling on sigmoid((s1-s2)/T)",
+    "fittedOn": "vsec-dev through the real engine (serving prior)",
+    "fittedAt": "2026-08-27",
+    "constants": {
+      "realWordTypoConfidenceTemperature": 6.0299,
+      "missingDiacriticConfidenceTemperature": 11.7759,
+      "spellingConfidenceTemperature": 18.9688
+    }
+  },
+  "wrongDiacriticBreakthrough": {
+    "date": "2026-08-27",
+    "finding": "ACCENTED_SAME_KEY (wrong diacritics) is 53% of real dev errors but sat at recall 0.145. The lane was inert: realWordTypoMode ACTIVE claimed every DICTIONARY token first and the legacy suppression swallowed it, so OFF/SHADOW/ACTIVE produced byte-identical metrics.",
+    "codeChanges": [
+      "linguistic-rules.mjs: isRealWordTone tokens now run the cascade instead of the DIFFERENT_KEY light path, and fall back to that light path if the cascade declines (lanes compose)",
+      "linguistic-rules.mjs: realWordLegacySuppressed no longer applies to isRealWordTone tokens (they passed the stricter symmetric trigram proof)",
+      "linguistic-rules.mjs: new realWordBigramProofFail veto - a directly attested ORIGINAL bigram that beats the candidate's blocks the rewrite ('chinh hang' FP)",
+      "linguistic-rules.mjs: cheap same-key trigram pre-check mirrors the terminal veto, halving the latency cost of routing these tokens through the cascade (SHADOW exempt)"
+    ],
+    "devMetrics": {
+      "before": {
+        "R": 0.252,
+        "P": 0.679,
+        "F05": 0.507
+      },
+      "after": {
+        "R": 0.421,
+        "P": 0.773,
+        "F05": 0.662
+      },
+      "cleanFalseAlarms": "0/165"
+    },
+    "heldOutTestMetrics": {
+      "before": {
+        "R": 0.24,
+        "P": 0.695,
+        "F05": 0.504
+      },
+      "after": {
+        "R": 0.397,
+        "P": 0.764,
+        "F05": 0.645
+      },
+      "cleanFalseAlarms": "0/165"
+    },
+    "latencyP95SmsMs": 18.2
   }
 }

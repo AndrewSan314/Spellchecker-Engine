@@ -18,9 +18,9 @@ import { adaptVsecSplit } from './spelling_benchmark_adapter_vsec.mjs';
 import {
   classifyToken, evaluateSpellingToken,
 } from '../src/rules/linguistic-rules.mjs';
-import { classifyCorrectionRelation } from '../src/correction-taxonomy.mjs';
+import { classifyCorrectionRelation, linguisticCorrectionMatches } from '../src/correction-taxonomy.mjs';
 import {
-  assertSplitAllowed, sha256File, writeArtifact, stageFromDecision,
+  assertSplitAllowed, sha256File, writeArtifact, stageFromDecision, tokenIndexForExpected,
 } from './run_spelling_eval.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -72,6 +72,13 @@ function main() {
   };
   const examplesByRelationStage = {};
   const examplesByPmdDecision = {};
+  const realWordDeclined = {
+    labels: 0, rejectionReasons: {}, goldInPool: 0, goldQuickAttested: 0,
+    goldEvaluated: 0, goldRank: {}, selectedRank: {}, checkFailures: {},
+    examples: [],
+  };
+  const falsePositiveFunnel = { total: 0, owners: {}, gates: {}, examples: [] };
+  const realWordEmissions = { tp: 0, fp: 0, evidence: {}, examples: [] };
   let labels = 0;
 
   const countStage = (rel, stage, reason = null) => {
@@ -101,6 +108,44 @@ function main() {
     const doc = engine.documentBuilder.build(vctx());
     const words = doc.tokens.filter((t) => t.type === 'WORD');
 
+    for (const issue of linguisticIssues) {
+      const semanticHit = row.expect.some((exp) => linguisticCorrectionMatches(issue, exp));
+      const tokenIdx = words.findIndex((w) => w.start === issue.start && w.end === issue.end);
+      if (tokenIdx < 0) continue;
+      const d = evaluateSpellingToken(engine.services, snap, vctx(), doc, words, tokenIdx,
+        { instrumentRealWord: true });
+      const owner = d.decision?.decisionOwner ?? 'classical-unknown-lane';
+      if (owner === 'classical-real-word-lane') {
+        const selected = d.decision?.diagnostic?.evaluated?.find((x) =>
+          x.candidate === String(d.decision?.selectedWord ?? '').toLowerCase()) ?? null;
+        const f = selected?.features ?? {};
+        const key = `cand${f.candidateAttestedWindows ?? 0}:orig${f.originalAttestedWindows ?? 0}`
+          + `:same${f.sameAccentKey ? 1 : 0}:edit${f.editDistance ?? '?'}`;
+        if (semanticHit) realWordEmissions.tp++;
+        else realWordEmissions.fp++;
+        bump(realWordEmissions.evidence, `${semanticHit ? 'tp' : 'fp'}:${key}`);
+        if (realWordEmissions.examples.length < MAX_EXAMPLES_PER_BUCKET * 5) {
+          realWordEmissions.examples.push({
+            id: row.id, outcome: semanticHit ? 'tp' : 'fp', value: issue.value,
+            suggestion: issue.suggestions?.[0] ?? null, selected,
+          });
+        }
+      }
+      if (semanticHit) continue;
+      falsePositiveFunnel.total++;
+      bump(falsePositiveFunnel.owners, owner);
+      for (const gate of Object.keys(d.gates ?? {})) bump(falsePositiveFunnel.gates, gate);
+      if (falsePositiveFunnel.examples.length < MAX_EXAMPLES_PER_BUCKET) {
+        const selected = d.decision?.diagnostic?.evaluated?.find((x) =>
+          x.candidate === String(d.decision?.selectedWord ?? '').toLowerCase()) ?? null;
+        falsePositiveFunnel.examples.push({
+          id: row.id, value: issue.value, suggestion: issue.suggestions?.[0] ?? null,
+          owner: d.decision?.decisionOwner ?? 'classical-unknown-lane', gates: d.gates,
+          selected,
+        });
+      }
+    }
+
     for (const exp of row.expect) {
       labels++;
       const targetRaw = String(exp.suggestions?.[0] ?? '');
@@ -112,11 +157,7 @@ function main() {
         continue;
       }
       const targetLower = targetRaw.toLowerCase();
-      const errLower = normSurface(exp.value).toLowerCase();
-      const tokIdx = words.findIndex((w) => w.normalized.toLowerCase() === errLower);
-      const byKey = tokIdx >= 0
-        ? tokIdx
-        : words.findIndex((w) => accentKey(w.normalized) === accentKey(errLower));
+      const byKey = tokenIndexForExpected(words, exp);
       if (byKey < 0) { countStage(rel, 'label-token-not-found'); continue; }
       const t = words[byKey];
 
@@ -124,8 +165,8 @@ function main() {
       const valueMatch = (i) => normSurface(i.value) === normSurface(exp.value);
       const suggMatch = (i) => (i.suggestions ?? [])
         .some((s) => normSurface(s) === normSurface(targetRaw));
-      const caughtStrict = spellingIssues.some((i) => valueMatch(i) && suggMatch(i));
-      const caughtAny = linguisticIssues.some((i) => valueMatch(i) && suggMatch(i));
+      const caughtStrict = spellingIssues.some((i) => linguisticCorrectionMatches(i, exp));
+      const caughtAny = linguisticIssues.some((i) => linguisticCorrectionMatches(i, exp));
       if (caughtAny) {
         countStage(rel, caughtStrict ? 'correct' : 'correct-other-lane');
         continue;
@@ -157,7 +198,7 @@ function main() {
 
       // ---- spelling-lane cascade + pool ranks ---------------------------
       const d = evaluateSpellingToken(engine.services, snap, vctx(),
-        doc, words, byKey);
+        doc, words, byKey, { instrumentRealWord: true });
       const stage = d.stage === 'prefilter'
         ? 'prefilter'
         : (d.stage === 'no-candidates'
@@ -166,6 +207,36 @@ function main() {
 
       countStage(rel, stage,
         stage === 'prefilter' ? (d.reason ?? 'unknown') : null);
+
+      const rw = d.decision;
+      if (d.gates?.realWordLaneDeclined && rw?.diagnostic) {
+        const diag = rw.diagnostic;
+        const pool = diag.pool ?? [];
+        const evaluated = diag.evaluated ?? [];
+        const gold = pool.find((x) => x.word === targetLower);
+        const rankedGold = evaluated.find((x) => x.candidate === targetLower);
+        const selected = evaluated.find((x) => x.candidate === rw.selectedWord);
+        realWordDeclined.labels++;
+        bump(realWordDeclined.rejectionReasons, rw.rejectionReason ?? 'unknown');
+        if (gold) realWordDeclined.goldInPool++;
+        if (gold?.quickAttested) realWordDeclined.goldQuickAttested++;
+        if (rankedGold) {
+          realWordDeclined.goldEvaluated++;
+          bump(realWordDeclined.goldRank, rankKey(rankedGold.rank));
+          for (const [check, passed] of Object.entries(rankedGold.checks ?? {})) {
+            if (!passed) bump(realWordDeclined.checkFailures, check);
+          }
+        }
+        if (selected) bump(realWordDeclined.selectedRank, rankKey(selected.rank));
+        if (realWordDeclined.examples.length < MAX_EXAMPLES_PER_BUCKET) {
+          realWordDeclined.examples.push({
+            id: row.id, value: exp.value, target: targetRaw, classified: cls,
+            rejectionReason: rw.rejectionReason,
+            gold: rankedGold ?? (gold ? { ...gold, rank: null } : null),
+            selected: selected ?? null,
+          });
+        }
+      }
 
       if (d.stage === 'decided') {
         bump(poolRanks.wide, rankKey(
@@ -210,6 +281,9 @@ function main() {
     prefilterReasons,
     pmdDecisions,
     poolRanks,
+    realWordDeclined,
+    falsePositiveFunnel,
+    realWordEmissions,
     examples: {
       byRelationStage: examplesByRelationStage,
       byPmdDecision: examplesByPmdDecision,
@@ -241,6 +315,9 @@ function main() {
     prefilterReasons: report.prefilterReasons,
     pmdDecisions: report.pmdDecisions,
     poolRanks: report.poolRanks,
+    realWordDeclined: report.realWordDeclined,
+    falsePositiveFunnel: report.falsePositiveFunnel,
+    realWordEmissions: report.realWordEmissions,
   }, null, 2));
   if (flags.out) {
     const sha = writeArtifact(path.resolve(flags.out), report);

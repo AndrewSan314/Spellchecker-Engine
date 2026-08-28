@@ -85,6 +85,17 @@ function matvecFloat(vec, weight, bias, out) {
   }
 }
 
+/**
+ * Number of encoder blocks present in a checkpoint, counted by walking
+ * `encoder.blocks.N.*` upward from 0 so a gap can never be read as a larger
+ * model than actually shipped.
+ */
+function countEncoderBlocks(tensors) {
+  let n = 0;
+  while (tensors[`encoder.blocks.${n}.ln1.weight`]) n++;
+  return n;
+}
+
 class AttentionRerankerInstance {
   constructor(metadata, tensors, buffer) {
     this.meta = metadata;
@@ -96,6 +107,22 @@ class AttentionRerankerInstance {
     this.headDim = this.config.head_dim || 24;
     this.ffnDim = this.config.ffn_dim || 96;
     this.maxTokens = 32;
+    // Phase 3: the forward pass used to hard-code `encoder.blocks.0.*`, so
+    // any checkpoint with more than one block silently ran only its first
+    // layer. That is why arch A shipped -- selection recorded it as
+    // "runtime-compatible", not better (calibration F0.5: C 0.9535 vs A
+    // 0.9370). Block count is read from the checkpoint itself so the tensors
+    // stay the single source of truth; num_layers in config is a cross-check.
+    this.numBlocks = countEncoderBlocks(tensors);
+    const declaredBlocks = this.config.blocks
+      ?? this.config.num_layers ?? this.config.num_blocks;
+    if (declaredBlocks != null && declaredBlocks !== this.numBlocks) {
+      throw new Error(`attention-reranker: checkpoint declares ${declaredBlocks}`
+        + ` block(s) but carries tensors for ${this.numBlocks}`);
+    }
+    if (this.numBlocks < 1) {
+      throw new Error('attention-reranker: no encoder.blocks.N.* tensors found');
+    }
 
     this.tensors = tensors;
     this.buffer = buffer;
@@ -134,6 +161,7 @@ class AttentionRerankerInstance {
     optionWordIds,
     optionMask,
     classicalFeatures,
+    markers = null,
     charHashes = null,
     optionCharHashes = null,
   }) {
@@ -147,6 +175,8 @@ class AttentionRerankerInstance {
     const wordScales = t['encoder.word_embedding.weight'].scales;
     const posWeight = t['encoder.position_embedding.weight']?.data;
     const posScales = t['encoder.position_embedding.weight']?.scales;
+    const markerWeight = t['encoder.marker_embedding.weight']?.data;
+    const markerScales = t['encoder.marker_embedding.weight']?.scales;
     const charWeight = t['encoder.char_embedding.weight']?.data;
     const charScales = t['encoder.char_embedding.weight']?.scales;
 
@@ -163,152 +193,164 @@ class AttentionRerankerInstance {
       for (let d = 0; d < H; d++) {
         let val = wordWeight[rowOff + d] * scale;
         if (posWeight) val += posWeight[pOff + d] * pScale;
+        if (markerWeight && markers && markers[pos] != null) {
+          const marker = markers[pos];
+          const markerOff = marker * H;
+          const markerScale = markerScales ? markerScales[marker] : 1.0;
+          val += markerWeight[markerOff + d] * markerScale;
+        }
         s.x[destOff + d] = val;
       }
       if (charHashes) addCharEmbedding(s.x.subarray(destOff, destOff + H), charHashes[pos], charWeight, charScales, H);
     }
 
-    // 2. Pre-LN Transformer Block 0
-    // LayerNorm 1 over x
-    const ln1W = t['encoder.blocks.0.ln1.weight'].data;
-    const ln1B = t['encoder.blocks.0.ln1.bias'].data;
-    for (let pos = 0; pos < this.maxTokens; pos++) {
-      const off = pos * H;
-      for (let d = 0; d < H; d++) s.tokenBuf[d] = s.x[off + d];
-      layerNorm(s.tokenBuf, ln1W, ln1B, s.tokenOut);
-      for (let d = 0; d < H; d++) s.ln1_x[off + d] = s.tokenOut[d];
-    }
+    // 2. Pre-LN Transformer blocks (Phase 3: every block, not just #0).
+    // Each block reads and writes s.x in place, so stacking is just
+    // iteration -- the scratch buffers are reused across blocks.
+    for (let blk = 0; blk < this.numBlocks; blk++) {
+      const B = `encoder.blocks.${blk}`;
+      // LayerNorm 1 over x
+      const ln1W = t[`${B}.ln1.weight`].data;
+      const ln1B = t[`${B}.ln1.bias`].data;
+      for (let pos = 0; pos < this.maxTokens; pos++) {
+        const off = pos * H;
+        for (let d = 0; d < H; d++) s.tokenBuf[d] = s.x[off + d];
+        layerNorm(s.tokenBuf, ln1W, ln1B, s.tokenOut);
+        for (let d = 0; d < H; d++) s.ln1_x[off + d] = s.tokenOut[d];
+      }
 
-    // Self-attention Q, K, V
-    const qW = t['encoder.blocks.0.attn.q_proj.weight'].data;
-    const qS = t['encoder.blocks.0.attn.q_proj.weight'].scales;
-    const qB = t['encoder.blocks.0.attn.q_proj.bias'].data;
+      // Self-attention Q, K, V
+      const qW = t[`${B}.attn.q_proj.weight`].data;
+      const qS = t[`${B}.attn.q_proj.weight`].scales;
+      const qB = t[`${B}.attn.q_proj.bias`].data;
 
-    const kW = t['encoder.blocks.0.attn.k_proj.weight'].data;
-    const kS = t['encoder.blocks.0.attn.k_proj.weight'].scales;
-    const kB = t['encoder.blocks.0.attn.k_proj.bias'].data;
+      const kW = t[`${B}.attn.k_proj.weight`].data;
+      const kS = t[`${B}.attn.k_proj.weight`].scales;
+      const kB = t[`${B}.attn.k_proj.bias`].data;
 
-    const vW = t['encoder.blocks.0.attn.v_proj.weight'].data;
-    const vS = t['encoder.blocks.0.attn.v_proj.weight'].scales;
-    const vB = t['encoder.blocks.0.attn.v_proj.bias'].data;
+      const vW = t[`${B}.attn.v_proj.weight`].data;
+      const vS = t[`${B}.attn.v_proj.weight`].scales;
+      const vB = t[`${B}.attn.v_proj.bias`].data;
 
-    for (let pos = 0; pos < this.maxTokens; pos++) {
-      const off = pos * H;
-      for (let d = 0; d < H; d++) s.tokenBuf[d] = s.ln1_x[off + d];
+      for (let pos = 0; pos < this.maxTokens; pos++) {
+        const off = pos * H;
+        for (let d = 0; d < H; d++) s.tokenBuf[d] = s.ln1_x[off + d];
 
-      matvecLinear(s.tokenBuf, qW, qS, qB, s.tokenOut);
-      for (let d = 0; d < H; d++) s.q[off + d] = s.tokenOut[d];
+        matvecLinear(s.tokenBuf, qW, qS, qB, s.tokenOut);
+        for (let d = 0; d < H; d++) s.q[off + d] = s.tokenOut[d];
 
-      matvecLinear(s.tokenBuf, kW, kS, kB, s.tokenOut);
-      for (let d = 0; d < H; d++) s.k[off + d] = s.tokenOut[d];
+        matvecLinear(s.tokenBuf, kW, kS, kB, s.tokenOut);
+        for (let d = 0; d < H; d++) s.k[off + d] = s.tokenOut[d];
 
-      matvecLinear(s.tokenBuf, vW, vS, vB, s.tokenOut);
-      for (let d = 0; d < H; d++) s.v[off + d] = s.tokenOut[d];
-    }
+        matvecLinear(s.tokenBuf, vW, vS, vB, s.tokenOut);
+        for (let d = 0; d < H; d++) s.v[off + d] = s.tokenOut[d];
+      }
 
-    // Scaled Dot-Product Attention per Head
-    const numHeads = this.numHeads;
-    const headDim = this.headDim;
-    const scaleFactor = 1.0 / Math.sqrt(headDim);
+      // Scaled Dot-Product Attention per Head
+      const numHeads = this.numHeads;
+      const headDim = this.headDim;
+      const scaleFactor = 1.0 / Math.sqrt(headDim);
 
-    s.attnOut.fill(0);
+      s.attnOut.fill(0);
 
-    for (let h = 0; h < numHeads; h++) {
-      const hOff = h * headDim;
-      for (let i = 0; i < this.maxTokens; i++) {
-        if (mask[i] === 0) continue;
-        const qOff = i * H + hOff;
+      for (let h = 0; h < numHeads; h++) {
+        const hOff = h * headDim;
+        for (let i = 0; i < this.maxTokens; i++) {
+          if (mask[i] === 0) continue;
+          const qOff = i * H + hOff;
 
-        // Compute scores against all j
-        let maxScore = -Infinity;
-        const rowScores = new Float32Array(this.maxTokens);
+          // Compute scores against all j
+          let maxScore = -Infinity;
+          const rowScores = new Float32Array(this.maxTokens);
 
-        for (let j = 0; j < this.maxTokens; j++) {
-          if (mask[j] === 0) {
-            rowScores[j] = -10000.0;
-            continue;
+          for (let j = 0; j < this.maxTokens; j++) {
+            if (mask[j] === 0) {
+              rowScores[j] = -10000.0;
+              continue;
+            }
+            const kOff = j * H + hOff;
+            let dot = 0;
+            for (let d = 0; d < headDim; d++) {
+              dot += s.q[qOff + d] * s.k[kOff + d];
+            }
+            const sc = dot * scaleFactor;
+            rowScores[j] = sc;
+            if (sc > maxScore) maxScore = sc;
           }
-          const kOff = j * H + hOff;
-          let dot = 0;
-          for (let d = 0; d < headDim; d++) {
-            dot += s.q[qOff + d] * s.k[kOff + d];
-          }
-          const sc = dot * scaleFactor;
-          rowScores[j] = sc;
-          if (sc > maxScore) maxScore = sc;
-        }
 
-        // Softmax
-        let expSum = 0;
-        for (let j = 0; j < this.maxTokens; j++) {
-          if (mask[j] === 0) {
-            rowScores[j] = 0;
-          } else {
-            const expVal = Math.exp(rowScores[j] - maxScore);
-            rowScores[j] = expVal;
-            expSum += expVal;
+          // Softmax
+          let expSum = 0;
+          for (let j = 0; j < this.maxTokens; j++) {
+            if (mask[j] === 0) {
+              rowScores[j] = 0;
+            } else {
+              const expVal = Math.exp(rowScores[j] - maxScore);
+              rowScores[j] = expVal;
+              expSum += expVal;
+            }
           }
-        }
-        const invExpSum = expSum > 0 ? 1.0 / expSum : 0;
-        for (let j = 0; j < this.maxTokens; j++) rowScores[j] *= invExpSum;
+          const invExpSum = expSum > 0 ? 1.0 / expSum : 0;
+          for (let j = 0; j < this.maxTokens; j++) rowScores[j] *= invExpSum;
 
-        // Weighted sum of V
-        const outDest = i * H + hOff;
-        for (let j = 0; j < this.maxTokens; j++) {
-          if (mask[j] === 0) continue;
-          const vOff = j * H + hOff;
-          const weight = rowScores[j];
-          for (let d = 0; d < headDim; d++) {
-            s.attnOut[outDest + d] += weight * s.v[vOff + d];
+          // Weighted sum of V
+          const outDest = i * H + hOff;
+          for (let j = 0; j < this.maxTokens; j++) {
+            if (mask[j] === 0) continue;
+            const vOff = j * H + hOff;
+            const weight = rowScores[j];
+            for (let d = 0; d < headDim; d++) {
+              s.attnOut[outDest + d] += weight * s.v[vOff + d];
+            }
           }
         }
       }
-    }
 
-    // Output projection + residual 1 (a = x + out_proj(attnOut))
-    const outProjW = t['encoder.blocks.0.attn.out_proj.weight'].data;
-    const outProjS = t['encoder.blocks.0.attn.out_proj.weight'].scales;
-    const outProjB = t['encoder.blocks.0.attn.out_proj.bias'].data;
+      // Output projection + residual 1 (a = x + out_proj(attnOut))
+      const outProjW = t[`${B}.attn.out_proj.weight`].data;
+      const outProjS = t[`${B}.attn.out_proj.weight`].scales;
+      const outProjB = t[`${B}.attn.out_proj.bias`].data;
 
-    for (let pos = 0; pos < this.maxTokens; pos++) {
-      const off = pos * H;
-      for (let d = 0; d < H; d++) s.tokenBuf[d] = s.attnOut[off + d];
-      matvecLinear(s.tokenBuf, outProjW, outProjS, outProjB, s.tokenOut);
-      for (let d = 0; d < H; d++) {
-        s.x[off + d] += s.tokenOut[d]; // residual
+      for (let pos = 0; pos < this.maxTokens; pos++) {
+        const off = pos * H;
+        for (let d = 0; d < H; d++) s.tokenBuf[d] = s.attnOut[off + d];
+        matvecLinear(s.tokenBuf, outProjW, outProjS, outProjB, s.tokenOut);
+        for (let d = 0; d < H; d++) {
+          s.x[off + d] += s.tokenOut[d]; // residual
+        }
       }
-    }
 
-    // LayerNorm 2
-    const ln2W = t['encoder.blocks.0.ln2.weight'].data;
-    const ln2B = t['encoder.blocks.0.ln2.bias'].data;
-    for (let pos = 0; pos < this.maxTokens; pos++) {
-      const off = pos * H;
-      for (let d = 0; d < H; d++) s.tokenBuf[d] = s.x[off + d];
-      layerNorm(s.tokenBuf, ln2W, ln2B, s.tokenOut);
-      for (let d = 0; d < H; d++) s.ln2_a[off + d] = s.tokenOut[d];
-    }
-
-    // FFN + residual 2 (h = a + ffn2(gelu(ffn1(ln2_a))))
-    const ffn1W = t['encoder.blocks.0.ffn.0.weight'].data;
-    const ffn1S = t['encoder.blocks.0.ffn.0.weight'].scales;
-    const ffn1B = t['encoder.blocks.0.ffn.0.bias'].data;
-
-    const ffn2W = t['encoder.blocks.0.ffn.2.weight'].data;
-    const ffn2S = t['encoder.blocks.0.ffn.2.weight'].scales;
-    const ffn2B = t['encoder.blocks.0.ffn.2.bias'].data;
-
-    for (let pos = 0; pos < this.maxTokens; pos++) {
-      const off = pos * H;
-      for (let d = 0; d < H; d++) s.tokenBuf[d] = s.ln2_a[off + d];
-
-      matvecLinear(s.tokenBuf, ffn1W, ffn1S, ffn1B, s.ffn1);
-      for (let f = 0; f < this.ffnDim; f++) s.ffn1Gelu[f] = gelu(s.ffn1[f]);
-
-      matvecLinear(s.ffn1Gelu, ffn2W, ffn2S, ffn2B, s.ffn2);
-      for (let d = 0; d < H; d++) {
-        s.x[off + d] += s.ffn2[d]; // residual
+      // LayerNorm 2
+      const ln2W = t[`${B}.ln2.weight`].data;
+      const ln2B = t[`${B}.ln2.bias`].data;
+      for (let pos = 0; pos < this.maxTokens; pos++) {
+        const off = pos * H;
+        for (let d = 0; d < H; d++) s.tokenBuf[d] = s.x[off + d];
+        layerNorm(s.tokenBuf, ln2W, ln2B, s.tokenOut);
+        for (let d = 0; d < H; d++) s.ln2_a[off + d] = s.tokenOut[d];
       }
+
+      // FFN + residual 2 (h = a + ffn2(gelu(ffn1(ln2_a))))
+      const ffn1W = t[`${B}.ffn.0.weight`].data;
+      const ffn1S = t[`${B}.ffn.0.weight`].scales;
+      const ffn1B = t[`${B}.ffn.0.bias`].data;
+
+      const ffn2W = t[`${B}.ffn.2.weight`].data;
+      const ffn2S = t[`${B}.ffn.2.weight`].scales;
+      const ffn2B = t[`${B}.ffn.2.bias`].data;
+
+      for (let pos = 0; pos < this.maxTokens; pos++) {
+        const off = pos * H;
+        for (let d = 0; d < H; d++) s.tokenBuf[d] = s.ln2_a[off + d];
+
+        matvecLinear(s.tokenBuf, ffn1W, ffn1S, ffn1B, s.ffn1);
+        for (let f = 0; f < this.ffnDim; f++) s.ffn1Gelu[f] = gelu(s.ffn1[f]);
+
+        matvecLinear(s.ffn1Gelu, ffn2W, ffn2S, ffn2B, s.ffn2);
+        for (let d = 0; d < H; d++) {
+          s.x[off + d] += s.ffn2[d]; // residual
+        }
+      }
+
     }
 
     // Final LayerNorm

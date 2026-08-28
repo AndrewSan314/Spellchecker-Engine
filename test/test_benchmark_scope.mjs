@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { benchmarkIssueMatches, matchBenchmarkRow, normalizeBenchmarkSurface } from '../benchmark/run-benchmark.mjs';
+import { linguisticCorrectionMatches } from '../src/correction-taxonomy.mjs';
 
 test('rule-scoped full labels count spelling extras but ignore formatting extras', () => {
   const row = {
@@ -39,4 +40,16 @@ test('suggestion matching is NFC/case-insensitive and surface-safe', () => {
     { ruleId: 'POSSIBLE_SPELLING_ERROR', value: 'lam', suggestions: ['gắn'] },
     { ruleId: 'POSSIBLE_SPELLING_ERROR', value: 'lam', suggestion: 'gan' },
   ), false);
+});
+
+test('semantic VSEC matches require the annotated source syllable span', () => {
+  const expected = {
+    value: 'hoc', suggestion: 'học', positionStart: 40, positionEnd: 43,
+  };
+  assert.equal(linguisticCorrectionMatches({
+    ruleId: 'POSSIBLE_SPELLING_ERROR', value: 'hoc', suggestions: ['học'], start: 5, end: 8,
+  }, expected), false);
+  assert.equal(linguisticCorrectionMatches({
+    ruleId: 'POSSIBLE_MISSING_DIACRITIC', value: 'hoc', suggestions: ['học'], start: 40, end: 43,
+  }, expected), true);
 });

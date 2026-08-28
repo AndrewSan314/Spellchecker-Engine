@@ -13,6 +13,8 @@ import {
   LexiconService, WhitelistService, AbbreviationService, AccentIndex,
 } from './lexical.mjs';
 import { RecallReranker } from './recall-reranker.mjs';
+import { ErrorChannel } from './error-channel.mjs';
+import { extractContextEvidence } from './context-evidence.mjs';
 import { loadAttentionReranker } from './attention-reranker.mjs';
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -175,6 +177,7 @@ export class SmsValidationEngine {
     });
     this.beamDecoder = new BeamSearchDecoder(languageModel);
     this.typoCandidateProvider = new SymSpellCandidateProvider(lexicon);
+    this.errorChannel = ErrorChannel.load(path.join(DATA_DIR, 'error-channel.json'));
 
     this.services = {
       configService,
@@ -187,6 +190,10 @@ export class SmsValidationEngine {
       typoCandidateProvider: this.typoCandidateProvider,
       recallReranker: this.recallReranker,
       attentionReranker: this.attentionReranker,
+      errorChannel: this.errorChannel,
+      // Offline calibration hook: null in production, set by
+      // tools/fit_confidence_temperature.mjs to capture raw score margins.
+      confidenceSink: null,
     };
 
     this.documentBuilder = { build: buildValidationDocument };
@@ -244,13 +251,35 @@ export class SmsValidationEngine {
     const unsuppressed = this.applySuppression(doc, raw)
       .concat(shadowMode ? [] : []);
     const resolved = this.resolveConflicts(unsuppressed);
+    let words;
+    const verified = resolved.filter((issue) => {
+      if (!LINGUISTIC_RULE_IDS.has(issue.ruleId)) return true;
+      const target = issue.suggestions?.[0];
+      const baseProven = !this.lexicon.contains(issue.value)
+        || (this.errorChannel.hasPair(issue.value, target)
+          && this.errorChannel.pairCount(issue.value, target) !== 2)
+        || issue.confidence >= 0.96;
+      if (baseProven || issue.ruleId !== RuleIds.POSSIBLE_MISSING_DIACRITIC) return baseProven;
+
+      const nearProtected = doc.protectedRanges?.some((range) =>
+        Math.abs(range.start - issue.end) <= 2 || Math.abs(range.end - issue.start) <= 2);
+      if (!nearProtected || !target) return false;
+      words ??= doc.tokens.filter((t) => t.type === 'WORD');
+      const idx = words.findIndex((word) => word.start === issue.start && word.end === issue.end);
+      if (idx < 0) return false;
+      const ev = extractContextEvidence({
+        languageModel: this.languageModel, words: words.map((word) => word.normalized), idx,
+        candidateWord: target, originalWord: words[idx].normalized,
+      });
+      return ev.candidateAttestedWindows > ev.originalAttestedWindows;
+    });
     // SHADOW issues bypass suppression/conflict bookkeeping — they are
     // observability data only; keep them sorted for stable diffs.
     const shadowIssues = shadowMode
       ? shadowRaw.sort((a, b) => a.start - b.start || a.end - b.end)
       : [];
 
-    const sorted = resolved.sort((a, b) =>
+    const sorted = verified.sort((a, b) =>
       a.start - b.start || a.end - b.end || a.ruleId.localeCompare(b.ruleId));
 
     const hasErrors = sorted.some((i) => i.severity === Severity.ERROR);

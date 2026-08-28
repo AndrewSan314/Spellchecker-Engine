@@ -599,18 +599,20 @@ def main():
             "metrics": best_metrics,
         }
 
-    # Model selection on calibration
-    # Smallest architecture (A < B < C) within 0.5 percentage point of best F0.5
+    # Model selection on calibration.
+    # The current pure-JS runtime implements the one-block A contract; B/C are
+    # calibration candidates only until their extra blocks are implemented there.
     best_overall_f05 = max(results[a]["metrics"]["f05"] for a in results)
+    runtime_supported_arches = ("A",)
     selected_arch = None
     selection_reason = ""
 
-    for arch_id in ("A", "B", "C"):
+    for arch_id in runtime_supported_arches:
         f05 = results[arch_id]["metrics"]["f05"]
         if f05 >= best_overall_f05 - 0.005:
             selected_arch = arch_id
             selection_reason = (
-                f"Smallest candidate in A,B,C within 0.5 pt F0.5 of best ({best_overall_f05:.4f}): "
+                f"Runtime-compatible Arch A selected; best calibration F0.5 across A/B/C was {best_overall_f05:.4f}: "
                 f"Arch {arch_id} achieved F0.5={f05:.4f}, P={results[arch_id]['metrics']['precision']:.4f}, "
                 f"R={results[arch_id]['metrics']['recall']:.4f}, KEEP_acc={results[arch_id]['metrics']['keep_accuracy']:.4f}"
             )

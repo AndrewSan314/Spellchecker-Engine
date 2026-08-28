@@ -190,8 +190,10 @@ class AttentionEncoder(nn.Module):
         if char_hashes is not None and char_counts is not None:
             # char_hashes: (batch, seq_len, M)
             char_embeds = self.char_embedding(char_hashes)  # (batch, seq_len, M, hidden)
-            # Sum over M
-            char_sum = char_embeds.sum(dim=2)  # (batch, seq_len, hidden)
+            # Sum only real hashes; zero padding must not contribute bucket-0.
+            positions = torch.arange(char_hashes.shape[-1], device=char_hashes.device)
+            valid = positions.view(1, 1, -1) < char_counts.unsqueeze(-1)
+            char_sum = (char_embeds * valid.unsqueeze(-1)).sum(dim=2)
             counts = char_counts.unsqueeze(-1).clamp(min=1)  # (batch, seq_len, 1)
             char_mean = torch.where(
                 (char_counts > 0).unsqueeze(-1),
@@ -274,7 +276,9 @@ class AttentionModel(nn.Module):
         emb = self.encoder.word_embedding(word_id)
         if char_hashes is not None and char_counts is not None:
             char_embeds = self.encoder.char_embedding(char_hashes)
-            char_sum = char_embeds.sum(dim=-2)
+            positions = torch.arange(char_hashes.shape[-1], device=char_hashes.device)
+            valid = positions.view(1, -1) < char_counts.unsqueeze(-1)
+            char_sum = (char_embeds * valid.unsqueeze(-1)).sum(dim=-2)
             counts = char_counts.unsqueeze(-1).clamp(min=1)
             char_mean = torch.where(
                 (char_counts > 0).unsqueeze(-1),

@@ -97,6 +97,25 @@ function normSurface(v) {
     .replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
 }
 
+export function expectedPositionMatches(issue, expected) {
+  if (!Number.isInteger(expected?.positionStart) || !Number.isInteger(expected?.positionEnd)) {
+    return true;
+  }
+  return issue?.start >= expected.positionStart && issue?.end <= expected.positionEnd;
+}
+
+export function tokenIndexForExpected(words, expected) {
+  if (Number.isInteger(expected?.positionStart) && Number.isInteger(expected?.positionEnd)) {
+    return words.findIndex((word) => word.start >= expected.positionStart
+      && word.end <= expected.positionEnd);
+  }
+  const errLower = normSurface(expected?.value).toLowerCase();
+  const direct = words.findIndex((word) => word.normalized.toLowerCase() === errLower);
+  return direct >= 0
+    ? direct
+    : words.findIndex((word) => accentKey(word.normalized) === accentKey(errLower));
+}
+
 /**
  * Task 1 (recall-improvement plan): single-source terminal-stage
  * attribution over one evaluateSpellingToken decision. Shared by the
@@ -293,12 +312,13 @@ function main() {
     // helper (linguisticCorrectionMatches) so this view can never drift.
     const linguisticIssues = result.issues.filter((i) => i.ruleId === RuleIds.POSSIBLE_SPELLING_ERROR
       || i.ruleId === RuleIds.POSSIBLE_MISSING_DIACRITIC);
-    const labelValues = new Set(row.expect.map((e) => normSurface(e.value)));
     for (const issue of spellingIssues) {
-      if (!labelValues.has(normSurface(issue.value))) fpStrict++;
+      if (!row.expect.some((e) => issue.ruleId === RuleIds.POSSIBLE_SPELLING_ERROR
+        && linguisticCorrectionMatches(issue, e))) fpStrict++;
     }
     for (const issue of linguisticIssues) {
-      if (labelValues.has(normSurface(issue.value))) valueTp++;
+      if (row.expect.some((e) => expectedPositionMatches(issue, e)
+        && normSurface(issue.value) === normSurface(e.value))) valueTp++;
       else fp++;
       const semanticHit = row.expect.some((e) => linguisticCorrectionMatches(issue, e));
       if (!semanticHit) fpSemantic++;
@@ -318,21 +338,14 @@ function main() {
         continue;
       }
       const targetLower = targetRaw.toLowerCase();
-      const errLower = normSurface(exp.value).toLowerCase();
-      const tokIdx = words.findIndex((w) => w.normalized.toLowerCase() === errLower);
-      const byKey = tokIdx >= 0
-        ? tokIdx
-        : words.findIndex((w) => accentKey(w.normalized) === accentKey(errLower));
+      const byKey = tokenIndexForExpected(words, exp);
       if (byKey < 0) { countStage(rel, 'label-token-not-found'); continue; }
 
       // was the label caught by the ENGINE? Strict view = spelling-rule
       // issue only (official benchmark semantics); cross-lane view credits
       // any linguistic issue matching value + suggestion.
-      const valueMatch = (i) => normSurface(i.value) === normSurface(exp.value);
-      const suggMatch = (i) => (i.suggestions ?? [])
-        .some((s) => normSurface(s) === normSurface(targetRaw));
-      const caughtStrict = spellingIssues.some((i) => valueMatch(i) && suggMatch(i));
-      const caughtAny = linguisticIssues.some((i) => valueMatch(i) && suggMatch(i));
+      const caughtStrict = spellingIssues.some((i) => linguisticCorrectionMatches(i, exp));
+      const caughtAny = linguisticIssues.some((i) => linguisticCorrectionMatches(i, exp));
       // semantic credit via the shared matcher, evaluated INDEPENDENTLY of
       // the legacy predicates so view drift is detectable rather than hidden
       if (linguisticIssues.some((i) => linguisticCorrectionMatches(i, exp))) {
