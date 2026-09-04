@@ -81,6 +81,18 @@
       "devComparison": "dev was strict 0.703 / semantic 0.684 / precision 0.976 - the held-out drop (-5.5 pp recall, -3.7 pp precision) is the honest generalization gap.",
       "runs": 1,
       "command": "ENGINE_PROFILE=lite node tools/eval_sms.mjs --split test"
+    },
+    {
+      "date": "2026-09-04",
+      "dataset": "dataset_sms/sms-test.jsonl",
+      "config": "ENGINE_PROFILE=lite, B=T=300k group-wise cap + back-off repair; PMD left-to-right consistency + bare-form context suppression",
+      "declaredBefore": true,
+      "runNumber": 2,
+      "reason": "A user-reported wrong suggestion ('ma nay' -> 'mà' instead of 'mã này') exposed two model defects: the pruning split candidate competitions apart, and the artifact violated c(a,b) >= sum_c c(a,b,c) so back-off drowned the trigram evidence. Fixing them changed both the artifact and the ranker, so the previous held-out number no longer describes what runs. Re-run declared before execution.",
+      "result": "lite: strict 0.594, semantic 0.594, precision 0.937, 20 false alarms, 0/32 clean rows. full: strict 0.651, semantic 0.652, precision 0.926, 26 FA, 0/32 clean rows.",
+      "note": "This set has now been used twice. A third generalization claim needs a NEW set - regenerate with a different seed or label real SMS.",
+      "verdict": "MIXED - report as measured, do not tune on it. The RULE fixes transfer: the full profile (artifact unchanged, rules changed) went 0.618 -> 0.652 on this same set, and the independent VSEC benchmark went 0.607 -> 0.620 recall on 2949 labels. The ARTIFACT cap change does not transfer: lite went 0.648 -> 0.594 here while dev went 0.684 -> 0.739. The cap (300k) was selected on dev, so treat the dev gain as selection, not as an improvement.",
+      "samplingCaveat": "This set has 500 labels but only 138 messages, and 377 of those labels come from 28 ALL_UNACCENTED messages. The effective sample is messages, not labels, so differences of a few points are not resolvable. Do not read +/-5 pp here as signal."
     }
   ]
 }

@@ -297,6 +297,29 @@ export function createPossibleMissingDiacriticRule(services) {
         originalPrior: prior,
       };
       let posIdx = 0;
+      // Left-to-right consistency (see surfWithBeam): the surface this rule
+      // itself picked for an already-visited position. The beam only ever
+      // provides context, and it resolves an unaccented neighbour by raw
+      // FREQUENCY — for "chia se ma nay" it reads "se" as "sẽ" (3.0M) rather
+      // than "sẻ" (446k), and then "sẽ mà" beats a non-existent "sẽ mã", so
+      // the next position inherits the mistake and confidently proposes
+      // "mà nay" instead of "mã này". Feeding this rule's own decisions
+      // forward makes the sequence self-consistent.
+      const localChoice = new Array(wordSeq.length).fill(null);
+      // In a message typed WITHOUT diacritics, the raw form of a neighbour is
+      // not a word the sender chose — it is the very thing being repaired. Yet
+      // it was still voting as context evidence, and because plenty of bare
+      // forms are real words ("nay", "ma", "la") that vote systematically
+      // favours whatever collocates with the UNACCENTED reading: in
+      // "chia se ma nay" the pair "mà nay" (285) outvoted "mã này" (63) purely
+      // because "nay" was allowed to speak for itself. When the message looks
+      // unaccented, an unaccented neighbour only contributes its restored
+      // readings; if it has none, the raw form still stands in.
+      const unaccentedRatioGate = snap.get('linguistic.unaccentedRatioThreshold') ?? 0.8;
+      const unaccentedMinWords = snap.get('linguistic.unaccentedMinWords') ?? 5;
+      const bareWords = wordSeq.filter((t) => !hasVietnameseAccent(t.normalized)).length;
+      const messageLooksUnaccented = wordSeq.length >= unaccentedMinWords
+        && bareWords / wordSeq.length >= unaccentedRatioGate;
       for (const pos of positions) {
         // plan "Fix missing-diacritic logic": the beam only provides CONTEXT.
         // EVERY ambiguous position is locally re-ranked against that context
@@ -309,10 +332,16 @@ export function createPossibleMissingDiacriticRule(services) {
           // strong-neighbour literal rule lives in the GATE below.
           const surfWithBeam = (j) => {
             const list = [];
+            // this rule's own choice for an ALREADY decided position wins the
+            // first slot; the beam's global choice and the raw form follow.
+            const local = j < posIdx ? localChoice[j] : null;
+            if (local != null) list.push(local);
             const beamW = top1.words[j]?.toLowerCase();
             const raw = wordSeq[j].normalized.toLowerCase();
-            if (beamW != null) list.push(beamW);
-            if (!list.includes(raw)) list.push(raw);
+            if (beamW != null && !list.includes(beamW)) list.push(beamW);
+            const rawIsBare = !hasVietnameseAccent(raw);
+            const suppressRaw = messageLooksUnaccented && rawIsBare && list.length > 0;
+            if (!suppressRaw && !list.includes(raw)) list.push(raw);
             return list;
           };
           const prevSurfs = posIdx > 0 ? surfWithBeam(posIdx - 1) : [];
@@ -342,6 +371,7 @@ export function createPossibleMissingDiacriticRule(services) {
           // discriminate. Dividing the margin by a fitted temperature keeps
           // the ordering and restores resolution. T=1 reproduces the legacy
           // number bit-for-bit.
+          localChoice[posIdx] = bestCand.word.toLowerCase();
           const orderedScores = [...scores].sort((a, b) => b - a);
           const rawMargin = orderedScores.length > 1
             ? orderedScores[0] - orderedScores[1] : Infinity;

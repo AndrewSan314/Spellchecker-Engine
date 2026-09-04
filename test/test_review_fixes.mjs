@@ -13,6 +13,12 @@ import { SmsValidationEngine, ValidationContext } from '../src/engine.mjs';
 import { ValidationConfigService, ValidationConfigSnapshot, DEFAULT_SNAPSHOT } from '../src/config.mjs';
 import { RuleIds, LINGUISTIC_RULE_IDS, RULE_PRIORITY, priorityOf } from '../src/core.mjs';
 import { createWordBoundaryRule } from '../src/rules/linguistic-rules.mjs';
+import { NGramLanguageModel } from '../src/language.mjs';
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const DATA = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'src', 'data');
 
 const engine = new SmsValidationEngine();
 const validate = (text, mode = 'ACCENTED') =>
@@ -137,4 +143,56 @@ test('B5: SHADOW mode still returns no linguistic issue to the user', () => {
   const res = shadow.validate(new ValidationContext('Ma OTP cua quy khach la 123456.', 'ACCENTED'));
   assert.equal(res.issues.filter((i) => LINGUISTIC_RULE_IDS.has(i.ruleId)).length, 0);
   assert.ok(res.shadowIssues.length > 0, 'shadow issues must still be recorded');
+});
+
+
+// ============================================================
+// Regression: a user-reported wrong suggestion.
+//   "Khong chia se ma nay cho bat ky ai"  ->  engine said "ma" was "mà"
+//   while the sentence means "mã này" (this code).
+// Four defects fed it; see README "Bốn khiếm khuyết mô hình".
+// ============================================================
+test('"chia se ma nay": never asserts the wrong reading of "ma"', () => {
+  const res = validate('Khong chia se ma nay cho bat ky ai');
+  const onMa = res.issues.filter((i) => i.value.toLowerCase() === 'ma');
+  assert.deepEqual(onMa.map((i) => i.suggestions?.[0]), [],
+    `the engine must not claim a reading for "ma" here, got: ${JSON.stringify(onMa.map((i) => i.suggestions?.[0]))}`);
+  // and it must still do its job on the tokens it does understand
+  const suggested = new Map(res.issues.map((i) => [i.value.toLowerCase(), i.suggestions?.[0]]));
+  assert.equal(suggested.get('se'), 'sẻ', 'lost the "chia sẻ" restoration');
+  assert.equal(suggested.get('khong'), 'không');
+});
+
+test('the sentence-level decisions stay self-consistent left to right', () => {
+  // "se" is resolved by frequency to "sẽ" by the beam; the rule must use its
+  // own "sẻ" decision for the next position instead of inheriting that.
+  const res = validate('Khong chia se ma nay cho bat ky ai');
+  const se = res.issues.find((i) => i.value.toLowerCase() === 'se');
+  assert.ok(se, 'expected a decision on "se"');
+  assert.notEqual(se.suggestions?.[0], 'sẽ',
+    'frequency-first neighbour resolution leaked back in');
+});
+
+test('the lite artifact satisfies the n-gram back-off invariant', () => {
+  const artifact = path.join(DATA, 'lm-ngrams.sms.tsv');
+  if (!existsSync(artifact)) return; // not built on this clone
+  const lm = NGramLanguageModel.load(undefined, { prebuiltPath: artifact, hashArtifact: false });
+  // every trigram (a b c) implies c(a,b) >= sum and c(b,c) >= sum: without
+  // this, back-off assigns ~0 probability to a spelling the trigrams attest,
+  // which is exactly how "mã" lost to "mà".
+  const required = new Map();
+  for (const [key, count] of lm.trigram) {
+    const a = key.indexOf(' ');
+    const b = key.indexOf(' ', a + 1);
+    for (const pair of [key.slice(0, b), key.slice(a + 1)]) {
+      required.set(pair, (required.get(pair) ?? 0) + count);
+    }
+  }
+  const violations = [];
+  for (const [pair, needed] of required) {
+    if ((lm.bigram.get(pair) ?? 0) < needed) violations.push(pair);
+    if (violations.length > 5) break;
+  }
+  assert.deepEqual(violations, [],
+    'trigrams attest bigrams the artifact does not contain — rebuild with tools/build_sms_profile.mjs');
 });

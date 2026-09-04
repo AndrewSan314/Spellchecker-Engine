@@ -1,7 +1,7 @@
 {
   "schema": "sms-lm-manifest-v1",
   "generatedBy": "tools/build_sms_profile.mjs",
-  "generatedAt": "2026-09-03T09:34:41.961Z",
+  "generatedAt": "2026-09-04T03:02:02.251Z",
   "source": {
     "file": "lm-ngrams.tsv",
     "bytes": 79874419,
@@ -22,23 +22,40 @@
   "smsTrainOnly": true,
   "params": {
     "maxUnigrams": 60000,
-    "maxBigrams": 120000,
-    "maxTrigrams": 120000,
+    "maxBigrams": 300000,
+    "maxRivalsPerGroup": 6,
+    "maxTrigrams": 300000,
     "domainWeight": 120,
     "generalVocabTop": 20000
   },
   "result": {
     "file": "lm-ngrams.sms.tsv",
-    "bytes": 4481637,
+    "bytes": 10477068,
     "rows": {
       "U": 20521,
-      "B": 120544,
-      "T": 121317
+      "B": 321315,
+      "T": 301224
+    },
+    "backoffRepair": {
+      "addedBigrams": 20949,
+      "raisedBigrams": 33501
+    },
+    "candidateGroups": {
+      "B": {
+        "total": 462763,
+        "kept": 94538,
+        "dropped": 368225
+      },
+      "T": {
+        "total": 2326294,
+        "kept": 211693,
+        "dropped": 2114601
+      }
     },
     "domainVocab": 2894,
     "totalTokens": 1328457354,
-    "sha256": "a263738e5a287bbe62817d94d745e7e121eea53516d912d6c42a3a9ef1ae8da0",
-    "buildMs": 5316,
+    "sha256": "e997564862b801caca796853425c0ad087fade928f28ae76136fc2746c625c29",
+    "buildMs": 20270,
     "lexicon": {
       "file": "lexicon-sms.txt",
       "bytes": 257272,

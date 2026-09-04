@@ -55,19 +55,25 @@ const DEFAULTS = {
   outLexicon: path.join(DATA, 'lexicon-sms.txt'),
   smsCorpus: path.join(ROOT, 'dataset_sms', 'sms-clean-train.txt'),
   maxUnigrams: 60_000,
-  // Chosen on the SMS dev split (never test). The sweep, dev semantic view:
-  //   B/T      LM     RSS    cold   recall  precision  clean false alarms
-  //   120k/120k  5 MB  249 MB  0.7 s  0.684   0.976      0/30   <- default
-  //   200k/250k  9 MB  272 MB  0.9 s  0.700   0.934      2/30
-  //   300k/350k 14 MB  317 MB  1.3 s  0.706   0.947      2/30
-  //   600k/800k 29 MB  591 MB  2.3 s  0.729   0.970      0/30
-  // The mid sizes lose precision: they add collocations attested often enough
-  // to win a rewrite, without the wider context that would veto it. The small
-  // cut is precision-first and 2.4x lighter than the big one, which is the
-  // right trade for a local run and for a pre-send checker.
-  maxBigrams: 120_000,
-  maxTrigrams: 120_000,
+  // Chosen on the SMS dev split (never test).
+  //
+  // The first cut used a per-ROW frequency cap and a smaller budget. It was
+  // wrong twice over: it split candidate competitions apart (see the cap
+  // below) and it left the model self-contradictory (see the back-off
+  // repair). With those two fixed, the budget buys real quality:
+  //   B/T        LM      RSS     cold   dev recall  precision
+  //   120k/120k   4.3 MB  249 MB  0.7 s  0.624       0.963
+  //   300k/300k  10.5 MB  309 MB  1.1 s  0.739       0.976   <- default
+  //   500k/500k  20.3 MB  418 MB  1.5 s  0.734       0.965
+  // 500k is not better than 300k: past that point the rows added are rare
+  // n-grams that mostly add noise. 300k is the knee.
+  maxBigrams: 300_000,
+  maxTrigrams: 300_000,
   domainWeight: 120,
+  // rivals retained per accent-stripped key (see the cap below): enough to
+  // decide any realistic competition, small enough that long tails of a
+  // frequent key cannot starve other groups
+  maxRivalsPerGroup: 6,
   generalVocabTop: 20_000, // most frequent general words kept regardless
 };
 
@@ -146,6 +152,10 @@ export async function buildSmsProfile(opts = {}) {
       keep.add(cand.word.toLowerCase());
     }
   }
+  // Snapshot BEFORE the general top-N words are merged in: this is the set the
+  // n-gram cap protects. It deliberately includes accent twins, so BOTH sides
+  // of a candidate competition survive or fall together — see the cap below.
+  const domainVocab = new Set(keep);
   const domainOnly = keep.size;
 
   // ---------- 2. stream the general artifact ----------
@@ -197,11 +207,70 @@ export async function buildSmsProfile(opts = {}) {
     }
   }
 
-  // ---------- 3. cap by frequency ----------
-  biRows.sort((x, y) => y[1] - x[1] || (x[0] < y[0] ? -1 : 1));
-  triRows.sort((x, y) => y[1] - x[1] || (x[0] < y[0] ? -1 : 1));
-  const bi = new Map(biRows.slice(0, cfg.maxBigrams));
-  const tri = new Map(triRows.slice(0, cfg.maxTrigrams));
+  // ---------- 3. cap by CANDIDATE GROUP, not by row ----------
+  //
+  // A per-row frequency cap is wrong for this model, and it produced a real
+  // bug: "mã này" (count 63, ranked ~322,000th) was cut while its rival
+  // "mà nay" (285) survived, so an unaccented "ma nay" was confidently
+  // "corrected" to "mà nay" instead of "mã này". Dropping ONE SIDE of a
+  // candidate competition does not make the model smaller, it makes it wrong
+  // — the decoder then sees unanimous evidence for the only surviving spelling.
+  //
+  // So rows are grouped by their accent-stripped key ("ma nay" groups
+  // mà nay / mã này / mã nay / mà này) and whole groups are kept or dropped
+  // together, ranked by the group's strongest member. Groups touching the SMS
+  // domain vocabulary go first. The engine therefore never sees a rigged vote.
+  const byCount = (x, y) => y[1] - x[1] || (x[0] < y[0] ? -1 : 1);
+  const allDomain = (key) => {
+    for (const token of key.split(' ')) if (!domainVocab.has(token)) return false;
+    return true;
+  };
+  const strippedKey = (key) => key.split(' ').map((t) => accentKey(t)).join(' ');
+  const capped = (rows, limit) => {
+    const groups = new Map();
+    for (const row of rows) {
+      const gk = strippedKey(row[0]);
+      let group = groups.get(gk);
+      if (!group) {
+        group = { rows: [], max: 0, domain: false };
+        groups.set(gk, group);
+      }
+      group.rows.push(row);
+      if (row[1] > group.max) group.max = row[1];
+      if (!group.domain && allDomain(row[0])) group.domain = true;
+    }
+    const ordered = [...groups.values()].sort((a, b) =>
+      (b.domain ? 1 : 0) - (a.domain ? 1 : 0) || b.max - a.max);
+    const kept = [];
+    let split = 0;
+    for (const group of ordered) {
+      // Inside a group, only the strongest rivals matter: a competition is
+      // decided between the top spellings, and the long tail of the same
+      // stripped key adds bytes without changing any decision. Keeping whole
+      // groups unbounded burns the budget on those tails (17,970 of 462,763
+      // groups survived when we tried it) and costs far more coverage than
+      // the tails are worth.
+      group.rows.sort(byCount);
+      const rivals = group.rows.slice(0, cfg.maxRivalsPerGroup);
+      if (kept.length + rivals.length > limit) {
+        // Budget exhausted: stop rather than admit half a competition.
+        split += 1;
+        continue;
+      }
+      for (const row of rivals) kept.push(row);
+    }
+    kept.sort(byCount);
+    return {
+      map: new Map(kept),
+      groups: groups.size,
+      groupsKept: groups.size - split,
+      groupsDropped: split,
+    };
+  };
+  const biCap = capped(biRows, cfg.maxBigrams);
+  const triCap = capped(triRows, cfg.maxTrigrams);
+  const bi = biCap.map;
+  const tri = triCap.map;
 
   // ---------- 4. SMS domain overlay (train split only) ----------
   const overlay = countCorpus(smsLines, cfg.domainWeight);
@@ -236,7 +305,42 @@ export async function buildSmsProfile(opts = {}) {
     }
   }
 
-  // ---------- 5. emit ----------
+  // ---------- 5. back-off consistency ----------
+  //
+  // Every occurrence of the trigram (a b c) contains the bigrams (a b) and
+  // (b c), so a correct count table satisfies
+  //     c(a,b) >= sum_c c(a,b,c)   and   c(b,c) >= sum_a c(a,b,c).
+  // The source artifact violates this: it caps bigrams and trigrams
+  // independently, so "chia sẻ mã" survives with count 102 while the bigram
+  // "sẻ mã" was pruned to nothing. The scorer then backs off P(mã | sẻ) to a
+  // near-zero smoothed value and that single term drowns the trigram evidence
+  // — which is exactly how "chia se ma nay" got "corrected" to "mà" instead
+  // of "mã". A model may be small; it may not be self-contradictory.
+  //
+  // Rows added here are REQUIRED for the kept trigrams to be scorable, so
+  // they are not subject to the cap.
+  const requiredBigrams = new Map();
+  const require = (key, count) => {
+    requiredBigrams.set(key, (requiredBigrams.get(key) ?? 0) + count);
+  };
+  for (const [key, count] of tri) {
+    const a = key.indexOf(' ');
+    const b = key.indexOf(' ', a + 1);
+    require(key.slice(0, b), count);
+    require(key.slice(a + 1), count);
+  }
+  let repairedRows = 0;
+  let addedRows = 0;
+  for (const [key, needed] of requiredBigrams) {
+    const sp = key.indexOf(' ');
+    if (!uni.has(key.slice(0, sp)) || !uni.has(key.slice(sp + 1))) continue;
+    const current = bi.get(key) ?? 0;
+    if (current >= needed) continue;
+    if (current === 0) addedRows += 1; else repairedRows += 1;
+    bi.set(key, needed);
+  }
+
+  // ---------- 6. emit ----------
   const totalTokens = headerTokens + overlay.tokens;
   const out = [];
   out.push('#SMS-LM v1 (domain-pruned)');
@@ -267,6 +371,7 @@ export async function buildSmsProfile(opts = {}) {
     params: {
       maxUnigrams: cfg.maxUnigrams,
       maxBigrams: cfg.maxBigrams,
+      maxRivalsPerGroup: cfg.maxRivalsPerGroup,
       maxTrigrams: cfg.maxTrigrams,
       domainWeight: cfg.domainWeight,
       generalVocabTop: cfg.generalVocabTop,
@@ -275,13 +380,18 @@ export async function buildSmsProfile(opts = {}) {
       file: path.basename(cfg.out),
       bytes: body.length,
       rows: { U: unigramRows.length, B: bi.size, T: tri.size },
+      backoffRepair: { addedBigrams: addedRows, raisedBigrams: repairedRows },
+      candidateGroups: {
+        B: { total: biCap.groups, kept: biCap.groupsKept, dropped: biCap.groupsDropped },
+        T: { total: triCap.groups, kept: triCap.groupsKept, dropped: triCap.groupsDropped },
+      },
       domainVocab: domainOnly,
       totalTokens,
       sha256: createHash('sha256').update(body).digest('hex'),
       buildMs: Date.now() - t0,
     },
   };
-  // ---------- 6. matching pruned lexicon ----------
+  // ---------- 7. matching pruned lexicon ----------
   // Same vocabulary as the LM: a word the LM cannot score should not be a
   // candidate the ranker can propose, and vice versa. This also shrinks the
   // SymSpell deletion index, the second memory hog after the LM.
@@ -329,6 +439,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     + ` U=${result.rows.U} B=${result.rows.B} T=${result.rows.T}`);
   console.log(`  lexicon ${result.lexicon.file}: ${(result.lexicon.bytes / 1e6).toFixed(2)} MB`
     + ` entries=${result.lexicon.entries}`);
-  console.log(`  domain vocabulary=${result.domainVocab}  buildMs=${result.buildMs}`);
+  console.log(`  domain vocabulary=${result.domainVocab}`
+    + `  candidate groups kept: B ${result.candidateGroups.B.kept}/${result.candidateGroups.B.total}`
+    + ` T ${result.candidateGroups.T.kept}/${result.candidateGroups.T.total}`);
+  console.log(`  back-off repair: +${result.backoffRepair.addedBigrams} bigram rows added,`
+    + ` ${result.backoffRepair.raisedBigrams} raised to match their trigrams`);
+  console.log(`  buildMs=${result.buildMs}`);
   console.log(`  sha256=${result.sha256.slice(0, 16)}…`);
 }
