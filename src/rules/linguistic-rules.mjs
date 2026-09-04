@@ -497,7 +497,10 @@ export function createPossibleMissingDiacriticRule(services) {
               pos.token.start, pos.token.end, pos.token.original,
               `Từ "${pos.token.original}" có thể đang thiếu dấu (gợi ý: "${bestCand.word}").`,
               [bestCand.word],
-              Math.round(conf * 100) / 100,
+              // Review B3: RAW calibrated confidence. Rounding to 2 decimals
+              // here promoted 0.9550-0.9599 to 0.96 and let it clear the
+              // engine's proof floor; the server rounds for display instead.
+              conf,
             ));
           }
         }
@@ -1318,6 +1321,9 @@ function evaluateUnifiedAttentionToken({
     return base;
   }
 
+  // Review B9: both keys are real config entries now (DEFAULT_SNAPSHOT +
+  // config/spelling-tuning.json). The literal below is only a last-resort
+  // guard for a hand-built snapshot that omits them.
   const minProb = snap.get('spelling.attentionMinProbability')
     ?? snap.get('linguistic.attentionMinProbability') ?? 0.80;
   // Unified active mode owns KEEP_ORIGINAL vs candidate selection. The
@@ -1856,6 +1862,12 @@ export function createPossibleSpellingErrorRule(services) {
       const words = doc.tokens.filter((t) => t.type === 'WORD');
       const wordSurfaces = words.map((t) => t.normalized);
       const channel = services.errorChannel;
+      // Review B3/B8: the engine's proof floor and this rule's direct-proof
+      // confidence used to be the same literal 0.96 written in two modules —
+      // a hidden coupling. Both now come from the config snapshot.
+      const confidenceFloor = snap.get('linguistic.verifiedConfidenceFloor') ?? 0.96;
+      const directConfidence = snap.get('linguistic.errorChannelDirectConfidence')
+        ?? confidenceFloor;
 
       for (let idx = 0; idx < words.length; idx++) {
         const d = evaluateSpellingToken(services, snap, ctx, doc, words, idx);
@@ -1877,13 +1889,13 @@ export function createPossibleSpellingErrorRule(services) {
         }
         if (d.stage !== 'decided' || !d.emit || !((!services.lexicon.contains(t.normalized) && contextProven)
           || pairProven
-          || (d.calibratedConfidence ?? 0) >= 0.96)) continue;
+          || (d.calibratedConfidence ?? 0) >= confidenceFloor)) continue;
         issues.push(new ValidationIssue(
           RuleIds.POSSIBLE_SPELLING_ERROR, Severity.WARNING,
           t.start, t.end, t.original,
           `Từ "${t.original}" có thể là lỗi chính tả (gợi ý: "${d.best.word}").`,
           d.suggestions,
-          Math.round(d.calibratedConfidence * 100) / 100,
+          d.calibratedConfidence, // review B3: raw value, server rounds for display
         ));
       }
       if (ctx.messageMode === MessageMode.NON_ACCENTED) return issues;
@@ -1901,8 +1913,22 @@ export function createPossibleSpellingErrorRule(services) {
         // OOF: low-frequency direct pairs need two independent context wins;
         // one window was 32 TP / 48 FP, while >=2 was 116 TP / 23 FP.
         if (windowGap < (proof.count <= 2 ? 2 : 1)) continue;
-        issues.push(new ValidationIssue(RuleIds.POSSIBLE_SPELLING_ERROR, Severity.WARNING,
-          t.start, t.end, t.original, `Spelling suggestion: "${proof.target}".`, [proof.target], 0.96));
+        // Review B8: this branch used to emit an ENGLISH message inside an
+        // otherwise Vietnamese UI, and labelled every proof — including pure
+        // missing-diacritic restorations ("Khong" -> "không") — as
+        // POSSIBLE_SPELLING_ERROR. Classify by accent key and speak Vietnamese.
+        const sameKey = accentKey(t.normalized) === accentKey(proof.target);
+        const missingDiacritic = sameKey && !hasVietnameseAccent(t.normalized)
+          && hasVietnameseAccent(proof.target);
+        issues.push(missingDiacritic
+          ? new ValidationIssue(RuleIds.POSSIBLE_MISSING_DIACRITIC, Severity.WARNING,
+            t.start, t.end, t.original,
+            `Từ "${t.original}" có thể đang thiếu dấu (gợi ý: "${proof.target}").`,
+            [proof.target], directConfidence)
+          : new ValidationIssue(RuleIds.POSSIBLE_SPELLING_ERROR, Severity.WARNING,
+            t.start, t.end, t.original,
+            `Từ "${t.original}" có thể là lỗi chính tả (gợi ý: "${proof.target}").`,
+            [proof.target], directConfidence));
       }
       return issues;
     },
@@ -1917,14 +1943,25 @@ export function createPossibleSpellingErrorRule(services) {
 export function createWordBoundaryRule(services) {
   const { configService } = services;
   return {
-    id: () => RuleIds.POSSIBLE_SPELLING_ERROR,
-    priority: () => 600,
+    // Review B1: its own stable id. Sharing POSSIBLE_SPELLING_ERROR made
+    // IssueConflictResolver dedup the two lanes on an identical span (the
+    // spelling rule, registered first, always won) and made per-lane
+    // precision/recall unmeasurable.
+    id: () => RuleIds.POSSIBLE_WORD_BOUNDARY_ERROR,
+    priority: () => 580,
     supports: () => configService.snapshot()
-      .get('linguistic.wordBoundaryCorrectionMode') !== 'OFF',
+      .get('linguistic.wordBoundaryCorrectionMode') === 'ACTIVE',
 
     validate: (ctx, doc) => {
       const snap = configService.snapshot();
-      if (snap.get('linguistic.wordBoundaryCorrectionMode') === 'OFF') {
+      // Review B2: the mode check used to sit INSIDE the per-token loop,
+      // after evaluateWordBoundaryCandidates() and the candidate sort — so
+      // in the default SHADOW mode every request paid for a full lane
+      // evaluation that could never emit. Decide once, up front.
+      // SHADOW/OFF decisions are produced by the evaluation tooling
+      // (tools/run_spelling_eval.mjs, tools/calibrate_recall_lanes.mjs),
+      // which calls evaluateWordBoundaryCandidates directly.
+      if (snap.get('linguistic.wordBoundaryCorrectionMode') !== 'ACTIVE') {
         return [];
       }
       const issues = [];
@@ -1940,16 +1977,12 @@ export function createWordBoundaryRule(services) {
             || a.suggestion.localeCompare(b.suggestion));
         const win = candidates[0];
         if (!win) continue;
-        // SHADOW computes and reports upstream but NEVER emits
-        if (snap.get('linguistic.wordBoundaryCorrectionMode') !== 'ACTIVE') {
-          continue;
-        }
         issues.push(new ValidationIssue(
-          RuleIds.POSSIBLE_SPELLING_ERROR, Severity.WARNING,
+          RuleIds.POSSIBLE_WORD_BOUNDARY_ERROR, Severity.WARNING,
           win.start, win.end, win.value,
           `"${win.value}" có thể cần tách/gộp từ (gợi ý: "${win.suggestion}").`,
           [win.suggestion],
-          Math.round(win.score * 100) / 100,
+          win.score, // review B3: raw score; the server rounds for display
         ));
       }
       return issues;

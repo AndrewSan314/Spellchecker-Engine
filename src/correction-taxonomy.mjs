@@ -77,6 +77,9 @@ export function classifyCorrectionRelation(input, target) {
 const LINGUISTIC_RULE_IDS = new Set([
   'POSSIBLE_MISSING_DIACRITIC',
   'POSSIBLE_SPELLING_ERROR',
+  // review B1: the word-boundary lane now has its own id; it is still a
+  // linguistic correction for the product-recall view.
+  'POSSIBLE_WORD_BOUNDARY_ERROR',
 ]);
 
 function normalizedValueMatches(issue, expected) {

@@ -11,6 +11,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { accentKey } from './normalizer.mjs';
+import { resolveArtifact } from './profile.mjs';
 
 const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data');
 
@@ -29,6 +30,14 @@ export class LanguageModelArtifactError extends Error {
 }
 
 const KIND_RANK = Object.freeze({ U: 1, B: 2, T: 3 });
+
+/**
+ * Which LM artifact to load — see src/profile.mjs. The engine's data profile
+ * is one switch (ENGINE_PROFILE) that moves the LM and the lexicon together.
+ */
+export function resolveLmArtifact(env = process.env) {
+  return resolveArtifact('lm', env);
+}
 
 // plan §17.6 seed weights (POC only — tuned via config, Task 9 calibrates):
 //   A unigram prior · B left bigram P(w|prev) · C right bigram JOINT
@@ -146,7 +155,8 @@ export class NGramLanguageModel {
    *   hashArtifact   default true; computes sha256 into loadDiagnostics
    */
   static load(file = path.join(DATA_DIR, 'corpus-train.txt'), opts = {}) {
-    const prebuiltPath = opts.prebuiltPath ?? path.join(DATA_DIR, 'lm-ngrams.tsv');
+    const resolved = opts.prebuiltPath ? null : resolveLmArtifact();
+    const prebuiltPath = opts.prebuiltPath ?? resolved.path;
     const allowFallback = opts.allowFallback !== false;
     const t0 = Date.now();
     if (!file.endsWith('corpus-train.txt')) {
@@ -185,6 +195,7 @@ export class NGramLanguageModel {
     model.loadDiagnostics = {
       ...model.loadDiagnostics,
       backend: 'tsv',
+      profile: resolved?.profile ?? 'explicit',
       artifactPath: prebuiltPath,
       bytes: st.size,
       loadMs: Date.now() - t0,

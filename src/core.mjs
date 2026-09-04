@@ -112,12 +112,15 @@ export class ValidationIssue {
  * to users (plan "Implement SHADOW đúng nghĩa").
  */
 export class ValidationResult {
-  constructor(valid, hasErrors, hasWarnings, issues, shadowIssues = []) {
+  constructor(valid, hasErrors, hasWarnings, issues, shadowIssues = [], summary = null) {
     this.valid = valid;
     this.hasErrors = hasErrors;
     this.hasWarnings = hasWarnings;
     this.issues = Object.freeze([...issues]);
     this.shadowIssues = Object.freeze([...shadowIssues]);
+    // Message-level observations for the UI (never a substitute for issues):
+    // { unaccentedContent: boolean, linguisticIssueCount: number, wordCount: number }
+    this.summary = summary ? Object.freeze({ ...summary }) : null;
     Object.freeze(this);
   }
 }
@@ -153,6 +156,11 @@ export const RuleIds = Object.freeze({
   ZERO_WIDTH_CHARACTER: 'ZERO_WIDTH_CHARACTER',
   NON_BREAKING_SPACE: 'NON_BREAKING_SPACE',
   POSSIBLE_SPELLING_ERROR: 'POSSIBLE_SPELLING_ERROR',
+  // Review B1: the split/merge lane used to reuse POSSIBLE_SPELLING_ERROR,
+  // so IssueConflictResolver silently dropped whichever of the two lanes
+  // registered second on an identical span, and per-lane precision/recall
+  // could not be measured. It now has its own stable id.
+  POSSIBLE_WORD_BOUNDARY_ERROR: 'POSSIBLE_WORD_BOUNDARY_ERROR',
 });
 
 /**
@@ -176,6 +184,7 @@ export const RULE_PRIORITY = Object.freeze({
   [RuleIds.ABBREVIATION_DETECTED]: 800,
   [RuleIds.POSSIBLE_MISSING_DIACRITIC]: 700,
   [RuleIds.POSSIBLE_SPELLING_ERROR]: 600,
+  [RuleIds.POSSIBLE_WORD_BOUNDARY_ERROR]: 580,
   [RuleIds.NON_BREAKING_SPACE]: 550,
   [RuleIds.LEADING_WHITESPACE]: 400,
   [RuleIds.TRAILING_WHITESPACE]: 400,
@@ -206,4 +215,5 @@ export const CRITICAL_RULE_IDS = Object.freeze(new Set([
 export const LINGUISTIC_RULE_IDS = Object.freeze(new Set([
   RuleIds.POSSIBLE_MISSING_DIACRITIC,
   RuleIds.POSSIBLE_SPELLING_ERROR,
+  RuleIds.POSSIBLE_WORD_BOUNDARY_ERROR,
 ]));

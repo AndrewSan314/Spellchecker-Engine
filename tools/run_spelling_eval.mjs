@@ -310,8 +310,12 @@ function main() {
     // of the typo-only slice. Both views are reported; tuning uses the
     // semantic one (Task 2). The semantic matcher is THE shared production
     // helper (linguisticCorrectionMatches) so this view can never drift.
+    // Review B1: the word-boundary lane has its own ruleId now. It emits only
+    // in ACTIVE mode (SHADOW today), but the semantic view must credit it when
+    // it does, otherwise promoting the lane would look like a recall loss.
     const linguisticIssues = result.issues.filter((i) => i.ruleId === RuleIds.POSSIBLE_SPELLING_ERROR
-      || i.ruleId === RuleIds.POSSIBLE_MISSING_DIACRITIC);
+      || i.ruleId === RuleIds.POSSIBLE_MISSING_DIACRITIC
+      || i.ruleId === RuleIds.POSSIBLE_WORD_BOUNDARY_ERROR);
     for (const issue of spellingIssues) {
       if (!row.expect.some((e) => issue.ruleId === RuleIds.POSSIBLE_SPELLING_ERROR
         && linguisticCorrectionMatches(issue, e))) fpStrict++;

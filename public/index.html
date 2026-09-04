@@ -210,7 +210,22 @@ function render(text, data) {
       ` Có ERROR · ${data.issues.length} issue · xử lý ${data.tookMs} ms</span>`;
   }
 
-  $('issues').innerHTML = data.issues.length === 0
+  // Review §7: một SMS gõ không dấu trong chế độ ACCENTED sinh cảnh báo cho
+  // gần như MỌI token. Gộp thành một thông báo cấp tin nhắn và cho phép mở
+  // danh sách chi tiết, thay vì đổ 11-12 cảnh báo lên màn hình.
+  const collapsed = data.summary?.unaccentedContent === true
+    && data.summary.linguisticIssueCount >= 5;
+  const notice = collapsed
+    ? `<div class="issue WARNING">
+         <span class="rid">NỘI DUNG KHÔNG DẤU</span>
+         <div>Tin nhắn có vẻ được gõ không dấu (${Math.round(data.summary.unaccentedWordRatio * 100)}%
+         số từ không dấu) trong khi chế độ đang là ACCENTED.</div>
+         <div>${data.summary.linguisticIssueCount} cảnh báo thiếu dấu/chính tả đã được gộp —
+         <a href="#" id="expandLing">xem chi tiết</a>.</div>
+       </div>`
+    : '';
+
+  $('issues').innerHTML = notice + (data.issues.length === 0
     ? '<div class="clean-msg">Không có issue nào.</div>'
     : data.issues.map((i) =>
       `<div class="issue ${i.severity}">
@@ -218,7 +233,22 @@ function render(text, data) {
          <span class="badge ${i.severity==='ERROR'?'bad':i.severity==='WARNING'?'warnb':'ok'}" style="margin-left:8px">${i.severity}</span>
          <div>[${i.start},${i.end}) value=<span class="val">${JSON.stringify(i.value)}</span>${i.confidence!=null?` conf=${i.confidence}`:''}</div>
          <div>${esc(i.message)}${i.suggestions?.length?` <span class="sug">→ gợi ý: ${i.suggestions.map(esc).join(', ')}</span>`:''}</div>
-       </div>`).join('');
+       </div>`).join(''));
+
+  if (collapsed) {
+    // giữ nguyên dữ liệu, chỉ ẩn phần chi tiết cho đến khi người dùng bấm
+    const detail = [...$('issues').querySelectorAll('.issue')].slice(1);
+    const isLinguistic = (el) => /POSSIBLE_(MISSING_DIACRITIC|SPELLING_ERROR|WORD_BOUNDARY_ERROR)/
+      .test(el.querySelector('.rid')?.textContent ?? '');
+    const hidden = detail.filter(isLinguistic);
+    for (const el of hidden) el.style.display = 'none';
+    const link = $('expandLing');
+    if (link) link.onclick = (e) => {
+      e.preventDefault();
+      for (const el of hidden) el.style.display = '';
+      link.remove();
+    };
+  }
 
   $('jsonOut').textContent = JSON.stringify(data, null, 2);
 }
@@ -226,6 +256,13 @@ function render(text, data) {
 async function runBenchmark() {
   $('benchOut').innerHTML = '<div class="clean-msg">Đang chạy…</div>';
   const res = await fetch('/api/v1/sms/content/benchmark', { method: 'POST' });
+  if (!res.ok) {
+    // Review A4: endpoint demo mặc định tắt (chạy đồng bộ trên 1.439 dòng
+    // corpus, không auth, không rate limit).
+    $('benchOut').innerHTML = '<div class="clean-msg">Endpoint benchmark đang tắt. '
+      + 'Khởi động server với <code>DEMO_ENDPOINTS=1 npm start</code> để bật.</div>';
+    return;
+  }
   const r = await res.json();
   const t = r.totals;
   const pct = (x) => (x * 100).toFixed(1) + '%';

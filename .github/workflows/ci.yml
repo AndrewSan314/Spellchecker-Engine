@@ -1,0 +1,58 @@
+# Review E4: the repo had no CI at all, so nothing enforced the test suite.
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  node:
+    name: Node tests (${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      # No dependencies: the engine is zero-dependency by design (node:http,
+      # node:fs only), so there is nothing to install.
+      - name: Full Node test suite
+        run: npm test
+
+  python-tools:
+    name: Python tool tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Install tool dependencies (pyproject.toml)
+        run: uv sync
+      - name: Unit tests for tools/
+        run: uv run python -m unittest discover -s test -t . -v
+
+  benchmark:
+    name: Benchmark drift guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      # Review D1: README numbers had silently drifted from HEAD. The
+      # benchmark now runs in CI and its output is uploaded, so a change in
+      # recall/precision is visible in the PR instead of months later.
+      - run: npm run bench
+      - run: node tools/measure_error_channel_overlap.mjs
+      # Domain evaluation: the SMS dataset is committed, the lite artifacts are
+      # committed, so this is a pure regression check on the domain we serve.
+      - run: npm run sms:eval
+      - run: npm run sms:eval:full
+      - uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: benchmark/results.json

@@ -2,7 +2,14 @@
 
 POC kiểm tra nội dung SMS tiếng Việt, chạy local bằng Node.js và không gọi API AI bên ngoài. Engine kết hợp rule deterministic với SymSpell, Telex và mô hình ngôn ngữ n-gram để phát hiện lỗi định dạng, thiếu dấu và lỗi chính tả theo ngữ cảnh.
 
-> Trạng thái hiện tại: rule-based đã ổn định; candidate oracle 93.5% và SMS p95 ~3ms đạt gate kỹ thuật. Các recall lane (wrong-diacritic / real-word / word-boundary) đã được xây, huấn luyện model pairwise leakage-safe và calibration đầy đủ nhưng KHÔNG lane nào vượt đủ ràng buộc precision+recall để ACTIVE — recall spelling semantic trên dev/held-out ~0.165-0.169, chưa đạt mục tiêu 0.35 của kế hoạch.
+> Trạng thái hiện tại (cập nhật 2026-09-03, sau đợt review `spellchecker-engine-review.txt`):
+> lớp HTTP đã vá 4 lỗi cấp production; rule deterministic ổn định và đáng tin;
+> có thêm **profile `lite` để chạy local** (khởi động 0,7 s, RSS ~250 MB thay vì 5,8 s /
+> ~860 MB) và **bộ dữ liệu SMS tiếng Việt trong repo** (`dataset_sms/`) để huấn luyện +
+> đánh giá đúng miền. Trên miền SMS held-out: recall 64,8% · precision 93,9%.
+> Trên VSEC, điểm số vẫn được nâng đỡ bởi bảng tra sinh từ tập train — xem
+> [Rủi ro phương pháp](#rủi-ro-phương-pháp-đọc-trước-khi-tin-số-liệu).
+> Đây là POC nghiên cứu, chưa phải service production.
 
 ## Tính năng
 
@@ -15,7 +22,13 @@ POC kiểm tra nội dung SMS tiếng Việt, chạy local bằng Node.js và kh
 - Cheap-rank trước context reranking để giới hạn chi phí.
 - Whitelist và abbreviation snapshot; abbreviation có phạm vi Brandname.
 - Linguistic mode: `OFF`, `SHADOW`, `ACTIVE`.
+- Cảnh báo cấp tin nhắn khi nội dung trông như gõ không dấu (`summary.unaccentedContent`),
+  thay vì bắn cảnh báo theo từng token.
 - Demo UI, REST API, benchmark, profiler và pipeline chống data leakage.
+- Hai profile dữ liệu: `full` (nghiên cứu) và `lite` (SMS-domain, nhẹ cho máy local).
+- Bộ dữ liệu SMS tiếng Việt sinh trong repo + công cụ train/eval theo miền.
+- CLI `npm run check` để thử nhanh một tin nhắn, không cần bật server.
+- CI (`.github/workflows/ci.yml`): Node 20/22 + Python tools + benchmark drift guard.
 
 ## Kiến trúc
 
@@ -50,17 +63,93 @@ N-gram không lưu toàn bộ corpus. Corpus chỉ dùng khi build; artifact run
 
 ## Yêu cầu
 
-- Node.js 18 trở lên.
-- Python 3 cho pipeline dữ liệu.
+- Node.js 18 trở lên (CI chạy 20 và 22). Engine **không có dependency npm**.
+- [`uv`](https://docs.astral.sh/uv/) + Python 3.10+ cho pipeline dữ liệu trong `tools/`.
+  Dependency khai báo trong `pyproject.toml` (`numpy`, `pyarrow`, `torch`); cài bằng
+  `uv sync`. Serving engine không cần Python.
 
 ## Chạy nhanh
 
-```powershell
-cd "F:\AI\Tendoo Marketing\sms-validation-demo"
-npm.cmd start
+Không có dependency npm — engine chỉ dùng `node:http` / `node:fs`.
+
+```bash
+git clone https://github.com/AndrewSan314/Spellchecker-Engine.git
+cd Spellchecker-Engine
+
+npm start                    # profile lite: sẵn sàng sau ~0,7 s -> http://localhost:3000
+npm run start:full           # profile full: ~5,8 s, dùng artifact nghiên cứu đầy đủ
+PORT=3111 npm start          # đổi port
 ```
 
-Mở `http://localhost:3000`. Đổi port bằng `$env:PORT = 3111` trước khi chạy. Runtime hiện load TSV vào JavaScript `Map`, nên cold start khoảng 4–6 giây và RSS khoảng 800–900 MB. Binary word-ID backend đang trong lộ trình deployment.
+Thử nhanh một tin nhắn, không cần server:
+
+```bash
+npm run check -- "Ma OTP cua quy khach la 123456, hieu luc 5 phut."
+npm run check                                  # chế độ gõ từng dòng
+npm run check -- --json "Kinh chao quy khach"  # output máy đọc
+echo "Cam on quy khach" | npm run check
+```
+
+```
+WARNINGS  8 issue(s)  11.7 ms
+  Ma OTP cua quy khach la 123456, hieu luc 5 phut. Khong chia se ma nay.
+  ^^ POSSIBLE_MISSING_DIACRITIC
+         ^^^ POSSIBLE_MISSING_DIACRITIC
+  ...
+  ⚠ nội dung có vẻ được gõ KHÔNG DẤU trong chế độ ACCENTED (8 cảnh báo gộp lại thành một)
+```
+
+Trên Windows PowerShell:
+
+```powershell
+$env:ENGINE_PROFILE = "lite"; node src\server.mjs
+$env:PORT = 3111
+```
+
+### Hai profile dữ liệu (`ENGINE_PROFILE`)
+
+Chi phí của engine nằm ở **artifact dữ liệu**, không phải ở code: LM 80 MB nạp vào
+`Map` chuỗi, cộng chỉ mục xoá SymSpell dựng từ 51k từ. Profile `lite` dùng cặp artifact
+đã cắt theo miền SMS (`tools/build_sms_profile.mjs`), giữ **nguyên count thật** cho những
+từ còn lại — `pUni` chia cho `totalTokens + 0,5·V` với `totalTokens ≈ 1,3·10⁹`, nên bỏ
+vocabulary từ 200k xuống 20k làm xác suất đổi <0,01% và mọi ngưỡng đã calibrate vẫn còn ý
+nghĩa.
+
+| | `full` (mặc định của engine) | `lite` (mặc định của `npm start`) |
+|---|---:|---:|
+| LM | `lm-ngrams.tsv` 80 MB · U 200k / B 1M / T 2,76M | `lm-ngrams.sms.tsv` 5,4 MB · U 20,5k / B 120k / T 121k |
+| Lexicon | `lexicon-built.txt` 51.151 từ | `lexicon-sms.txt` 20.503 từ |
+| Cold start | 5,8 s | **0,7 s** |
+| RSS sau khi nạp | 857 MB | **249 MB** |
+| p50 / p95 (6 SMS ngắn, 720 lần gọi) | 2,3 / 9,6 ms | 2,2 / 4,9 ms |
+| SMS dev: recall (semantic) | 0,689 | **0,684** |
+| SMS dev: precision (semantic) | 0,957 | **0,976** |
+| SMS dev: báo động giả trên tin sạch | 1/30 | **0/30** |
+
+`lite` **không** phải bản rút gọn kém hơn: trên chính miền SMS nó nhỉnh hơn về precision và
+không báo động giả trên tin sạch, vì phần vocabulary bị cắt là từ vựng báo chí/bách khoa —
+nguồn chính của gợi ý sai trong tin nhắn thương mại.
+
+Xây lại artifact `lite` (chỉ cần khi đổi dataset hoặc tham số):
+
+```bash
+npm run sms:dataset    # sinh dataset_sms/ (deterministic)
+npm run sms:profile    # sinh src/data/lm-ngrams.sms.tsv + lexicon-sms.txt
+```
+
+Biến môi trường:
+
+| Biến | Mặc định | Ý nghĩa |
+|---|---|---|
+| `ENGINE_PROFILE` | `full` (`npm start` đặt `lite`) | `full` \| `lite` — chọn cặp artifact LM + lexicon |
+| `LM_ARTIFACT` / `LEXICON_ARTIFACT` | — | Ghi đè đường dẫn artifact (dùng cho tooling) |
+| `PORT` | `3000` | Cổng HTTP |
+| `MAX_BODY_BYTES` | `16384` | Giới hạn body request (byte). Vượt → `413` và đóng socket |
+| `DEMO_ENDPOINTS` | *(tắt)* | `=1` mới bật `/api/v1/sms/content/benchmark` và `/api/v1/config` |
+| `SPELLING_TUNING_FILE` | `config/spelling-tuning.json` | File calibration mà runtime nạp lúc khởi động |
+
+Profile `lite` mà thiếu artifact sẽ **cảnh báo một lần rồi tự quay về `full`** — không bao
+giờ im lặng, cũng không crash trên clone sạch. `GET /healthz` trả về profile đang chạy.
 
 ## REST API
 
@@ -76,17 +165,50 @@ Content-Type: application/json
 }
 ```
 
-Response chứa `{ valid, hasErrors, hasWarnings, issues, tookMs }`. Mỗi issue có `ruleId`, `severity`, `start`, `end`, `value`, `message`, `suggestions`, `confidence`. `start` inclusive, `end` exclusive và luôn thỏa `content.substring(start, end) === value`.
+Response chứa `{ valid, hasErrors, hasWarnings, issues, summary, tookMs }`. Mỗi issue có
+`ruleId`, `severity`, `start`, `end`, `value`, `message`, `suggestions`, `confidence`.
+`start` inclusive, `end` exclusive và luôn thỏa `content.substring(start, end) === value`.
 
-Client không điều khiển confidence/margin; payload `options` bị bỏ qua vì server config là nguồn sự thật duy nhất.
+`confidence` trên dây là giá trị **đã làm tròn 2 chữ số để hiển thị**; engine giữ giá trị
+thô cho mọi so sánh ngưỡng nội bộ (trước đây engine so sánh chính giá trị đã làm tròn nên
+0,9550–0,9599 bị nâng lên 0,96 và lọt cửa — review B3).
 
-| Method | Endpoint | Mục đích |
+`summary` là quan sát cấp tin nhắn, không thay thế `issues`:
+
+```json
+"summary": { "wordCount": 17, "linguisticIssueCount": 11,
+             "unaccentedWordRatio": 1, "unaccentedContent": true }
+```
+
+`unaccentedContent = true` nghĩa là nội dung trông như gõ không dấu trong khi
+`messageMode = ACCENTED`. UI nên hiển thị MỘT cảnh báo cấp tin nhắn thay vì bắn cảnh báo
+theo từng token (một câu 15 từ không dấu sinh 11–12 issue). Ngưỡng: `linguistic.unaccentedRatioThreshold`
+(0,8) và `linguistic.unaccentedMinWords` (5).
+
+| Method | Endpoint | Mục đích | Mặc định |
+|---|---|---|---|
+| `POST` | `/api/v1/sms/content/validate` | Kiểm tra SMS | bật |
+| `GET` | `/healthz` | Liveness + đếm rule OPTIONAL bị degraded | bật |
+| `POST` | `/api/v1/sms/content/benchmark` | Benchmark nội bộ (chạy đồng bộ trên 1.439 dòng corpus) | **tắt** |
+| `GET` | `/api/v1/config` | Xem runtime config + nguồn calibration | **tắt** |
+
+Hai endpoint demo chỉ bật khi `DEMO_ENDPOINTS=1`; mặc định trả `404`. Trước đây chúng luôn
+mở và `/benchmark` có thể treo server hàng chục giây mà không cần auth (review A4).
+
+Client không điều khiển confidence/margin; payload `options` bị bỏ qua vì server config là
+nguồn sự thật duy nhất.
+
+### Hardening lớp HTTP (review A1–A4)
+
+| Mã | Vấn đề cũ | Cách sửa |
 |---|---|---|
-| `POST` | `/api/v1/sms/content/validate` | Kiểm tra SMS |
-| `POST` | `/api/v1/sms/content/benchmark` | Benchmark nội bộ |
-| `GET` | `/api/v1/config` | Xem runtime config |
+| A1 | `new URL(req.url, http://${req.headers.host})` nằm ngoài try/catch — một request với `Host: bad host` giết cả process (DoS 1 packet) | Toàn bộ handler nằm trong try/catch + fallback 500; path parse thẳng từ `req.url`, không cần Host |
+| A2 | `data += chunk` gọi `toString('utf8')` cho từng chunk → ký tự tiếng Việt bị cắt giữa chuỗi UTF-8 nhiều byte thành `U+FFFD` | Gom `Buffer` rồi `Buffer.concat(...).toString('utf8')` một lần |
+| A3 | Giới hạn 1 MB đếm theo ký tự, reject promise nhưng vẫn nhận tiếp dữ liệu, trả 400 | Đếm **byte**, mặc định 16 KB, trả `413` rồi mới destroy socket |
+| A4 | `/benchmark` và `/config` luôn mở | Sau cờ `DEMO_ENDPOINTS=1`, mặc định 404 |
 
-Hai endpoint sau chỉ dành cho demo, không nên public trong production.
+Test tương ứng: `test/test_server_hardening.mjs` (gửi request thô qua socket, bao gồm
+trường hợp cắt body giữa chữ "í").
 
 ## Dữ liệu lexical
 
@@ -122,26 +244,26 @@ Nguồn, train/held-out role và hash được ghi trong `src/data/lm-ngrams.man
 
 ### Rebuild và audit LM
 
-```powershell
-python tools/build_lm.py --news-shards 4 --unigram-news-shards 0 `
-  --domain-weight 5 --retain-accent-evidence `
-  --max-bigrams 1000000 --max-trigrams 500000 `
+```bash
+uv run python tools/build_lm.py --news-shards 4 --unigram-news-shards 0 \
+  --domain-weight 5 --retain-accent-evidence \
+  --max-bigrams 1000000 --max-trigrams 500000 \
   --max-lm-bytes 100000000
-python tools/rebuild_lm_higher.py --news-shards 4 `
-  --domain-overlay-weight 100 --max-trigrams 500000 `
+uv run python tools/rebuild_lm_higher.py --news-shards 4 \
+  --domain-overlay-weight 100 --max-trigrams 500000 \
   --max-lm-bytes 100000000
-python tools/audit_lm.py
+uv run python tools/audit_lm.py
 ```
 
 ### Dataset split và leakage audit
 
-```powershell
-python tools/split_spelling_datasets.py
-python tools/split_spelling_datasets.py --audit `
+```bash
+uv run python tools/split_spelling_datasets.py
+uv run python tools/split_spelling_datasets.py --audit \
   --external-benchmark benchmark/corpus-viwiki-spelling.json
 node tools/spelling_benchmark_adapter.mjs test
 node tools/corpus_pipeline.mjs
-npm.cmd run data:audit
+npm run data:audit
 ```
 
 Không dùng VSEC dev/test hoặc Viwiki external-test để build vocab/count; không tune trên held-out test; raw downloads không bị pipeline sửa; evaluation artifact phải ghi source/config/artifact hash.
@@ -150,52 +272,66 @@ Không dùng VSEC dev/test hoặc Viwiki external-test để build vocab/count; 
 
 ### Regression
 
-```powershell
-npm.cmd test
+```bash
+npm test          # TOÀN BỘ node test (~35 file, ~2 phút)
+npm run test:fast # chỉ core + rules, dùng khi lặp nhanh
+npm run test:python   # uv run python -m unittest discover -s test -t .
+npm run test:all      # cả hai
 ```
 
-Suite mặc định: 31 core tests + 35 rule tests. Các suite spelling riêng:
+Trước đây `npm test` chỉ chạy 2 file (66 test) trong khi repo có hơn 30 file `.mjs` và
+toàn bộ test Python — nghĩa là CI mặc định không bảo vệ phần lớn code (review E3). Hiện
+`npm test` chạy tất cả và `.github/workflows/ci.yml` chạy Node (20/22) + Python + benchmark
+trên mỗi PR.
 
-```powershell
-node --test test/test_viwiki_converter.mjs `
-  test/test_language_model_loader.mjs `
-  test/test_language_scoring.mjs `
-  test/test_candidate_generation.mjs `
-  test/test_context_reranker.mjs `
-  test/test_symspell_index.mjs `
-  test/test_eval_split_guard.mjs `
-  test/test_tuning_determinism.mjs `
-  test/test_correction_taxonomy.mjs `
-  test/test_semantic_correction_matching.mjs `
-  test/test_correction_candidate_builder.mjs `
-  test/test_context_evidence.mjs `
-  test/test_wrong_diacritic_lane.mjs `
-  test/test_real_word_typo_lane.mjs `
-  test/test_recall_reranker.mjs `
-  test/test_candidate_shortlist.mjs `
-  test/test_recall_calibration.mjs `
-  test/test_word_boundary_candidates.mjs
-python -m unittest test.test_recall_reranker_training -v
-```
+Trạng thái hiện tại: **276 node test — 271 pass, 0 fail, 5 skip** và **62 python test pass**
+(trước review: 244 pass / 1 fail / 4 skip, và 38 python test với 6 lỗi import).
+Các test skip đều là skip có điều kiện/có ghi chú (fixture `.tmp/` không có trong clone
+sạch — review E1 — và 2 "Phase 1 known regression").
+
+Test mới bổ sung theo review:
+
+| File | Bảo vệ |
+|---|---|
+| `test/test_server_hardening.mjs` | A1–A4 + B3 (gửi request thô qua socket) |
+| `test/test_frozen_tuning_config.mjs` | B9 — config frozen phải đúng bằng config đang chạy |
+| `test/test_review_fixes.mjs` | B1, B2, B3, B5, B7, B8, cảnh báo cấp tin nhắn |
 
 ### Recall lanes (recall-improvement plan 2026-08-24)
 
-Trạng thái lane sau calibration freeze (`config/spelling-tuning.json` v3):
+Trạng thái lane **đang chạy thật** (đọc từ `config/spelling-tuning.json`, xác thực bằng
+`test/test_frozen_tuning_config.mjs`):
 
 | Lane | Mode | Ghi chú |
 |---|---|---|
-| Wrong-diacritic (ACCENTED_SAME_KEY) | OFF | Model pairwise không đạt precision floor 0.70 trên dev (max ~0.67) |
-| Real-word typo (DIFFERENT_KEY_REAL_WORD) | ACTIVE | Full-grid calibration: p>=0.95, original windows<=3; lane precision 0.8908 trên replay dev |
-| Word-boundary (split/merge) | SHADOW | Tính toán để đo lường, không phát issue; TP 0 / FP 1 trên dev |
+| Missing-diacritic (UNACCENTED_SAME_KEY) | ACTIVE | Lane chính, chiếm phần lớn issue phát ra |
+| Wrong-diacritic (ACCENTED_SAME_KEY) | **ACTIVE** | Bật từ breakthrough 2026-08-27 (dev R 0,252 → 0,421; P 0,679 → 0,773) |
+| Real-word typo (DIFFERENT_KEY_REAL_WORD) | ACTIVE | p>=0,97, original windows<=3 |
+| Word-boundary (split/merge) | SHADOW | Không phát issue; ruleId riêng `POSSIBLE_WORD_BOUNDARY_ERROR` khi ACTIVE |
+| Attention reranker | OFF khi phục vụ | File calibration ghi SHADOW; xem `servingOverrides` bên dưới |
 
-Real-word lane được ACTIVE sau khi sửa lỗi calibration v2 chỉ verify ba trial
-đầu và bỏ sót nhóm p>=0.95. Chi tiết từng trial:
-`dataset_artifacts/evaluation/recall-calibration.json`.
+Bảng lane trong README cũ ghi wrong-diacritic = OFF trong khi code đặt `ACTIVE` (review D2).
 
-Model pairwise `recall-pairwise-v1` (`src/data/recall-reranker.json`, huấn
-luện chỉ từ VSEC train + clean-train negatives, leakage-guard fail-closed)
-được inject một lần duy nhất qua `SmsValidationEngine` và chạy kèm mọi shadow
-decision.
+### Config: cái đã "đóng băng" == cái đang phục vụ
+
+`config/spelling-tuning.json` tự nhận `"frozen": true` nhưng **không file nào trong `src/`
+đọc nó** — runtime lấy hằng số từ `DEFAULT_SNAPSHOT`, và hai bên đã lệch nhau ở nhóm key
+attention (`attentionMode` SHADOW vs OFF; `attentionMinProbability` 0,5 vs fallback 0,80).
+Mọi con số đánh giá vì thế không chứng minh được là đo trên cấu hình đang chạy (review B9).
+
+Nay `src/config.mjs` nạp file này lúc khởi động:
+
+- mọi key trong `frozenParams` và `confidenceCalibration.constants` được áp vào snapshot;
+- key lạ / JSON hỏng → **throw lúc khởi động**, không im lặng bỏ qua;
+- khác biệt cố ý giữa "winner của calibration" và "cái phục vụ" phải khai báo trong
+  `servingOverrides` kèm lý do — hiện chỉ có một mục: `attentionMode = OFF` (nhánh attention
+  không nằm trên serving path, arch A vượt gate latency 4×, arch C 10×; SHADOW không đổi
+  issue nào mà chỉ thêm ~11 forward pass/tin nhắn);
+- `GET /api/v1/config` (khi bật `DEMO_ENDPOINTS=1`) trả kèm `tuningSource` để đối chiếu.
+
+Model pairwise `recall-pairwise-v1` (`src/data/recall-reranker.json`, huấn luyện chỉ từ
+VSEC train + clean-train negatives, leakage-guard fail-closed) được inject một lần duy nhất
+qua `SmsValidationEngine` và chạy kèm mọi shadow decision.
 
 ### Kết quả cuối (frozen configuration)
 
@@ -206,47 +342,73 @@ Dev (VSEC dev, 1.115 labels — `final-recall-dev-report.json`):
 | strictRuleId | 0.7797 | 0.1650 | 0.4468 |
 | semanticLinguistic (primary product score) | 0.6502 | 0.2717 | 0.5086 |
 
-Held-out dưới cấu hình v2 trước fix — đã chạy ĐÚNG MỘT LẦN (VSEC test,
-1.121 labels — `final-recall-heldout.json`); không chạy lại để tránh biến
-held-out thành tập tuning:
+Held-out (VSEC test) đã được chạy **nhiều hơn một lần**: một lần dưới cấu hình v2
+(`final-recall-heldout.json`) và một lần nữa cho wrong-diacritic breakthrough
+(`config/spelling-tuning.json → wrongDiacriticBreakthrough.heldOutTestMetrics`,
+R 0,24 → 0,397; P 0,695 → 0,764). README cũ khẳng định "đã chạy ĐÚNG MỘT LẦN" và "chưa có
+held-out measurement cho cấu hình v3" — cả hai đều sai (review C2/D3):
 
-| View | Precision | Recall | F0.5 |
-|---|---:|---:|---:|
-| strictRuleId | 0.9118 | 0.0553 | 0.2225 |
-| semanticLinguistic | 0.6469 | 0.1650 | 0.4084 |
+| Lần chạy | View | Precision | Recall | F0.5 |
+|---|---|---:|---:|---:|
+| v2, trước fix | strictRuleId | 0.9118 | 0.0553 | 0.2225 |
+| v2, trước fix | semanticLinguistic | 0.6469 | 0.1650 | 0.4084 |
+| wrong-diacritic, sau | (lane view) | 0.764 | 0.397 | 0.645 |
 
-Chưa có held-out measurement cho cấu hình v3. Cấu hình v3 chỉ được chọn từ
-dev, clean guard, missing-diacritic guard và latency gate; cần một tập test
-mới độc lập nếu muốn đánh giá generalization tiếp theo.
+Vì tập test đã tham gia vòng lặp quyết định, **nó không còn là tập generalization không
+thiên lệch**. Cần một tập test mới, khoá lại và chạy đúng một lần.
 
-Hiệu năng (`profile:engine`, frozen state): SMS ≤160 ký tự p95 **12,79 ms**
-(gate ≤15 ms), steady RSS ~853 MB.
+Hiệu năng (`npm run profile:engine`, máy review 2026-09-03, Node v26.3.0):
+
+| Đo | Giá trị |
+|---|---:|
+| Cold start (load LM TSV) | ~6,0 s |
+| RSS sau load / steady | 831 MB / 1.065 MB |
+| SMS ≤160 ký tự p95 (corpus benchmark 1.439 dòng) | 27,97 ms |
+| 6 mẫu SMS marketing ngắn, 720 lần gọi | p50 2,39 ms · p95 10,20 ms |
+
+Các tài liệu cũ ghi 12,79 ms / 18,2 ms / 24,04 ms / 11,27 ms cho cùng khái niệm "p95"
+(review D5). Con số phụ thuộc mạnh vào máy và vào phân bố độ dài của corpus, nên gate
+latency chỉ có nghĩa khi so cùng máy + cùng corpus; đừng so hai dòng khác corpus với nhau.
 
 ### Benchmark tổng
 
-```powershell
-npm.cmd run bench
+```bash
+npm run bench
 ```
 
-Kết quả ghi vào `benchmark/results.json`. Snapshot frozen-state:
+Kết quả ghi vào `benchmark/results.json` (file này được git track — chạy bench sẽ làm bẩn
+working tree). Số liệu đo lại trên HEAD ngày 2026-09-03:
 
-| Metric | Kết quả |
-|---|---:|
-| Expected issues | 2.949 |
-| Caught | 1.646 |
-| False positives | 28 |
-| Overall error recall | 55,8% |
-| Precision | 98,3% |
+| Metric | README cũ (snapshot commit cũ) | HEAD hiện tại |
+|---|---:|---:|
+| Expected issues | 2.949 | 2.949 |
+| Caught | 1.646 | 1.790 |
+| False positives | 28 | 59 |
+| Overall error recall | 55,8% | **60,7%** |
+| Precision proxy | 98,3% | **96,8%** |
 
-Precision proxy chỉ phản ánh corpus có nhãn/forbid/clean hiện tại, không phải cam kết precision production.
+README cũ là snapshot của một commit trước `b925c98` và chưa bao giờ được cập nhật
+(review D1). CI nay chạy `npm run bench` mỗi PR và upload `benchmark/results.json` để
+drift không âm thầm nữa.
+
+Ảnh hưởng của các fix trong đợt review này (đo bằng A/B trên cùng corpus):
+
+- B3 (không dùng confidence đã làm tròn làm ngưỡng): caught 1.800 → 1.790. 10 issue từng
+  lọt cửa nhờ 0,955x được làm tròn lên 0,96 — recall giảm 0,3 pp, đổi lấy một ngưỡng đúng
+  nghĩa.
+- B8 (gán đúng ruleId cho nhánh error-channel): caught không đổi, false positive 61 → 59.
+
+Precision proxy chỉ phản ánh corpus có nhãn/forbid/clean hiện tại, không phải cam kết
+precision production.
 
 ### Candidate và spelling evaluation
 
-```powershell
+```bash
 node tools/audit_candidate_recall.mjs --split dev
-npm.cmd run eval:spelling:dev
-# Chỉ chạy held-out test sau khi freeze config:
-npm.cmd run eval:spelling:test
+npm run eval:spelling:dev
+# Chỉ chạy held-out test sau khi freeze config — và lưu ý held-out đã bị dùng
+# lại nhiều lần (review C2), xem "Rủi ro phương pháp" bên dưới:
+npm run eval:spelling:test
 ```
 
 - Candidate oracle coverage: 93,5%, vượt gate 92%.
@@ -255,30 +417,147 @@ npm.cmd run eval:spelling:test
 
 Khoảng 76% nhãn VSEC bị prefilter khỏi typo lane vì cùng stripped key và được thiết kế cho missing-diacritic lane. Không nên dùng strict `POSSIBLE_SPELLING_ERROR` recall làm metric duy nhất.
 
-### Profiler
+### Bộ dữ liệu SMS trong repo và kết quả trên miền SMS
 
-```powershell
-npm.cmd run profile:engine
+`dataset_sms/` là bộ SMS brandname tiếng Việt **viết tay trong repo** (62 template / 35
+group / 8 miền), sinh ra bằng `npm run sms:dataset`. Chi tiết: `dataset_sms/README.md`.
+
+Vì sao cần: mọi số liệu trước đây đo trên VSEC — văn xuôi kiểu Wikipedia, sai miền, và
+~68% nhãn trả lời được từ bảng tra sinh từ chính tập train của nó. Bộ SMS này đúng miền và
+**bảng tra error-channel không biết gì về nó**, nên recall đo được là recall thật của LM +
+rule.
+
+Chống leakage được thiết kế sẵn: split chia theo **group template** (`sha256(group)%100 →
+70/15/15`), nên không cách diễn đạt nào xuất hiện ở hai split; chỉ `sms-clean-train.txt`
+được dùng để build artifact, và có test khẳng định điều đó.
+
+```bash
+npm run sms:eval          # dev, profile lite
+npm run sms:eval:full     # dev, artifact đầy đủ
 ```
 
-Task 6 đã giảm `scoreCandidateOverSurfaces` khoảng 5,6 lần và `_pBiRaw` khoảng 11 lần so với plan-era baseline. P95 SMS <=160 ký tự dưới gate 15 ms; startup/RSS vẫn bị chi phối bởi backend TSV.
+**Kết quả (2026-09-03).** Dev dùng để chọn tham số; test được khai báo trong
+`config/acceptance-gates.json` trước khi chạy và **chạy đúng một lần**:
+
+| Split | Profile | Strict recall | Semantic recall | Semantic precision | Tin sạch bị báo nhầm |
+|---|---|---:|---:|---:|---:|
+| dev (174 tin, 713 nhãn) | lite | 0,703 | 0,684 | **0,976** | 0/30 |
+| dev | full | 0,696 | 0,689 | 0,957 | 1/30 |
+| **test (138 tin, 500 nhãn)** | **lite** | **0,648** | **0,648** | **0,939** | 2/32 |
+| test | full | 0,618 | 0,618 | 0,936 | 0/32 |
+
+Khoảng cách dev → test (−5,5 pp recall, −3,7 pp precision) chính là khoảng cách tổng quát
+hoá thật; không có bảng tra nào bù vào.
+
+Theo lớp lỗi (test, profile lite):
+
+| Lớp lỗi | Nhãn | Recall | Ghi chú |
+|---|---:|---:|---|
+| `TYPO` (đảo ký tự) | 22 | 81,8% | lane spelling hoạt động tốt nhất ở đây |
+| `SOME_UNACCENTED` | 69 | 71,0% | mất dấu vài từ, ngữ cảnh còn nguyên |
+| `TELEX` (`hangf`) | 19 | 68,4% | bằng chứng gõ trực tiếp |
+| `ALL_UNACCENTED` | 377 | 63,9% | cả tin không dấu — khó nhất, mất hết ngữ cảnh |
+| `WRONG_DIACRITIC` (`kỳ→ký`) | 12 | 25,0% | lane cần bằng chứng trigram đối xứng |
+| `BOUNDARY` (`cảmơn`) | 1 | 0% | lane đang SHADOW, **theo thiết kế chưa phát issue** |
+
+So với recall semantic 0,27 trên VSEC dev, con số 0,65 trên SMS không phải vì engine mạnh
+hơn: SMS ngắn, từ vựng hẹp, và phần lớn lỗi thực tế là mất dấu — đúng thứ lane
+missing-diacritic được xây để bắt. Đó cũng là lý do nên tin số liệu miền SMS hơn số liệu
+VSEC khi quyết định đưa vào sản phẩm.
+
+**Giới hạn:** dữ liệu tổng hợp từ template, không phải SMS thật của khách hàng. Nó không có
+đuôi dài của thực tế (tên riêng lạ, teencode, trộn tiếng Anh, emoji), nên vẫn là cận trên
+nhẹ. Bước tiếp theo vẫn là một tập SMS thật do team gán nhãn.
+
+### Rủi ro phương pháp (đọc trước khi tin số liệu)
+
+**Điểm số hiện tại được nâng đỡ bởi một bảng tra sinh từ tập train.**
+`src/data/error-channel.json` (3.790 cặp `pairProof`, 1.588 entry `direct`) được sinh từ
+`dataset_artifacts/vsec/vsec-train.jsonl`, và trên đường phục vụ `pairProven` là điều kiện
+CHÍNH cho phép phát issue. Nếu phân bố lỗi của dev/test trùng train thì P/R đo được một
+phần là đo trí nhớ, không phải khả năng tổng quát hoá.
+
+Đo lại được bằng:
+
+```bash
+npm run eval:overlap        # node tools/measure_error_channel_overlap.mjs
+```
+
+Kết quả trên HEAD (2026-09-03):
+
+| Split | Cặp (error→đúng) phân biệt cũng có trong train | Nhãn được bảng tra bao phủ |
+|---|---:|---:|
+| dev | 503/841 = 59,8% | 743/1.088 = **68,3%** |
+| test | 489/852 = 57,4% | 723/1.092 = **66,2%** |
+
+Split chia theo message nên không leak câu; cái leak là **phân bố lỗi**. Khoảng hai phần ba
+nhãn dev/test có thể được trả lời thẳng từ bảng tra. Trên SMS marketing thật (miền khác,
+kiểu gõ khác, tên riêng/brand khác), recall sẽ thấp hơn con số công bố ở đây (review C1).
+
+Ba rủi ro còn lại, chưa sửa được bằng code:
+
+- **C2 — held-out đã bị dùng lại.** Xem bảng ở mục "Kết quả cuối". Cần tập test mới, tốt
+  nhất là SMS thật do team gán nhãn, khoá trước khi chạy và chạy đúng một lần.
+- **C3 — gate trôi theo kết quả.** Gate latency từng xuất hiện với 3 giá trị (p95 ≤15 ms,
+  ≤20 ms, "limit subsequently authorized at 100 ms") và precision floor dao động 0,70/0,90.
+  Gate được nới sau khi biết kết quả thì không còn tác dụng kiểm soát. Nay gộp về một
+  nguồn duy nhất: `config/acceptance-gates.json` (kèm danh sách giá trị lịch sử đã bị thay
+  thế, luật đổi gate, và nhật ký các lần chạy held-out).
+- **B4 — `pairCount !== 2` là số fit vào dev.** Bộ lọc verified loại đúng nhóm cặp xuất hiện
+  chính xác 2 lần trong VSEC train vì nhóm đó xấu trên dev (48 TP / 9 FP). Không có cơ sở
+  ngôn ngữ học. Hiện nó là config `linguistic.errorChannelPairCountVeto` (đặt `null` để tắt)
+  thay vì hằng số chôn trong code, nhưng vẫn cần chứng minh lại bằng OOF, không phải dev.
+
+**C5 — recall thực tế còn thấp:** strict rule-ID dev R=0,165; semantic dev R=0,2717, nghĩa là
+73–83% lỗi chính tả trong tập nhãn không được bắt. Phần dùng được cho production hiện nay
+là rule deterministic (whitespace / punctuation / unicode / protected ranges).
+
+**C4 — nhánh attention là code chết trên runtime:** `src/attention-reranker.mjs` (577 dòng),
+tokenizer, schema, `src/data/attention-reranker.int8.bin` (289 KB), ~10 tool Python và ~10
+file test tồn tại nhưng `attentionMode = OFF` khi phục vụ. Đây là gánh nặng bảo trì; cần
+quyết định dứt điểm: batch hoá rồi bật, hoặc tách sang branch nghiên cứu.
+
+### Profiler
+
+```bash
+npm run profile:engine
+```
+
+Task 6 đã giảm `scoreCandidateOverSurfaces` khoảng 5,6 lần và `_pBiRaw` khoảng 11 lần so
+với plan-era baseline. Startup/RSS vẫn bị chi phối bởi backend TSV. Xem bảng hiệu năng ở
+mục "Kết quả cuối": p95 phụ thuộc máy và corpus, đừng trích một con số rời khỏi ngữ cảnh.
 
 ## Scripts
 
 | Command | Chức năng |
 |---|---|
-| `npm.cmd start` | Server + demo UI |
-| `npm.cmd test` | Core + rule regression |
-| `npm.cmd run bench` | Benchmark tổng |
-| `npm.cmd run data:audit` | Split/leakage audit |
-| `npm.cmd run eval:spelling:dev` | Dev spelling evaluation |
-| `npm.cmd run eval:spelling:test` | Guarded final test |
-| `npm.cmd run profile:engine` | Startup/RSS/latency/hotspot |
+| `npm start` | Server + demo UI, profile `lite` (nhanh, nhẹ) |
+| `npm run start:full` | Server với artifact đầy đủ |
+| `npm run check -- "<tin nhắn>"` | Kiểm tra nhanh một tin trong terminal |
+| `npm test` | Toàn bộ node test |
+| `npm run test:fast` | Chỉ core + rule regression |
+| `npm run test:python` | Test cho `tools/` (qua `uv`) |
+| `npm run test:all` | Node + Python |
+| `npm run sms:dataset` | Sinh lại `dataset_sms/` (deterministic) |
+| `npm run sms:profile` | Build artifact `lite` từ train split |
+| `npm run sms:eval` | Đánh giá trên SMS dev (profile lite) |
+| `npm run sms:eval:full` | Đánh giá trên SMS dev (artifact đầy đủ) |
+| `npm run bench` | Benchmark tổng (corpus VSEC/synthetic) |
+| `npm run eval:overlap` | Đo chồng lấn phân bố lỗi train ↔ dev/test (review C1) |
+| `npm run data:audit` | Split/leakage audit |
+| `npm run eval:spelling:dev` | Dev spelling evaluation |
+| `npm run eval:spelling:test` | Guarded final test |
+| `npm run profile:engine` | Startup/RSS/latency/hotspot |
+
+(Trên Windows dùng `npm.cmd`; các script có tiền tố `ENGINE_PROFILE=lite` cần chạy bằng
+`$env:ENGINE_PROFILE = "lite"` rồi gọi `node` trực tiếp.)
 
 ## Cấu trúc thư mục
 
 ```text
 src/                  runtime engine, server, rules và data
+dataset_sms/          bộ SMS tiếng Việt viết trong repo (template + split + manifest)
+benchmark/sms/        cùng dữ liệu ở định dạng benchmark row
 public/               demo UI
 benchmark/            labeled corpora và results
 dataset_raw/          raw downloaded datasets
@@ -286,7 +565,7 @@ dataset_artifacts/    split-safe/generated evaluation artifacts
 tools/                build, audit, evaluation, profiling
 test/                 Node/Python tests
 docs/                 design, implementation plan, execution log
-config/               frozen spelling tuning state
+config/               frozen spelling tuning state + acceptance gates
 ```
 
 ## Tiến độ và roadmap
@@ -298,16 +577,73 @@ Việc còn lại:
 - Experiment Modified Kneser-Ney độc lập.
 - Versioned binary LM và runtime word-ID backend.
 - Giảm cold-start/RSS và bỏ full TSV parsing khi deploy.
-- Freeze final config rồi mới chạy held-out test cuối.
-- Chỉ cân nhắc attention reranker nhẹ nếu classical pipeline vẫn không đạt recall sau khi xử lý lane/ranking.
+- Khoá một tập test MỚI (tốt nhất là SMS thật do team gán nhãn) và chạy đúng một lần —
+  tập held-out hiện tại đã thành tập tuning (review C2).
+- Chứng minh lại `errorChannelPairCountVeto` bằng OOF thay vì dev (review B4).
+- Quyết định dứt điểm nhánh attention: batch hoá rồi bật, hoặc tách sang branch nghiên cứu
+  để runtime nhẹ đi (review C4).
+- Chuyển artifact >10 MB sang Git LFS / storage ngoài và thêm LICENSE (review E5/E6).
+- Mở rộng `dataset_sms/` bằng SMS thật do team gán nhãn (bộ hiện tại là tổng hợp từ template).
+- Bật lane word-boundary: dataset đã có lớp lỗi `BOUNDARY` để calibrate.
+- Nâng recall lớp `ALL_UNACCENTED` (63,9% trên test) — đây là lớp lỗi phổ biến nhất thực tế.
 
 Chi tiết tại `docs/plans/2026-08-24-spelling-engine-optimization.md` và `docs/plans/execution-log-spelling-optimization.md`.
 
 ## Lưu ý production
 
-- Đây là POC, chưa phải service đã harden.
-- Phải kiểm tra license dataset/dictionary trước khi phân phối.
-- Không public benchmark/config endpoint.
+- Đây là POC nghiên cứu, chưa phải service đã harden.
+- Bốn lỗi cấp production ở lớp HTTP (A1–A4) đã sửa và có test; nhưng vẫn còn thiếu auth,
+  rate limit, TLS termination, structured logging và metrics.
+- Phải kiểm tra license dataset/dictionary trước khi phân phối. Repo **chưa có LICENSE**
+  và chưa ghi license cho VSEC / viwiki / underthesea (review E6) — cần chủ repo quyết định.
+- `DEMO_ENDPOINTS` phải để tắt ở môi trường thật.
 - Không tự động học whitelist/exception từ nội dung người dùng.
 - Rule deterministic đáng tin cậy hơn statistical spelling hiện tại.
-- Không nới rule mù quáng để tăng recall; mọi thay đổi phải qua dev evaluation và precision constraints.
+- Không nới rule mù quáng để tăng recall; mọi thay đổi phải qua dev evaluation và precision
+  constraints.
+- Repo nặng vì commit thẳng dữ liệu (`.git` 55 MB, `dataset_artifacts` 94 MB, `src/data`
+  47 MB — riêng `lm-ngrams.tsv` 42 MB). Nên chuyển artifact >10 MB sang Git LFS hoặc storage
+  ngoài (review E5); việc này đụng vào lịch sử git nên chưa thực hiện.
+
+## Thay đổi theo review 2026-09-03
+
+Nguồn: `spellchecker-engine-review.txt`.
+
+| Mã | Vấn đề | Trạng thái |
+|---|---|---|
+| A1 | 1 request với `Host` hỏng giết cả server | ✅ đã sửa + test |
+| A2 | Body chia chunk làm hỏng ký tự tiếng Việt (`U+FFFD`) | ✅ đã sửa + test |
+| A3 | Giới hạn payload 1 MB, không destroy socket, trả 400 | ✅ 16 KB, `413`, destroy sau khi flush |
+| A4 | `/benchmark` + `/config` mở mặc định | ✅ sau `DEMO_ENDPOINTS=1` |
+| B1 | Trùng `ruleId` giữa spelling và word-boundary | ✅ `POSSIBLE_WORD_BOUNDARY_ERROR` |
+| B2 | Lane SHADOW vẫn tính toán mỗi request | ✅ kiểm tra mode trước vòng lặp / trong `supports()` |
+| B3 | Dùng confidence đã làm tròn làm ngưỡng quyết định | ✅ giữ giá trị thô, làm tròn ở serialize |
+| B4 | Magic number `pairCount !== 2` fit vào dev | ⚠️ thành config `errorChannelPairCountVeto`, vẫn cần OOF |
+| B5 | Code chết `.concat(shadowMode ? [] : [])` | ✅ đã bỏ |
+| B6 | Nhánh lexicon không làm gì, `src:'both'` không bao giờ đạt tới | ✅ merge đối xứng, comment đúng hành vi |
+| B7 | `degraded` phình vô hạn | ✅ ring 50 + counter + `/healthz` |
+| B8 | Message tiếng Anh + gán sai rule + hardcode 0.96 | ✅ tiếng Việt, `POSSIBLE_MISSING_DIACRITIC`, config |
+| B9 | Config "frozen" khác config đang chạy | ✅ runtime nạp file + `servingOverrides` + test |
+| C1 | Điểm số dựa vào bảng tra từ train | ⚠️ đã đo lại và ghi rõ (`npm run eval:overlap`) |
+| C2 | Held-out đã bị dùng lại | ⚠️ đã ghi đúng vào README; cần tập test mới |
+| C3 | Gate trôi theo kết quả | ⚠️ ghi nhận, chưa thống nhất một gate |
+| C4 | Nhánh attention là code chết | ⚠️ ghi rõ trong `servingOverrides`, chưa gỡ/bật |
+| D1–D5 | README lệch code | ✅ cập nhật + CI chạy bench mỗi PR |
+| E1 | Test phụ thuộc `.tmp/` fail trên clone sạch | ✅ skip có điều kiện |
+| E2 | Không khai báo dependency Python | ✅ `pyproject.toml` + `uv sync` (62 test pass) |
+| E3 | `npm test` chỉ chạy 2 file | ✅ chạy toàn bộ + `test:python` |
+| E4 | Không có CI | ✅ `.github/workflows/ci.yml` |
+| E5 | Artifact lớn commit thẳng | ❌ cần quyết định về Git LFS/history |
+| E6 | Không có LICENSE | ❌ cần chủ repo chọn license |
+| §7 | Ngập cảnh báo với SMS không dấu | ✅ cờ `summary.unaccentedContent` cấp tin nhắn |
+
+## Cải tiến cho chạy local (2026-09-03)
+
+| Việc | Kết quả |
+|---|---|
+| Profile dữ liệu `lite` (`ENGINE_PROFILE`) | cold start 5,8 s → **0,7 s**, RSS 857 → **249 MB**, p95 9,6 → **4,9 ms** |
+| Bộ dữ liệu SMS trong repo (`dataset_sms/`) | 62 template / 35 group / 1.942 tin có nhãn, split theo group, license sạch |
+| LM + lexicon huấn luyện theo miền SMS | 80 MB → 5,4 MB; SMS dev precision 0,957 → **0,976**, báo động giả trên tin sạch 1/30 → **0/30** |
+| Đánh giá đúng miền (`tools/eval_sms.mjs`) | held-out SMS: recall **0,648**, precision **0,939** (chạy một lần, khai báo trước) |
+| CLI `npm run check` | thử một tin trong terminal, có gạch chân vị trí lỗi |
+| `runBenchmark(engine, corpusDir)` | tham số corpus trước đây bị `void` bỏ đi — nay dùng được, `benchmark/sms/` chấm riêng |

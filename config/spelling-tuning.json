@@ -147,5 +147,16 @@
       "cleanFalseAlarms": "0/165"
     },
     "latencyP95SmsMs": 18.2
+  },
+  "servingOverrides": {
+    "date": "2026-09-03",
+    "rationale": "Review B9: src/ now LOADS this file (src/config.mjs loadFrozenTuning), so frozenParams are the served values. Keys listed here are deliberately served with a different value than the calibration winner; every divergence must appear here with a reason.",
+    "overrides": {
+      "attentionMode": {
+        "value": "OFF",
+        "frozenValue": "SHADOW",
+        "reason": "The attention reranker is not on the serving path (docs/phase-2-findings.md, docs/phase-3-findings.md): arch A exceeded the latency gate 4x and arch C 10x, and SHADOW changes no emitted issue - it only adds ~11 un-batched forward passes per message. Serving keeps it OFF; the SHADOW winner is preserved above as the calibration record. Flip this to SHADOW only together with a fresh latency measurement."
+      }
+    }
   }
 }

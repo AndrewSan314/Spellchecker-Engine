@@ -1,0 +1,64 @@
+{
+  "schema": "sms-dataset-v1",
+  "generatedBy": "tools/build_sms_dataset.mjs",
+  "seed": 20260903,
+  "templates": 62,
+  "groups": 35,
+  "splitPolicy": "by template group (sha256(group) % 100 -> 70/15/15); no group appears in two splits",
+  "counts": {
+    "train": {
+      "rows": 1630,
+      "labels": 6751,
+      "cleanRows": 332,
+      "byProfile": {
+        "ALL_UNACCENTED": 351,
+        "CLEAN": 332,
+        "TYPO": 163,
+        "SOME_UNACCENTED": 353,
+        "TELEX": 155,
+        "WRONG_DIACRITIC": 119,
+        "BOUNDARY": 78,
+        "PUNCT": 79
+      }
+    },
+    "dev": {
+      "rows": 174,
+      "labels": 724,
+      "cleanRows": 30,
+      "byProfile": {
+        "WRONG_DIACRITIC": 10,
+        "SOME_UNACCENTED": 46,
+        "ALL_UNACCENTED": 39,
+        "TELEX": 14,
+        "CLEAN": 30,
+        "PUNCT": 11,
+        "TYPO": 17,
+        "BOUNDARY": 7
+      }
+    },
+    "test": {
+      "rows": 138,
+      "labels": 505,
+      "cleanRows": 32,
+      "byProfile": {
+        "CLEAN": 32,
+        "ALL_UNACCENTED": 28,
+        "TYPO": 16,
+        "TELEX": 13,
+        "WRONG_DIACRITIC": 9,
+        "SOME_UNACCENTED": 34,
+        "PUNCT": 5,
+        "BOUNDARY": 1
+      }
+    },
+    "trainCorpusLines": 1231
+  },
+  "files": {
+    "sms-train.jsonl": "2ac1df3a70008773eba8c05ee9ad5118439114674b3dd5a02aa11ea8a3f67778",
+    "sms-dev.jsonl": "c6fd13a55fb740b3e026170b20be8749448529e671d8d1c241a7a3b7b28e844e",
+    "sms-test.jsonl": "54cf13d6192f0793649be168c588c0aecf445b0f2ee611e01d45fc5b5ad123f2",
+    "sms-clean-train.txt": "4892e89ad59de9ce2df8bf747efb48371892fdab434dde48ec432003ad67bde5",
+    "benchmark/sms/corpus-sms-dev.json": "40722a8b5cbff1088e52d06096aaf98a28e4a78425d9c3bd26c464cfea4bc2cd",
+    "benchmark/sms/corpus-sms-test.json": "a1e8803cf8434f2420ec4c0d6395275e4b514c045c721b9e94f847dc481a8d47"
+  }
+}

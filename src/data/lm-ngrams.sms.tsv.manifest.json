@@ -1,0 +1,49 @@
+{
+  "schema": "sms-lm-manifest-v1",
+  "generatedBy": "tools/build_sms_profile.mjs",
+  "generatedAt": "2026-09-03T09:34:41.961Z",
+  "source": {
+    "file": "lm-ngrams.tsv",
+    "bytes": 79874419,
+    "rows": {
+      "U": 200000,
+      "B": 1000000,
+      "T": 2760041
+    },
+    "headerTokens": 1325600394
+  },
+  "domainCorpora": [
+    "sms-clean-train.txt",
+    "corpus_banking_fintech.txt",
+    "corpus_retail_ecommerce.txt",
+    "corpus_telco_utilities_services.txt",
+    "corpus-train.txt"
+  ],
+  "smsTrainOnly": true,
+  "params": {
+    "maxUnigrams": 60000,
+    "maxBigrams": 120000,
+    "maxTrigrams": 120000,
+    "domainWeight": 120,
+    "generalVocabTop": 20000
+  },
+  "result": {
+    "file": "lm-ngrams.sms.tsv",
+    "bytes": 4481637,
+    "rows": {
+      "U": 20521,
+      "B": 120544,
+      "T": 121317
+    },
+    "domainVocab": 2894,
+    "totalTokens": 1328457354,
+    "sha256": "a263738e5a287bbe62817d94d745e7e121eea53516d912d6c42a3a9ef1ae8da0",
+    "buildMs": 5316,
+    "lexicon": {
+      "file": "lexicon-sms.txt",
+      "bytes": 257272,
+      "entries": 20503,
+      "sha256": "873aac40ab74a5be0d03c9ea5831bb99068f2cf3a90fae3ba3d2db8c3b37c5fa"
+    }
+  }
+}

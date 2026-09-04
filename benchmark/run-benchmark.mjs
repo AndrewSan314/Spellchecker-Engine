@@ -71,9 +71,15 @@ export function matchBenchmarkRow(row, issues) {
   return { remaining, matched, missed, extraIssues, scopedRuleIds };
 }
 
-export function runBenchmark(engine, corpusPath = null) {
-  const rowsIn = loadCorpusRows();
-  void corpusPath;
+/**
+ * @param {SmsValidationEngine} engine
+ * @param {string} [corpusDir] directory to glob corpus*.json from. Defaults to
+ *   benchmark/ (the tracked corpora). The parameter used to be accepted and
+ *   then thrown away with `void corpusPath` — it now works, which is how
+ *   benchmark/sms/ is scored without disturbing the tracked totals.
+ */
+export function runBenchmark(engine, corpusDir = HERE) {
+  const rowsIn = loadCorpusRows(corpusDir);
   const rows = [];
   const latencies = [];
 
@@ -149,6 +155,8 @@ export function runBenchmark(engine, corpusPath = null) {
   const pct = (p) => latencies.length === 0 ? 0 : latencies[Math.min(latencies.length - 1, Math.floor(p * latencies.length))];
   return {
     generatedAt: new Date().toISOString(),
+    lmProfile: engine.languageModel?.loadDiagnostics?.profile ?? null,
+    corpusDir: path.relative(path.join(HERE, '..'), corpusDir) || '.',
     rowCount: rows.length,
     totals: {
       expectedIssues: totalExpected,

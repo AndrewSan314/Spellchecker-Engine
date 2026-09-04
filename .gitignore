@@ -1,5 +1,8 @@
 # Dependencies
 node_modules/
+# Python virtualenv created by `uv sync` (deps declared in pyproject.toml).
+# uv.lock is intentionally NOT ignored — it pins the tool dependencies.
+.venv/
 
 # Python cache & bytecode
 __pycache__/

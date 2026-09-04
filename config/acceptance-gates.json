@@ -1,0 +1,86 @@
+{
+  "schema": "acceptance-gates-v1",
+  "createdAt": "2026-09-03",
+  "why": "Review C3: the acceptance gates existed in three places with three different values (p95 <= 15 ms in config/spelling-tuning.json, <= 20 ms in docs/phase-3-findings.md, 'limit subsequently authorized at 100 ms' in config/precision-over-90-profile.json) and the precision floor moved between 0.70 and 0.90. A gate that is widened after the result is known no longer controls anything. This file is the SINGLE authoritative record; every other mention is historical.",
+  "authoritative": {
+    "latency": {
+      "metric": "p95 over benchmark rows with content length <= 160 chars, measured by tools/profile_engine.mjs (field latency.sms160P95)",
+      "limitMs": 15,
+      "measurementIsMachineDependent": true,
+      "note": "Compare only against a measurement taken on the SAME machine with the SAME corpus. Recorded values ranged 11.27-27.97 ms across machines for code that never changed, so an absolute number carries no verdict on its own. A comparison run on the reviewer's machine must be paired with a baseline run of the previous commit."
+    },
+    "lanePrecisionFloor": {
+      "metric": "lane-local precision on VSEC dev replay",
+      "floor": 0.7,
+      "note": "A lane may not be promoted from SHADOW to ACTIVE below this."
+    },
+    "globalPrecisionRegression": {
+      "metric": "global semantic precision on VSEC dev",
+      "maxDrop": 0.02
+    },
+    "crossLaneRecall": {
+      "metric": "cross-lane semantic recall on VSEC dev",
+      "floor": 0.2677
+    },
+    "syntheticMissingDiacriticRecallDrop": {
+      "metric": "synthetic missing-diacritic corpus recall",
+      "maxDropPp": 0.5
+    },
+    "cleanCorpusFalseAlarms": {
+      "metric": "new unexpected issues on the red-team clean corpus",
+      "limit": 0
+    }
+  },
+  "historicalValuesSuperseded": [
+    {
+      "where": "docs/phase-3-findings.md",
+      "gate": "latency p95",
+      "value": "20 ms",
+      "status": "superseded — kept as an experiment record, not a gate"
+    },
+    {
+      "where": "config/precision-over-90-profile.json",
+      "gate": "latency p95",
+      "value": "100 ms ('limit subsequently authorized')",
+      "status": "superseded — the widening happened after the result was known"
+    },
+    {
+      "where": "config/precision-over-90-profile.json",
+      "gate": "precision floor",
+      "value": "0.90",
+      "status": "profile itself was rejected after held-out (P=87.14%); floor stays 0.70 for lane promotion"
+    }
+  ],
+  "rules": [
+    "A gate may be changed only BEFORE the measurement it judges, and the change must be recorded here with a date and a reason.",
+    "A measurement that fails a gate is recorded as a failure; it is not grounds for widening the gate in the same session.",
+    "Any run against the held-out test set must be declared here before it is executed (review C2)."
+  ],
+  "heldOutRunLog": [
+    {
+      "date": "2026-08-25",
+      "config": "v2 / precision-over-90-v1",
+      "result": "P=87.14% -> profile rejected",
+      "source": "docs/precision-breakthrough-log.md"
+    },
+    {
+      "date": "2026-08-27",
+      "config": "wrong-diacritic breakthrough",
+      "result": "R 0.24 -> 0.397, P 0.695 -> 0.764",
+      "source": "config/spelling-tuning.json > wrongDiacriticBreakthrough.heldOutTestMetrics"
+    },
+    {
+      "note": "Two or more decisions have now touched VSEC test, so it is a tuning set. The next generalization claim needs a NEW held-out set — ideally team-labelled real SMS — declared here before it is run."
+    },
+    {
+      "date": "2026-09-03",
+      "dataset": "dataset_sms/sms-test.jsonl (in-repo synthetic SMS, group-split)",
+      "config": "ENGINE_PROFILE=lite (lm-ngrams.sms.tsv B=120k T=120k, lexicon-sms.txt), tuned on dataset_sms/sms-dev.jsonl only",
+      "declaredBefore": true,
+      "result": "lite: strict recall 0.648, semantic recall 0.648, semantic precision 0.939, 21 false alarms, 2/32 clean rows with an alarm. full (comparison, same run): strict 0.618, semantic 0.618, precision 0.936, 21 FA, 0/32 clean rows.",
+      "devComparison": "dev was strict 0.703 / semantic 0.684 / precision 0.976 - the held-out drop (-5.5 pp recall, -3.7 pp precision) is the honest generalization gap.",
+      "runs": 1,
+      "command": "ENGINE_PROFILE=lite node tools/eval_sms.mjs --split test"
+    }
+  ]
+}

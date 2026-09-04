@@ -3,11 +3,20 @@
 // Immutable snapshot built once at startup (and reloadable);
 // RULES MUST NEVER QUERY DB/FILES PER TOKEN.
 // ============================================================
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
-const DATA_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), 'data');
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+/**
+ * Review B9: config/spelling-tuning.json declared itself "frozen" but NOTHING
+ * under src/ read it — the served thresholds came from DEFAULT_SNAPSHOT alone
+ * and had already drifted from the calibrated file (attention keys). The file
+ * is now the source of truth for every tunable it names; see
+ * loadFrozenTuning() below.
+ */
+export const TUNING_FILE = process.env.SPELLING_TUNING_FILE
+  ?? path.join(HERE, '..', 'config', 'spelling-tuning.json');
 
 const DEFAULT_SNAPSHOT = Object.freeze({
   enabled: true,
@@ -24,10 +33,20 @@ const DEFAULT_SNAPSHOT = Object.freeze({
   },
   spelling: {
     attentionMode: 'OFF',                 // OFF | SHADOW | EXPERIMENTAL_ACTIVE
+    // Attention gate thresholds. They used to exist ONLY in
+    // config/spelling-tuning.json, which the runtime never read, so
+    // linguistic-rules.mjs silently fell back to 0.80 instead of the
+    // calibrated 0.5 whenever the lane was switched on (review B9).
+    attentionMinProbability: 0.5,
+    attentionMinCandidateWindows: 2,
+    attentionMaxOriginalWindows: 1,
   },
   linguistic: {
     mode: 'ACTIVE',                       // OFF | SHADOW | ACTIVE (§39)
     attentionMode: 'OFF',                 // OFF | SHADOW | EXPERIMENTAL_ACTIVE
+    attentionMinProbability: 0.5,
+    attentionMinCandidateWindows: 2,
+    attentionMaxOriginalWindows: 1,
     maxAccentCandidatesPerToken: 12,      // §16.3
     beamWidth: 5,                         // §18.2
     minTokenLength: 2,                    // §16.4
@@ -137,8 +156,108 @@ const DEFAULT_SNAPSHOT = Object.freeze({
     scoreWeights: { A: 0.2, B: 1.0, C: 1.0, D: 1.5, E: 1.0, F: 1.0 },
     rightJointSmoothing: 20,
     forwardJointSmoothing: 10,
+    // Review B3/B8: the engine's "proven enough to surface" confidence floor.
+    // It used to be the literal 0.96 hardcoded in BOTH src/engine.mjs and
+    // src/rules/linguistic-rules.mjs — two modules coupled through a magic
+    // number. It is a threshold on the RAW calibrated confidence; rounding
+    // for display happens only in the server's serializeIssue.
+    verifiedConfidenceFloor: 0.96,
+    // Confidence attached to a direct error-channel proof (a pair observed in
+    // the training pairs table). Deliberately at the floor: the emission is
+    // justified by the proof, not by a model score.
+    errorChannelDirectConfidence: 0.96,
+    // Review B4: pairs seen EXACTLY this many times in VSEC train are vetoed
+    // in the engine's verifier. The value was fitted on dev (48 TP / 9 FP,
+    // docs/precision-breakthrough-log.md:95) and has no linguistic basis —
+    // set to null to disable the veto and re-derive it out-of-fold before
+    // trusting it in production.
+    errorChannelPairCountVeto: 2,
+    // Review §7: an unaccented SMS validated in ACCENTED mode yields one
+    // warning per token. When at least this share of words (and at least
+    // `unaccentedMinWords` words) look unaccented, the result carries a
+    // message-level flag so the UI can show ONE notice. Issues themselves are
+    // never suppressed — benchmarks and per-token metrics stay comparable.
+    unaccentedRatioThreshold: 0.8,
+    unaccentedMinWords: 5,
   },
 });
+
+/** keys the frozen tuning file is allowed to move (review B9) */
+const TUNABLE_SECTIONS = Object.freeze({
+  attentionMode: 'spelling',
+  attentionMinProbability: 'spelling',
+  attentionMinCandidateWindows: 'spelling',
+  attentionMaxOriginalWindows: 'spelling',
+});
+
+/**
+ * Reads the frozen calibration file and turns it into a config override.
+ *
+ * Contract (fail loud, never silently diverge):
+ *   - a missing file is fine (defaults serve);
+ *   - a malformed / non-frozen / unknown-key file THROWS at startup rather
+ *     than letting the served config drift from the recorded one;
+ *   - `servingOverrides` records keys deliberately NOT served with the frozen
+ *     value (with a reason), so the divergence is explicit and reviewable
+ *     instead of accidental.
+ *
+ * @returns {{overrides: object, source: object}|null}
+ */
+export function loadFrozenTuning(file = TUNING_FILE) {
+  if (!file || !existsSync(file)) return null;
+  let doc;
+  try {
+    doc = JSON.parse(readFileSync(file, 'utf8'));
+  } catch (err) {
+    throw new Error(`spelling tuning file is not valid JSON: ${file} — ${err.message}`);
+  }
+  const params = doc?.frozenParams;
+  if (!params || typeof params !== 'object') {
+    throw new Error(`spelling tuning file has no "frozenParams" object: ${file}`);
+  }
+  const overrides = { linguistic: {}, spelling: {} };
+  /** writes one tuned key into every section that owns it, or throws */
+  const assign = (key, value, what) => {
+    const section = TUNABLE_SECTIONS[key]
+      ?? (key in DEFAULT_SNAPSHOT.linguistic ? 'linguistic' : null);
+    if (!section) {
+      throw new Error(`spelling tuning file ${what} unknown key "${key}" (${file}); `
+        + 'add it to DEFAULT_SNAPSHOT or remove it from the file');
+    }
+    overrides[section][key] = value;
+    // a few attention keys are read from BOTH spelling.* and linguistic.*
+    if (section === 'spelling' && key in DEFAULT_SNAPSHOT.linguistic) {
+      overrides.linguistic[key] = value;
+    }
+  };
+
+  const applied = {};
+  for (const [key, value] of Object.entries(params)) {
+    assign(key, value, 'sets');
+    applied[key] = value;
+  }
+  // Confidence temperatures live in their own block in the file.
+  for (const [key, value] of Object.entries(doc?.confidenceCalibration?.constants ?? {})) {
+    assign(key, value, 'sets temperature');
+    applied[key] = value;
+  }
+  const served = {};
+  for (const [key, entry] of Object.entries(doc?.servingOverrides?.overrides ?? {})) {
+    assign(key, entry.value, 'overrides');
+    served[key] = entry;
+  }
+  return {
+    overrides,
+    source: {
+      file: path.basename(file),
+      version: doc.version ?? null,
+      frozen: doc.frozen === true,
+      createdAt: doc.createdAt ?? null,
+      frozenParams: applied,
+      servingOverrides: served,
+    },
+  };
+}
 
 export class ValidationConfigSnapshot {
   constructor(data) {
@@ -159,19 +278,39 @@ function deepFreeze(obj) {
 }
 
 export class ValidationConfigService {
-  constructor(snapshot = new ValidationConfigSnapshot(DEFAULT_SNAPSHOT)) {
-    this._snapshot = snapshot;
+  /**
+   * @param {ValidationConfigSnapshot} [snapshot] explicit snapshot (tests).
+   *   When omitted the service builds DEFAULT_SNAPSHOT + the frozen tuning
+   *   file, so "the calibrated config" and "the served config" are the same
+   *   object by construction (review B9).
+   */
+  constructor(snapshot = null, { tuningFile = TUNING_FILE } = {}) {
+    this.tuningSource = null;
+    if (snapshot) {
+      this._snapshot = snapshot;
+      return;
+    }
+    const frozen = loadFrozenTuning(tuningFile);
+    this.tuningSource = frozen?.source ?? null;
+    this._snapshot = new ValidationConfigSnapshot(
+      frozen ? mergeDeep(DEFAULT_SNAPSHOT, frozen.overrides) : DEFAULT_SNAPSHOT,
+    );
   }
   snapshot() {
     return this._snapshot;
   }
   /** plan §13: reload without restart (admin endpoint / scheduled job) */
   reload(overrides = {}) {
-    const merged = mergeDeep(DEFAULT_SNAPSHOT, overrides);
+    const frozen = loadFrozenTuning(this.tuningSource ? TUNING_FILE : null);
+    this.tuningSource = frozen?.source ?? this.tuningSource;
+    const base = frozen ? mergeDeep(DEFAULT_SNAPSHOT, frozen.overrides) : DEFAULT_SNAPSHOT;
+    const merged = mergeDeep(base, overrides);
     this._snapshot = new ValidationConfigSnapshot(merged);
     return this._snapshot;
   }
 }
+
+export { DEFAULT_SNAPSHOT };
 
 function mergeDeep(base, patch) {
   const out = structuredClone(base);

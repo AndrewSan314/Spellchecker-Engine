@@ -3,7 +3,7 @@
 // Pipeline: document -> rules -> suppression -> conflict -> sort -> result
 // ============================================================
 import {
-  ValidationContext, ValidationResult, Severity, RuleIds, priorityOf,
+  ValidationContext, ValidationResult, Severity, RuleIds, priorityOf, MessageMode,
   ValidationEngineError, CRITICAL_RULE_IDS, LINGUISTIC_RULE_IDS,
 } from './core.mjs';
 import { accentKey } from './normalizer.mjs';
@@ -15,6 +15,7 @@ import {
 import { RecallReranker } from './recall-reranker.mjs';
 import { ErrorChannel } from './error-channel.mjs';
 import { extractContextEvidence } from './context-evidence.mjs';
+import { resolveArtifact, profileName } from './profile.mjs';
 import { loadAttentionReranker } from './attention-reranker.mjs';
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -23,14 +24,25 @@ import path from 'node:path';
 const DATA_DIR = path.join(
   path.dirname(fileURLToPath(import.meta.url)), 'data');
 
+/** review B7 — most recent OPTIONAL-rule failures kept for diagnostics */
+const MAX_DEGRADED_ENTRIES = 50;
+
+/** provenance of the lexicon the last loadMergedLexicon() call produced */
+let lastLexiconArtifact = null;
+
 /**
  * Built corpus lexicon (tools/build_lm.py) merged with the curated domain
- * seed — curated entries win on key conflicts (max-freq merge inside load).
+ * seed. On a key conflict the CORPUS frequency wins (it is the only real
+ * evidence) and the entry is marked src:'both'; see put() below.
  */
 function loadMergedLexicon() {
+  // ENGINE_PROFILE decides WHICH built lexicon (see src/profile.mjs): the
+  // full 51k-word corpus lexicon, or the SMS-domain one that mirrors the
+  // pruned LM. The curated seed below is always merged on top.
+  const artifact = resolveArtifact('lexicon');
   let built;
   try {
-    built = readFileSync(path.join(DATA_DIR, 'lexicon-built.txt'), 'utf8');
+    built = readFileSync(artifact.path, 'utf8');
   } catch {
     return LexiconService.load();
   }
@@ -44,19 +56,30 @@ function loadMergedLexicon() {
   } catch { /* optional file */ }
   const merged = new Map();
   // plan §10: corpus-backed counts beat hand-assigned seed numbers.
-  // src: 'corpus' | 'curated' | 'both' — gates use realFrequency().
+  // src: 'corpus' | 'curated' | 'both' — gates use realFrequency(), which
+  // only trusts a frequency that came from the corpus ('corpus' or 'both').
+  //
+  // Review B6: the previous version could never produce 'both' (the loop
+  // order is corpus-then-curated, so the corpus branch never saw a curated
+  // predecessor) and its curated branch was an empty comment, while the
+  // header claimed "curated entries win on key conflicts". Both directions
+  // are now handled symmetrically and load order no longer matters:
+  //   corpus frequency ALWAYS wins over a curated seed number,
+  //   a key present in both sources is marked 'both'.
   const put = (word, freqStr, src) => {
     const freq = Number.parseInt(freqStr, 10) || 1;
     const key = word.toLowerCase();
     const prev = merged.get(key);
     if (!prev) {
       merged.set(key, { word, freq, type: 'A', src });
-    } else if (src === 'corpus' && prev.src === 'curated') {
+    } else if (src === prev.src || prev.src === 'both') {
+      if (freq > prev.freq) merged.set(key, { ...prev, freq });
+    } else if (src === 'corpus') {
+      // curated seen first: adopt the real corpus count
       merged.set(key, { ...prev, freq, src: 'both' });
-    } else if (src === 'curated' && prev.src !== 'curated') {
-      // keep corpus frequency; curated only supplies the surface form
-    } else if (freq > prev.freq) {
-      merged.set(key, { ...prev, freq });
+    } else {
+      // curated seen second: keep the corpus count, record the overlap
+      merged.set(key, { ...prev, src: 'both' });
     }
   };
   for (const line of built.split(/\r?\n/)) {
@@ -70,6 +93,13 @@ function loadMergedLexicon() {
     const [w, f] = line.split('\t');
     if (w && !stop.has(w.toLowerCase())) put(w, f, 'curated');
   }
+  // LexiconService is frozen, so the artifact provenance is recorded here and
+  // read back through SmsValidationEngine.profileInfo().
+  lastLexiconArtifact = {
+    profile: artifact.profile,
+    artifactPath: path.basename(artifact.path),
+    entries: merged.size,
+  };
   return LexiconService.fromEntries(merged.entries());
 }
 import {
@@ -101,6 +131,7 @@ const SUPPRESSIBLE_IN_PROTECTED = new Set([
   RuleIds.MULTIPLE_WHITESPACE,
   RuleIds.POSSIBLE_MISSING_DIACRITIC,
   RuleIds.POSSIBLE_SPELLING_ERROR,
+  RuleIds.POSSIBLE_WORD_BOUNDARY_ERROR,
   RuleIds.ABBREVIATION_DETECTED,
 ]);
 // ZERO_WIDTH / INVALID / NON_BREAKING / ACCENT_MODE are NEVER suppressed here.
@@ -196,9 +227,26 @@ export class SmsValidationEngine {
       confidenceSink: null,
     };
 
+    // Which data artifacts this instance is actually serving (ENGINE_PROFILE).
+    this.profile = {
+      name: profileName(),
+      lm: {
+        profile: languageModel.loadDiagnostics?.profile ?? null,
+        artifact: languageModel.loadDiagnostics?.artifactPath
+          ? path.basename(languageModel.loadDiagnostics.artifactPath) : null,
+        counts: languageModel.loadDiagnostics?.counts ?? null,
+      },
+      lexicon: lastLexiconArtifact,
+    };
+
     this.documentBuilder = { build: buildValidationDocument };
-    // plan §8 degraded-metric sink for OPTIONAL rule failures
+    // plan §8 degraded-metric sink for OPTIONAL rule failures.
+    // Review B7: the engine is a process-lifetime singleton, so an unbounded
+    // array here is a slow leak (one entry per failure, forever). It is now a
+    // bounded ring of the most recent failures plus monotonic counters.
     this.degraded = [];
+    this.degradedCounts = new Map();
+    this.degradedTotal = 0;
     this.rules = [
       createZeroWidthCharacterRule(configService),
       createInvalidCharacterRule(configService),
@@ -222,8 +270,10 @@ export class SmsValidationEngine {
   /** plan §9 engine flow — rules are order-independent; output is sorted. */
   validate(context) {
     const doc = this.documentBuilder.build(context);
-    const mode = this.configService.snapshot().get('linguistic.mode');
-    const shadowMode = mode === 'SHADOW';
+    // ONE immutable snapshot per validation (plan §13): every gate below reads
+    // the same configuration, even if a reload lands mid-request.
+    const snap = this.configService.snapshot();
+    const shadowMode = snap.get('linguistic.mode') === 'SHADOW';
 
     const raw = [];
     const shadowRaw = [];
@@ -244,21 +294,34 @@ export class SmsValidationEngine {
         if (CRITICAL_RULE_IDS.has(rule.id())) {
           throw new ValidationEngineError(rule.id(), err);
         }
-        this.degraded.push({ ruleId: rule.id(), error: err?.message ?? String(err) });
+        this.recordDegraded(rule.id(), err);
       }
     }
 
-    const unsuppressed = this.applySuppression(doc, raw)
-      .concat(shadowMode ? [] : []);
+    // Review B5: this used to end in `.concat(shadowMode ? [] : [])`, which
+    // is a no-op in both branches and read as if SHADOW were handled here.
+    // SHADOW routing happens in the loop above.
+    const unsuppressed = this.applySuppression(doc, raw);
     const resolved = this.resolveConflicts(unsuppressed);
+    // Review B3: this compares the RAW calibrated confidence. The rules used
+    // to round to 2 decimals before emitting, so a true 0.9550 was promoted
+    // to 0.96 and cleared this floor; rounding is now display-only (server).
+    // Review B4: both magic numbers are named config values now.
+    const confidenceFloor = snap.get('linguistic.verifiedConfidenceFloor') ?? 0.96;
+    const pairCountVeto = snap.get('linguistic.errorChannelPairCountVeto');
     let words;
     const verified = resolved.filter((issue) => {
       if (!LINGUISTIC_RULE_IDS.has(issue.ruleId)) return true;
+      // Review B1: the word-boundary lane has its own calibrated gates and
+      // no error-channel pair to prove (it rewrites token boundaries, not
+      // spellings); the pair verifier below does not apply to it.
+      if (issue.ruleId === RuleIds.POSSIBLE_WORD_BOUNDARY_ERROR) return true;
       const target = issue.suggestions?.[0];
       const baseProven = !this.lexicon.contains(issue.value)
         || (this.errorChannel.hasPair(issue.value, target)
-          && this.errorChannel.pairCount(issue.value, target) !== 2)
-        || issue.confidence >= 0.96;
+          && (pairCountVeto == null
+            || this.errorChannel.pairCount(issue.value, target) !== pairCountVeto))
+        || issue.confidence >= confidenceFloor;
       if (baseProven || issue.ruleId !== RuleIds.POSSIBLE_MISSING_DIACRITIC) return baseProven;
 
       const nearProtected = doc.protectedRanges?.some((range) =>
@@ -284,7 +347,54 @@ export class SmsValidationEngine {
 
     const hasErrors = sorted.some((i) => i.severity === Severity.ERROR);
     const hasWarnings = sorted.some((i) => i.severity === Severity.WARNING);
-    return new ValidationResult(!hasErrors, hasErrors, hasWarnings, sorted, shadowIssues);
+    return new ValidationResult(!hasErrors, hasErrors, hasWarnings, sorted, shadowIssues,
+      this.buildSummary(context, doc, sorted, snap));
+  }
+
+  /**
+   * Review §7: an unaccented SMS checked in ACCENTED mode makes the engine
+   * flag nearly every token (11-12 issues on a 15-word message), which reads
+   * as noise in the UI. The issues are NOT suppressed — per-token metrics and
+   * benchmarks must stay comparable — but the result carries a message-level
+   * observation so a client can render ONE notice instead of a wall.
+   */
+  buildSummary(context, doc, issues, snap) {
+    const words = doc.tokens.filter((t) => t.type === 'WORD');
+    const ratioThreshold = snap.get('linguistic.unaccentedRatioThreshold') ?? 0.8;
+    const minWords = snap.get('linguistic.unaccentedMinWords') ?? 5;
+    let unaccented = 0;
+    for (const w of words) if (accentKey(w.normalized) === w.normalized.toLowerCase()) unaccented += 1;
+    const ratio = words.length ? unaccented / words.length : 0;
+    return {
+      wordCount: words.length,
+      linguisticIssueCount: issues.filter((i) => LINGUISTIC_RULE_IDS.has(i.ruleId)).length,
+      unaccentedWordRatio: Math.round(ratio * 1000) / 1000,
+      // true => "this message looks like it was typed without diacritics",
+      // i.e. show one message-level notice rather than one warning per token.
+      unaccentedContent: context.messageMode === MessageMode.ACCENTED
+        && words.length >= minWords && ratio >= ratioThreshold,
+    };
+  }
+
+  /** plan §8 — bounded degraded sink (review B7) */
+  recordDegraded(ruleId, err) {
+    this.degradedTotal += 1;
+    this.degradedCounts.set(ruleId, (this.degradedCounts.get(ruleId) ?? 0) + 1);
+    this.degraded.push({
+      ruleId, error: err?.message ?? String(err), at: new Date().toISOString(),
+    });
+    if (this.degraded.length > MAX_DEGRADED_ENTRIES) {
+      this.degraded.splice(0, this.degraded.length - MAX_DEGRADED_ENTRIES);
+    }
+  }
+
+  /** aggregate view for /healthz — counters survive the ring eviction */
+  degradedSummary() {
+    return {
+      total: this.degradedTotal,
+      byRule: Object.fromEntries(this.degradedCounts),
+      recent: this.degraded.slice(-5),
+    };
   }
 
   /** plan §24 IssueSuppressor */
@@ -336,6 +446,7 @@ function SPECIFICITY_TIEBREAK(ruleId) {
     case RuleIds.ABBREVIATION_DETECTED: return 3;
     case RuleIds.POSSIBLE_MISSING_DIACRITIC: return 2;
     case RuleIds.POSSIBLE_SPELLING_ERROR: return 1;
+    case RuleIds.POSSIBLE_WORD_BOUNDARY_ERROR: return 1;
     default: return 0;
   }
 }

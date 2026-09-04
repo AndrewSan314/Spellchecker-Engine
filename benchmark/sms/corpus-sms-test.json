@@ -1,0 +1,5424 @@
+{
+  "meta": {
+    "source": "dataset_sms (synthetic, authored in-repo)",
+    "split": "test",
+    "note": "Rows carry fullyLabeledRuleIds so extras outside the labelled lanes are not counted as false positives."
+  },
+  "rows": [
+    {
+      "id": "telco-05-000",
+      "category": "sms-clean",
+      "text": "Đăng ký gói TT789X chỉ với 499.000d mỗi tháng, nhận ngay 10GB data và miễn phí gọi nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "telco-05-001",
+      "category": "sms-all-unaccented",
+      "text": "Dang ky goi TT789X chi voi 1.500.000d moi thang, nhan ngay 30GB data va mien phi goi noi mang.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Dang",
+          "suggestion": "Đăng",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "ký",
+          "positionStart": 5,
+          "positionEnd": 7
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "goi",
+          "suggestion": "gói",
+          "positionStart": 8,
+          "positionEnd": 11
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "chi",
+          "suggestion": "chỉ",
+          "positionStart": 19,
+          "positionEnd": 22
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "voi",
+          "suggestion": "với",
+          "positionStart": 23,
+          "positionEnd": 26
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mỗi",
+          "positionStart": 38,
+          "positionEnd": 41
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thang",
+          "suggestion": "tháng",
+          "positionStart": 42,
+          "positionEnd": 47
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nhan",
+          "suggestion": "nhận",
+          "positionStart": 49,
+          "positionEnd": 53
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "va",
+          "suggestion": "và",
+          "positionStart": 69,
+          "positionEnd": 71
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "mien",
+          "suggestion": "miễn",
+          "positionStart": 72,
+          "positionEnd": 76
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 77,
+          "positionEnd": 80
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "goi",
+          "suggestion": "gọi",
+          "positionStart": 81,
+          "positionEnd": 84
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "noi",
+          "suggestion": "nội",
+          "positionStart": 85,
+          "positionEnd": 88
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "mang",
+          "suggestion": "mạng",
+          "positionStart": 89,
+          "positionEnd": 93
+        }
+      ]
+    },
+    {
+      "id": "telco-05-002",
+      "category": "sms-typo",
+      "text": "Đăng ký gói MA50K chỉ với 1.500.000d mỗi tháng, nhnậ ngay 5GB data và minễ phí gọi nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "nhnậ",
+          "suggestion": "nhận",
+          "positionStart": 48,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "minễ",
+          "suggestion": "miễn",
+          "positionStart": 70,
+          "positionEnd": 74
+        }
+      ]
+    },
+    {
+      "id": "telco-05-003",
+      "category": "sms-telex",
+      "text": "Đăng ký gói KM2026 chir với 99.000d mỗi tháng, nhận ngay 60GB data và miễn phí gọi nội mangj.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "chir",
+          "suggestion": "chỉ",
+          "positionStart": 19,
+          "positionEnd": 23
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "mangj",
+          "suggestion": "mạng",
+          "positionStart": 87,
+          "positionEnd": 92
+        }
+      ]
+    },
+    {
+      "id": "telco-05-004",
+      "category": "sms-wrong-diacritic",
+      "text": "Đang ký gói KM2026 chỉ với 350.000d mỗi tháng, nhận ngay 10GB data và miễn phí gọi nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Đang",
+          "suggestion": "Đăng",
+          "positionStart": 0,
+          "positionEnd": 4
+        }
+      ]
+    },
+    {
+      "id": "telco-05-005",
+      "category": "sms-some-unaccented",
+      "text": "Đăng ký gói DH2026A chỉ với 1.500.000d moi tháng, nhan ngay 30GB data và miễn phí gọi nội mang.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mỗi",
+          "positionStart": 39,
+          "positionEnd": 42
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nhan",
+          "suggestion": "nhận",
+          "positionStart": 50,
+          "positionEnd": 54
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "mang",
+          "suggestion": "mạng",
+          "positionStart": 90,
+          "positionEnd": 94
+        }
+      ]
+    },
+    {
+      "id": "telco-05-006",
+      "category": "sms-clean",
+      "text": "Đăng ký gói KM2026 chỉ với 99.000d mỗi tháng, nhận ngay 5GB data và miễn phí gọi nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "telco-05-007",
+      "category": "sms-some-unaccented",
+      "text": "Đăng ký gói MA50K chi với 499.000d moi thang, nhận ngay 60GB data và miễn phí gọi nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "chi",
+          "suggestion": "chỉ",
+          "positionStart": 18,
+          "positionEnd": 21
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mỗi",
+          "positionStart": 35,
+          "positionEnd": 38
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thang",
+          "suggestion": "tháng",
+          "positionStart": 39,
+          "positionEnd": 44
+        }
+      ]
+    },
+    {
+      "id": "telco-05-008",
+      "category": "sms-telex",
+      "text": "Đăng ký gói VC100K chir với 499.000d mỗi thangs, nhận ngay 30GB data và miễn phí gọi nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "chir",
+          "suggestion": "chỉ",
+          "positionStart": 19,
+          "positionEnd": 23
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thangs",
+          "suggestion": "tháng",
+          "positionStart": 41,
+          "positionEnd": 47
+        }
+      ]
+    },
+    {
+      "id": "telco-05-009",
+      "category": "sms-clean",
+      "text": "Đăng ký gói DH2026A chỉ với 99.000d mỗi tháng, nhận ngay 60GB data và miễn phí gọi nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "telco-05-010",
+      "category": "sms-some-unaccented",
+      "text": "Đăng ky gói DH2026A chỉ với 2.000.000d mỗi tháng, nhận ngay 30GB data và miễn phí gọi nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "ký",
+          "positionStart": 5,
+          "positionEnd": 7
+        }
+      ]
+    },
+    {
+      "id": "telco-05-011",
+      "category": "sms-clean",
+      "text": "Đăng ký gói DH2026A chỉ với 350.000d mỗi tháng, nhận ngay 10GB data và miễn phí gọi nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "telco-05-012",
+      "category": "sms-wrong-diacritic",
+      "text": "Đăng ký gọi MA50K chỉ với 499.000d mỗi tháng, nhận ngay 30GB data và miễn phí gói nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "gọi",
+          "suggestion": "gói",
+          "positionStart": 8,
+          "positionEnd": 11
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "gói",
+          "suggestion": "gọi",
+          "positionStart": 78,
+          "positionEnd": 81
+        }
+      ]
+    },
+    {
+      "id": "telco-05-013",
+      "category": "sms-punct",
+      "text": "Đăng ký gói MA50K chỉ với 350.000d mỗi tháng , nhận ngay 30GB data và miễn phí gọi nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "WHITESPACE_BEFORE_PUNCTUATION"
+        }
+      ]
+    },
+    {
+      "id": "telco-05-014",
+      "category": "sms-typo",
+      "text": "Đăng ký gói VC100K chỉ với 1.500.000d mỗi tháng, nhận ngay 5GB data và minễ phí gọi nội mạng.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "minễ",
+          "suggestion": "miễn",
+          "positionStart": 71,
+          "positionEnd": 75
+        }
+      ]
+    },
+    {
+      "id": "telco-05-015",
+      "category": "sms-all-unaccented",
+      "text": "Dang ky goi KM2026 chi voi 499.000d moi thang, nhan ngay 60GB data va mien phi goi noi mang.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Dang",
+          "suggestion": "Đăng",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "ký",
+          "positionStart": 5,
+          "positionEnd": 7
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "goi",
+          "suggestion": "gói",
+          "positionStart": 8,
+          "positionEnd": 11
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "chi",
+          "suggestion": "chỉ",
+          "positionStart": 19,
+          "positionEnd": 22
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "voi",
+          "suggestion": "với",
+          "positionStart": 23,
+          "positionEnd": 26
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mỗi",
+          "positionStart": 36,
+          "positionEnd": 39
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thang",
+          "suggestion": "tháng",
+          "positionStart": 40,
+          "positionEnd": 45
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nhan",
+          "suggestion": "nhận",
+          "positionStart": 47,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "va",
+          "suggestion": "và",
+          "positionStart": 67,
+          "positionEnd": 69
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "mien",
+          "suggestion": "miễn",
+          "positionStart": 70,
+          "positionEnd": 74
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 75,
+          "positionEnd": 78
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "goi",
+          "suggestion": "gọi",
+          "positionStart": 79,
+          "positionEnd": 82
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "noi",
+          "suggestion": "nội",
+          "positionStart": 83,
+          "positionEnd": 86
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "mang",
+          "suggestion": "mạng",
+          "positionStart": 87,
+          "positionEnd": 91
+        }
+      ]
+    },
+    {
+      "id": "telco-06-000",
+      "category": "sms-wrong-diacritic",
+      "text": "MOBIFONE trân trọng thống báo gói cước của quý khách sẽ tự động gia hạn vào ngày 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thống",
+          "suggestion": "thông",
+          "positionStart": 20,
+          "positionEnd": 25
+        }
+      ]
+    },
+    {
+      "id": "telco-06-001",
+      "category": "sms-clean",
+      "text": "VNMOBI trân trọng thông báo gói cước của quý khách sẽ tự động gia hạn vào ngày 15/09/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "telco-06-002",
+      "category": "sms-some-unaccented",
+      "text": "VINAPHONE tran trọng thông báo gói cước của quý khách sẽ tự động gia hạn vào ngày 01/12/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tran",
+          "suggestion": "trân",
+          "positionStart": 10,
+          "positionEnd": 14
+        }
+      ]
+    },
+    {
+      "id": "telco-06-003",
+      "category": "sms-typo",
+      "text": "VINAPHONE trân tọrng thông báo gói cước của quý khách sẽ tự động gia hạn vào nàgy 20/11/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tọrng",
+          "suggestion": "trọng",
+          "positionStart": 15,
+          "positionEnd": 20
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "nàgy",
+          "suggestion": "ngày",
+          "positionStart": 77,
+          "positionEnd": 81
+        }
+      ]
+    },
+    {
+      "id": "telco-06-004",
+      "category": "sms-telex",
+      "text": "VNMOBI trân trọng thông báo gói cước cuar quý khách sex tự động gia hạn vào ngày 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cuar",
+          "suggestion": "của",
+          "positionStart": 37,
+          "positionEnd": 41
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "sex",
+          "suggestion": "sẽ",
+          "positionStart": 52,
+          "positionEnd": 55
+        }
+      ]
+    },
+    {
+      "id": "telco-06-005",
+      "category": "sms-clean",
+      "text": "VNMOBI trân trọng thông báo gói cước của quý khách sẽ tự động gia hạn vào ngày 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "telco-06-006",
+      "category": "sms-telex",
+      "text": "VIETTEL trân trọng thông baos gói cước của quý khách sẽ tự động gia hạn vào ngày 20/11/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "baos",
+          "suggestion": "báo",
+          "positionStart": 25,
+          "positionEnd": 29
+        }
+      ]
+    },
+    {
+      "id": "telco-06-007",
+      "category": "sms-clean",
+      "text": "MOBIFONE trân trọng thông báo gói cước của quý khách sẽ tự động gia hạn vào ngày 20/11/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "telco-06-008",
+      "category": "sms-some-unaccented",
+      "text": "VIETTEL trân trọng thông báo goi cước của quý khách sẽ tự động gia hạn vào ngày 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "goi",
+          "suggestion": "gói",
+          "positionStart": 29,
+          "positionEnd": 32
+        }
+      ]
+    },
+    {
+      "id": "telco-06-009",
+      "category": "sms-wrong-diacritic",
+      "text": "MOBIFONE trân trọng thống báo gói cước của quý khách sẽ từ động gia hạn vào ngày 01/12/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "thống",
+          "suggestion": "thông",
+          "positionStart": 20,
+          "positionEnd": 25
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "từ",
+          "suggestion": "tự",
+          "positionStart": 56,
+          "positionEnd": 58
+        }
+      ]
+    },
+    {
+      "id": "telco-06-010",
+      "category": "sms-clean",
+      "text": "VINAPHONE trân trọng thông báo gói cước của quý khách sẽ tự động gia hạn vào ngày 05/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "telco-06-011",
+      "category": "sms-wrong-diacritic",
+      "text": "VNMOBI trân trọng thông báo gọi cước của quý khách sẽ tự động gia hạn vào ngày 05/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "gọi",
+          "suggestion": "gói",
+          "positionStart": 28,
+          "positionEnd": 31
+        }
+      ]
+    },
+    {
+      "id": "telco-06-012",
+      "category": "sms-some-unaccented",
+      "text": "VINAPHONE trân trọng thông báo gói cuoc của quý khách sẽ tự động gia hạn vao ngay 01/12/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cuoc",
+          "suggestion": "cước",
+          "positionStart": 35,
+          "positionEnd": 39
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vao",
+          "suggestion": "vào",
+          "positionStart": 73,
+          "positionEnd": 76
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 77,
+          "positionEnd": 81
+        }
+      ]
+    },
+    {
+      "id": "telco-06-013",
+      "category": "sms-some-unaccented",
+      "text": "VINAPHONE trân trong thông báo gói cước của quý khách sẽ tự dong gia hạn vào ngày 01/12/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "trong",
+          "suggestion": "trọng",
+          "positionStart": 15,
+          "positionEnd": 20
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dong",
+          "suggestion": "động",
+          "positionStart": 60,
+          "positionEnd": 64
+        }
+      ]
+    },
+    {
+      "id": "telco-06-014",
+      "category": "sms-some-unaccented",
+      "text": "VNMOBI trân trọng thong báo gói cước của quý khách sẽ tự động gia hạn vào ngày 20/11/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thong",
+          "suggestion": "thông",
+          "positionStart": 18,
+          "positionEnd": 23
+        }
+      ]
+    },
+    {
+      "id": "telco-06-015",
+      "category": "sms-typo",
+      "text": "VNMOBI trân trọng thông báo gói cưcớ của quý khách sẽ tự động gia hạn vào ngày 20/11/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cưcớ",
+          "suggestion": "cước",
+          "positionStart": 32,
+          "positionEnd": 36
+        }
+      ]
+    },
+    {
+      "id": "edu-01-000",
+      "category": "sms-telex",
+      "text": "Nhà trường thông baos học phí kỳ này là 1.500.000d, hạn nộp đến hết ngày 05/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "baos",
+          "suggestion": "báo",
+          "positionStart": 17,
+          "positionEnd": 21
+        }
+      ]
+    },
+    {
+      "id": "edu-01-001",
+      "category": "sms-telex",
+      "text": "Nhà trường thông báo học phí kỳ này laf 2.000.000d, hạn nộp đến hết ngày 05/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "laf",
+          "suggestion": "là",
+          "positionStart": 36,
+          "positionEnd": 39
+        }
+      ]
+    },
+    {
+      "id": "edu-01-002",
+      "category": "sms-all-unaccented",
+      "text": "Nha truong thong bao hoc phi ky nay la 200.000d, han nop den het ngay 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Nha",
+          "suggestion": "Nhà",
+          "positionStart": 0,
+          "positionEnd": 3
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "truong",
+          "suggestion": "trường",
+          "positionStart": 4,
+          "positionEnd": 10
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thong",
+          "suggestion": "thông",
+          "positionStart": 11,
+          "positionEnd": 16
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "bao",
+          "suggestion": "báo",
+          "positionStart": 17,
+          "positionEnd": 20
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 21,
+          "positionEnd": 24
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 25,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "kỳ",
+          "positionStart": 29,
+          "positionEnd": 31
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nay",
+          "suggestion": "này",
+          "positionStart": 32,
+          "positionEnd": 35
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "la",
+          "suggestion": "là",
+          "positionStart": 36,
+          "positionEnd": 38
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "han",
+          "suggestion": "hạn",
+          "positionStart": 49,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nop",
+          "suggestion": "nộp",
+          "positionStart": 53,
+          "positionEnd": 56
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 57,
+          "positionEnd": 60
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "het",
+          "suggestion": "hết",
+          "positionStart": 61,
+          "positionEnd": 64
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 65,
+          "positionEnd": 69
+        }
+      ]
+    },
+    {
+      "id": "edu-01-003",
+      "category": "sms-clean",
+      "text": "Nhà trường thông báo học phí kỳ này là 2.000.000d, hạn nộp đến hết ngày 01/12/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "edu-01-004",
+      "category": "sms-some-unaccented",
+      "text": "Nhà trường thông báo học phi kỳ này là 1.500.000d, hạn nộp đến het ngày 15/09/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 25,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "het",
+          "suggestion": "hết",
+          "positionStart": 63,
+          "positionEnd": 66
+        }
+      ]
+    },
+    {
+      "id": "edu-01-005",
+      "category": "sms-some-unaccented",
+      "text": "Nhà trường thông báo học phí ky này là 350.000d, hạn nộp đến hết ngày 01/12/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "kỳ",
+          "positionStart": 29,
+          "positionEnd": 31
+        }
+      ]
+    },
+    {
+      "id": "edu-01-006",
+      "category": "sms-typo",
+      "text": "Nhà trường thông báo học phí kỳ này là 350.000d, hạn nộp đến hết ngyà 05/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ngyà",
+          "suggestion": "ngày",
+          "positionStart": 65,
+          "positionEnd": 69
+        }
+      ]
+    },
+    {
+      "id": "edu-01-008",
+      "category": "sms-clean",
+      "text": "Nhà trường thông báo học phí kỳ này là 499.000d, hạn nộp đến hết ngày 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "edu-01-009",
+      "category": "sms-some-unaccented",
+      "text": "Nhà trường thông báo học phí kỳ này là 200.000d, hạn nộp đến het ngày 05/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "het",
+          "suggestion": "hết",
+          "positionStart": 61,
+          "positionEnd": 64
+        }
+      ]
+    },
+    {
+      "id": "edu-01-010",
+      "category": "sms-all-unaccented",
+      "text": "Nha truong thong bao hoc phi ky nay la 499.000d, han nop den het ngay 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Nha",
+          "suggestion": "Nhà",
+          "positionStart": 0,
+          "positionEnd": 3
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "truong",
+          "suggestion": "trường",
+          "positionStart": 4,
+          "positionEnd": 10
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thong",
+          "suggestion": "thông",
+          "positionStart": 11,
+          "positionEnd": 16
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "bao",
+          "suggestion": "báo",
+          "positionStart": 17,
+          "positionEnd": 20
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 21,
+          "positionEnd": 24
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 25,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "kỳ",
+          "positionStart": 29,
+          "positionEnd": 31
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nay",
+          "suggestion": "này",
+          "positionStart": 32,
+          "positionEnd": 35
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "la",
+          "suggestion": "là",
+          "positionStart": 36,
+          "positionEnd": 38
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "han",
+          "suggestion": "hạn",
+          "positionStart": 49,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nop",
+          "suggestion": "nộp",
+          "positionStart": 53,
+          "positionEnd": 56
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 57,
+          "positionEnd": 60
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "het",
+          "suggestion": "hết",
+          "positionStart": 61,
+          "positionEnd": 64
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 65,
+          "positionEnd": 69
+        }
+      ]
+    },
+    {
+      "id": "edu-01-011",
+      "category": "sms-some-unaccented",
+      "text": "Nhà trường thông báo hoc phí ky này là 1.500.000d, han nộp đến hết ngày 15/09/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 21,
+          "positionEnd": 24
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "kỳ",
+          "positionStart": 29,
+          "positionEnd": 31
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "han",
+          "suggestion": "hạn",
+          "positionStart": 51,
+          "positionEnd": 54
+        }
+      ]
+    },
+    {
+      "id": "edu-01-012",
+      "category": "sms-all-unaccented",
+      "text": "Nha truong thong bao hoc phi ky nay la 350.000d, han nop den het ngay 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Nha",
+          "suggestion": "Nhà",
+          "positionStart": 0,
+          "positionEnd": 3
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "truong",
+          "suggestion": "trường",
+          "positionStart": 4,
+          "positionEnd": 10
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thong",
+          "suggestion": "thông",
+          "positionStart": 11,
+          "positionEnd": 16
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "bao",
+          "suggestion": "báo",
+          "positionStart": 17,
+          "positionEnd": 20
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 21,
+          "positionEnd": 24
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 25,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "kỳ",
+          "positionStart": 29,
+          "positionEnd": 31
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nay",
+          "suggestion": "này",
+          "positionStart": 32,
+          "positionEnd": 35
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "la",
+          "suggestion": "là",
+          "positionStart": 36,
+          "positionEnd": 38
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "han",
+          "suggestion": "hạn",
+          "positionStart": 49,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nop",
+          "suggestion": "nộp",
+          "positionStart": 53,
+          "positionEnd": 56
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 57,
+          "positionEnd": 60
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "het",
+          "suggestion": "hết",
+          "positionStart": 61,
+          "positionEnd": 64
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 65,
+          "positionEnd": 69
+        }
+      ]
+    },
+    {
+      "id": "edu-01-013",
+      "category": "sms-some-unaccented",
+      "text": "Nhà trường thông báo học phí kỳ này là 350.000d, han nộp den hết ngày 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "han",
+          "suggestion": "hạn",
+          "positionStart": 49,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 57,
+          "positionEnd": 60
+        }
+      ]
+    },
+    {
+      "id": "edu-01-014",
+      "category": "sms-some-unaccented",
+      "text": "Nhà trường thong báo học phí ky này là 200.000d, hạn nộp đến hết ngày 05/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thong",
+          "suggestion": "thông",
+          "positionStart": 11,
+          "positionEnd": 16
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "kỳ",
+          "positionStart": 29,
+          "positionEnd": 31
+        }
+      ]
+    },
+    {
+      "id": "edu-01-015",
+      "category": "sms-all-unaccented",
+      "text": "Nha truong thong bao hoc phi ky nay la 99.000d, han nop den het ngay 01/12/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Nha",
+          "suggestion": "Nhà",
+          "positionStart": 0,
+          "positionEnd": 3
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "truong",
+          "suggestion": "trường",
+          "positionStart": 4,
+          "positionEnd": 10
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thong",
+          "suggestion": "thông",
+          "positionStart": 11,
+          "positionEnd": 16
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "bao",
+          "suggestion": "báo",
+          "positionStart": 17,
+          "positionEnd": 20
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 21,
+          "positionEnd": 24
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 25,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "kỳ",
+          "positionStart": 29,
+          "positionEnd": 31
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nay",
+          "suggestion": "này",
+          "positionStart": 32,
+          "positionEnd": 35
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "la",
+          "suggestion": "là",
+          "positionStart": 36,
+          "positionEnd": 38
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "han",
+          "suggestion": "hạn",
+          "positionStart": 48,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nop",
+          "suggestion": "nộp",
+          "positionStart": 52,
+          "positionEnd": 55
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 56,
+          "positionEnd": 59
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "het",
+          "suggestion": "hết",
+          "positionStart": 60,
+          "positionEnd": 63
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 64,
+          "positionEnd": 68
+        }
+      ]
+    },
+    {
+      "id": "edu-02-000",
+      "category": "sms-clean",
+      "text": "Phụ huynh vui lòng hoàn tất đóng học phí trước ngày 15/09/2026 để con em không bị gián đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "edu-02-001",
+      "category": "sms-some-unaccented",
+      "text": "Phụ huynh vui lòng hoàn tất dong học phí truoc ngày 05/10/2026 để con em không bị gián doan việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dong",
+          "suggestion": "đóng",
+          "positionStart": 28,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "truoc",
+          "suggestion": "trước",
+          "positionStart": 41,
+          "positionEnd": 46
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "doan",
+          "suggestion": "đoạn",
+          "positionStart": 87,
+          "positionEnd": 91
+        }
+      ]
+    },
+    {
+      "id": "edu-02-002",
+      "category": "sms-typo",
+      "text": "Phụ huynh vui lnòg hoàn tất đóng học phí trước ngày 05/10/2026 để con em kôhng bị gián đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "lnòg",
+          "suggestion": "lòng",
+          "positionStart": 14,
+          "positionEnd": 18
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "kôhng",
+          "suggestion": "không",
+          "positionStart": 73,
+          "positionEnd": 78
+        }
+      ]
+    },
+    {
+      "id": "edu-02-003",
+      "category": "sms-typo",
+      "text": "Phụ huynh vui lòng hoàn tất đóng học phí trước nàgy 20/11/2026 để con em không bị gián đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "nàgy",
+          "suggestion": "ngày",
+          "positionStart": 47,
+          "positionEnd": 51
+        }
+      ]
+    },
+    {
+      "id": "edu-02-005",
+      "category": "sms-telex",
+      "text": "Phụ huynh vui lòng hoàn tất đóng học phí trước ngayf 01/12/2026 để con em không bị gián đoạn viêcj học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ngayf",
+          "suggestion": "ngày",
+          "positionStart": 47,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "viêcj",
+          "suggestion": "việc",
+          "positionStart": 93,
+          "positionEnd": 98
+        }
+      ]
+    },
+    {
+      "id": "edu-02-006",
+      "category": "sms-some-unaccented",
+      "text": "Phụ huynh vui lòng hoàn tất dong học phi trước ngày 05/10/2026 để con em không bị gián đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dong",
+          "suggestion": "đóng",
+          "positionStart": 28,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 37,
+          "positionEnd": 40
+        }
+      ]
+    },
+    {
+      "id": "edu-02-007",
+      "category": "sms-all-unaccented",
+      "text": "Phu huynh vui long hoan tat dong hoc phi truoc ngay 05/10/2026 de con em khong bi gian doan viec hoc.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Phu",
+          "suggestion": "Phụ",
+          "positionStart": 0,
+          "positionEnd": 3
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "long",
+          "suggestion": "lòng",
+          "positionStart": 14,
+          "positionEnd": 18
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoan",
+          "suggestion": "hoàn",
+          "positionStart": 19,
+          "positionEnd": 23
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tat",
+          "suggestion": "tất",
+          "positionStart": 24,
+          "positionEnd": 27
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dong",
+          "suggestion": "đóng",
+          "positionStart": 28,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 33,
+          "positionEnd": 36
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 37,
+          "positionEnd": 40
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "truoc",
+          "suggestion": "trước",
+          "positionStart": 41,
+          "positionEnd": 46
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 47,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "de",
+          "suggestion": "để",
+          "positionStart": 63,
+          "positionEnd": 65
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khong",
+          "suggestion": "không",
+          "positionStart": 73,
+          "positionEnd": 78
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "bi",
+          "suggestion": "bị",
+          "positionStart": 79,
+          "positionEnd": 81
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "gian",
+          "suggestion": "gián",
+          "positionStart": 82,
+          "positionEnd": 86
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "doan",
+          "suggestion": "đoạn",
+          "positionStart": 87,
+          "positionEnd": 91
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "viec",
+          "suggestion": "việc",
+          "positionStart": 92,
+          "positionEnd": 96
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 97,
+          "positionEnd": 100
+        }
+      ]
+    },
+    {
+      "id": "edu-02-008",
+      "category": "sms-clean",
+      "text": "Phụ huynh vui lòng hoàn tất đóng học phí trước ngày 20/11/2026 để con em không bị gián đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "edu-02-009",
+      "category": "sms-clean",
+      "text": "Phụ huynh vui lòng hoàn tất đóng học phí trước ngày 01/12/2026 để con em không bị gián đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "edu-02-010",
+      "category": "sms-some-unaccented",
+      "text": "Phụ huynh vui lòng hoàn tất dong học phí trước ngày 01/12/2026 để con em không bi gian đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dong",
+          "suggestion": "đóng",
+          "positionStart": 28,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "bi",
+          "suggestion": "bị",
+          "positionStart": 79,
+          "positionEnd": 81
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "gian",
+          "suggestion": "gián",
+          "positionStart": 82,
+          "positionEnd": 86
+        }
+      ]
+    },
+    {
+      "id": "edu-02-011",
+      "category": "sms-clean",
+      "text": "Phụ huynh vui lòng hoàn tất đóng học phí trước ngày 01/12/2026 để con em không bị gián đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "edu-02-012",
+      "category": "sms-typo",
+      "text": "Phụ hunyh vui lòng hoàn tất đóng học phí trước ngày 05/10/2026 để con em không bị gián đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hunyh",
+          "suggestion": "huynh",
+          "positionStart": 4,
+          "positionEnd": 9
+        }
+      ]
+    },
+    {
+      "id": "edu-02-013",
+      "category": "sms-typo",
+      "text": "Phụ huynh vui lòng hoàn tất đóng học phí trớưc ngày 01/12/2026 để con em không bị gián đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "trớưc",
+          "suggestion": "trước",
+          "positionStart": 41,
+          "positionEnd": 46
+        }
+      ]
+    },
+    {
+      "id": "edu-02-014",
+      "category": "sms-clean",
+      "text": "Phụ huynh vui lòng hoàn tất đóng học phí trước ngày 15/09/2026 để con em không bị gián đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "edu-02-015",
+      "category": "sms-some-unaccented",
+      "text": "Phụ huynh vui lòng hoàn tất đóng học phí trước ngày 15/09/2026 de con em không bi gián đoạn việc học.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "de",
+          "suggestion": "để",
+          "positionStart": 63,
+          "positionEnd": 65
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "bi",
+          "suggestion": "bị",
+          "positionStart": 79,
+          "positionEnd": 81
+        }
+      ]
+    },
+    {
+      "id": "edu-04-000",
+      "category": "sms-typo",
+      "text": "HOMECARE khai giảng khóa học mới ngày 20/11/2026, ưu đãi 15% học phí cho học viên đăgn ký sớm.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đăgn",
+          "suggestion": "đăng",
+          "positionStart": 82,
+          "positionEnd": 86
+        }
+      ]
+    },
+    {
+      "id": "edu-04-001",
+      "category": "sms-all-unaccented",
+      "text": "NHATVIET khai giang khoa hoc moi ngay 01/12/2026, uu dai 50% hoc phi cho hoc vien dang ky som.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "giang",
+          "suggestion": "giảng",
+          "positionStart": 14,
+          "positionEnd": 19
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khoa",
+          "suggestion": "khóa",
+          "positionStart": 20,
+          "positionEnd": 24
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 25,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mới",
+          "positionStart": 29,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 33,
+          "positionEnd": 37
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "uu",
+          "suggestion": "ưu",
+          "positionStart": 50,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dai",
+          "suggestion": "đãi",
+          "positionStart": 53,
+          "positionEnd": 56
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 61,
+          "positionEnd": 64
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 65,
+          "positionEnd": 68
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 73,
+          "positionEnd": 76
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vien",
+          "suggestion": "viên",
+          "positionStart": 77,
+          "positionEnd": 81
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dang",
+          "suggestion": "đăng",
+          "positionStart": 82,
+          "positionEnd": 86
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "ký",
+          "positionStart": 87,
+          "positionEnd": 89
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "som",
+          "suggestion": "sớm",
+          "positionStart": 90,
+          "positionEnd": 93
+        }
+      ]
+    },
+    {
+      "id": "edu-04-002",
+      "category": "sms-all-unaccented",
+      "text": "FPT SHOP khai giang khoa hoc moi ngay 15/09/2026, uu dai 20% hoc phi cho hoc vien dang ky som.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "giang",
+          "suggestion": "giảng",
+          "positionStart": 14,
+          "positionEnd": 19
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khoa",
+          "suggestion": "khóa",
+          "positionStart": 20,
+          "positionEnd": 24
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 25,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mới",
+          "positionStart": 29,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 33,
+          "positionEnd": 37
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "uu",
+          "suggestion": "ưu",
+          "positionStart": 50,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dai",
+          "suggestion": "đãi",
+          "positionStart": 53,
+          "positionEnd": 56
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 61,
+          "positionEnd": 64
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 65,
+          "positionEnd": 68
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 73,
+          "positionEnd": 76
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vien",
+          "suggestion": "viên",
+          "positionStart": 77,
+          "positionEnd": 81
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dang",
+          "suggestion": "đăng",
+          "positionStart": 82,
+          "positionEnd": 86
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "ký",
+          "positionStart": 87,
+          "positionEnd": 89
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "som",
+          "suggestion": "sớm",
+          "positionStart": 90,
+          "positionEnd": 93
+        }
+      ]
+    },
+    {
+      "id": "edu-04-003",
+      "category": "sms-clean",
+      "text": "SAIGONFOOD khai giảng khóa học mới ngày 01/12/2026, ưu đãi 50% học phí cho học viên đăng ký sớm.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "edu-04-004",
+      "category": "sms-clean",
+      "text": "SAIGONFOOD khai giảng khóa học mới ngày 12/10/2026, ưu đãi 30% học phí cho học viên đăng ký sớm.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "edu-04-005",
+      "category": "sms-telex",
+      "text": "BAOMINH khai giảng khoas học mới ngày 20/11/2026, ưu đãi 10% học phí cho học viên đăng ký sớm.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khoas",
+          "suggestion": "khóa",
+          "positionStart": 19,
+          "positionEnd": 24
+        }
+      ]
+    },
+    {
+      "id": "edu-04-006",
+      "category": "sms-some-unaccented",
+      "text": "FPT SHOP khai giảng khóa học mới ngày 12/10/2026, uu đãi 30% học phí cho học viên đăng ký sớm.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "uu",
+          "suggestion": "ưu",
+          "positionStart": 50,
+          "positionEnd": 52
+        }
+      ]
+    },
+    {
+      "id": "edu-04-007",
+      "category": "sms-clean",
+      "text": "NHATVIET khai giảng khóa học mới ngày 12/10/2026, ưu đãi 30% học phí cho học viên đăng ký sớm.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "edu-04-008",
+      "category": "sms-some-unaccented",
+      "text": "BAOMINH khai giảng khóa hoc mới ngày 15/09/2026, ưu đãi 15% học phí cho học vien đăng ký sớm.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 24,
+          "positionEnd": 27
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vien",
+          "suggestion": "viên",
+          "positionStart": 76,
+          "positionEnd": 80
+        }
+      ]
+    },
+    {
+      "id": "edu-04-009",
+      "category": "sms-some-unaccented",
+      "text": "BAOMINH khai giảng khóa học mới ngay 20/11/2026, ưu đãi 15% học phí cho học viên dang ký sớm.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 32,
+          "positionEnd": 36
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dang",
+          "suggestion": "đăng",
+          "positionStart": 81,
+          "positionEnd": 85
+        }
+      ]
+    },
+    {
+      "id": "edu-04-010",
+      "category": "sms-some-unaccented",
+      "text": "SAIGONFOOD khai giảng khoa học mới ngày 01/12/2026, ưu đãi 15% học phí cho học vien đăng ký som.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khoa",
+          "suggestion": "khóa",
+          "positionStart": 22,
+          "positionEnd": 26
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vien",
+          "suggestion": "viên",
+          "positionStart": 79,
+          "positionEnd": 83
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "som",
+          "suggestion": "sớm",
+          "positionStart": 92,
+          "positionEnd": 95
+        }
+      ]
+    },
+    {
+      "id": "edu-04-011",
+      "category": "sms-all-unaccented",
+      "text": "BAOMINH khai giang khoa hoc moi ngay 20/11/2026, uu dai 20% hoc phi cho hoc vien dang ky som.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "giang",
+          "suggestion": "giảng",
+          "positionStart": 13,
+          "positionEnd": 18
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khoa",
+          "suggestion": "khóa",
+          "positionStart": 19,
+          "positionEnd": 23
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 24,
+          "positionEnd": 27
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mới",
+          "positionStart": 28,
+          "positionEnd": 31
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 32,
+          "positionEnd": 36
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "uu",
+          "suggestion": "ưu",
+          "positionStart": 49,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dai",
+          "suggestion": "đãi",
+          "positionStart": 52,
+          "positionEnd": 55
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 60,
+          "positionEnd": 63
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 64,
+          "positionEnd": 67
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 72,
+          "positionEnd": 75
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vien",
+          "suggestion": "viên",
+          "positionStart": 76,
+          "positionEnd": 80
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dang",
+          "suggestion": "đăng",
+          "positionStart": 81,
+          "positionEnd": 85
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "ký",
+          "positionStart": 86,
+          "positionEnd": 88
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "som",
+          "suggestion": "sớm",
+          "positionStart": 89,
+          "positionEnd": 92
+        }
+      ]
+    },
+    {
+      "id": "edu-04-012",
+      "category": "sms-all-unaccented",
+      "text": "FPT SHOP khai giang khoa hoc moi ngay 01/12/2026, uu dai 70% hoc phi cho hoc vien dang ky som.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "giang",
+          "suggestion": "giảng",
+          "positionStart": 14,
+          "positionEnd": 19
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khoa",
+          "suggestion": "khóa",
+          "positionStart": 20,
+          "positionEnd": 24
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 25,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mới",
+          "positionStart": 29,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 33,
+          "positionEnd": 37
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "uu",
+          "suggestion": "ưu",
+          "positionStart": 50,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dai",
+          "suggestion": "đãi",
+          "positionStart": 53,
+          "positionEnd": 56
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 61,
+          "positionEnd": 64
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 65,
+          "positionEnd": 68
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 73,
+          "positionEnd": 76
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vien",
+          "suggestion": "viên",
+          "positionStart": 77,
+          "positionEnd": 81
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dang",
+          "suggestion": "đăng",
+          "positionStart": 82,
+          "positionEnd": 86
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "ký",
+          "positionStart": 87,
+          "positionEnd": 89
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "som",
+          "suggestion": "sớm",
+          "positionStart": 90,
+          "positionEnd": 93
+        }
+      ]
+    },
+    {
+      "id": "edu-04-013",
+      "category": "sms-all-unaccented",
+      "text": "BAOMINH khai giang khoa hoc moi ngay 20/11/2026, uu dai 50% hoc phi cho hoc vien dang ky som.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "giang",
+          "suggestion": "giảng",
+          "positionStart": 13,
+          "positionEnd": 18
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khoa",
+          "suggestion": "khóa",
+          "positionStart": 19,
+          "positionEnd": 23
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 24,
+          "positionEnd": 27
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mới",
+          "positionStart": 28,
+          "positionEnd": 31
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 32,
+          "positionEnd": 36
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "uu",
+          "suggestion": "ưu",
+          "positionStart": 49,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dai",
+          "suggestion": "đãi",
+          "positionStart": 52,
+          "positionEnd": 55
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 60,
+          "positionEnd": 63
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "phi",
+          "suggestion": "phí",
+          "positionStart": 64,
+          "positionEnd": 67
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 72,
+          "positionEnd": 75
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vien",
+          "suggestion": "viên",
+          "positionStart": 76,
+          "positionEnd": 80
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dang",
+          "suggestion": "đăng",
+          "positionStart": 81,
+          "positionEnd": 85
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ky",
+          "suggestion": "ký",
+          "positionStart": 86,
+          "positionEnd": 88
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "som",
+          "suggestion": "sớm",
+          "positionStart": 89,
+          "positionEnd": 92
+        }
+      ]
+    },
+    {
+      "id": "edu-04-014",
+      "category": "sms-clean",
+      "text": "ANPHAT khai giảng khóa học mới ngày 20/11/2026, ưu đãi 15% học phí cho học viên đăng ký sớm.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "edu-04-015",
+      "category": "sms-some-unaccented",
+      "text": "FPT SHOP khai giảng khoa học mới ngày 20/11/2026, ưu đãi 20% học phí cho hoc viên dang ký sớm.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khoa",
+          "suggestion": "khóa",
+          "positionStart": 20,
+          "positionEnd": 24
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoc",
+          "suggestion": "học",
+          "positionStart": 73,
+          "positionEnd": 76
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dang",
+          "suggestion": "đăng",
+          "positionStart": 82,
+          "positionEnd": 86
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-000",
+      "category": "sms-clean",
+      "text": "Hoàn tiền 1.500.000d đã được cộng vào ví của quý khách cho giao dịch tại TENDOO.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "wallet-03-001",
+      "category": "sms-some-unaccented",
+      "text": "Hoàn tiền 499.000d đã được cộng vào ví cua quy khách cho giao dịch tại ANPHAT.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cua",
+          "suggestion": "của",
+          "positionStart": 39,
+          "positionEnd": 42
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 43,
+          "positionEnd": 46
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-002",
+      "category": "sms-telex",
+      "text": "Hoàn tiền 2.000.000d đã được cộng vào ví của quý khách cho giao dichj tại VNCARE.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "dichj",
+          "suggestion": "dịch",
+          "positionStart": 64,
+          "positionEnd": 69
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-003",
+      "category": "sms-all-unaccented",
+      "text": "Hoan tien 499.000d da duoc cong vao vi cua quy khach cho giao dich tai NHATVIET.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Hoan",
+          "suggestion": "Hoàn",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 5,
+          "positionEnd": 9
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "da",
+          "suggestion": "đã",
+          "positionStart": 19,
+          "positionEnd": 21
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "duoc",
+          "suggestion": "được",
+          "positionStart": 22,
+          "positionEnd": 26
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cong",
+          "suggestion": "cộng",
+          "positionStart": 27,
+          "positionEnd": 31
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vao",
+          "suggestion": "vào",
+          "positionStart": 32,
+          "positionEnd": 35
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vi",
+          "suggestion": "ví",
+          "positionStart": 36,
+          "positionEnd": 38
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cua",
+          "suggestion": "của",
+          "positionStart": 39,
+          "positionEnd": 42
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 43,
+          "positionEnd": 46
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 47,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dich",
+          "suggestion": "dịch",
+          "positionStart": 62,
+          "positionEnd": 66
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tai",
+          "suggestion": "tại",
+          "positionStart": 67,
+          "positionEnd": 70
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-004",
+      "category": "sms-all-unaccented",
+      "text": "Hoan tien 499.000d da duoc cong vao vi cua quy khach cho giao dich tai VIETSHOP.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Hoan",
+          "suggestion": "Hoàn",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 5,
+          "positionEnd": 9
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "da",
+          "suggestion": "đã",
+          "positionStart": 19,
+          "positionEnd": 21
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "duoc",
+          "suggestion": "được",
+          "positionStart": 22,
+          "positionEnd": 26
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cong",
+          "suggestion": "cộng",
+          "positionStart": 27,
+          "positionEnd": 31
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vao",
+          "suggestion": "vào",
+          "positionStart": 32,
+          "positionEnd": 35
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vi",
+          "suggestion": "ví",
+          "positionStart": 36,
+          "positionEnd": 38
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cua",
+          "suggestion": "của",
+          "positionStart": 39,
+          "positionEnd": 42
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 43,
+          "positionEnd": 46
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 47,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dich",
+          "suggestion": "dịch",
+          "positionStart": 62,
+          "positionEnd": 66
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tai",
+          "suggestion": "tại",
+          "positionStart": 67,
+          "positionEnd": 70
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-005",
+      "category": "sms-all-unaccented",
+      "text": "Hoan tien 99.000d da duoc cong vao vi cua quy khach cho giao dich tai ANPHAT.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Hoan",
+          "suggestion": "Hoàn",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 5,
+          "positionEnd": 9
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "da",
+          "suggestion": "đã",
+          "positionStart": 18,
+          "positionEnd": 20
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "duoc",
+          "suggestion": "được",
+          "positionStart": 21,
+          "positionEnd": 25
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cong",
+          "suggestion": "cộng",
+          "positionStart": 26,
+          "positionEnd": 30
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vao",
+          "suggestion": "vào",
+          "positionStart": 31,
+          "positionEnd": 34
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vi",
+          "suggestion": "ví",
+          "positionStart": 35,
+          "positionEnd": 37
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cua",
+          "suggestion": "của",
+          "positionStart": 38,
+          "positionEnd": 41
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 42,
+          "positionEnd": 45
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 46,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dich",
+          "suggestion": "dịch",
+          "positionStart": 61,
+          "positionEnd": 65
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tai",
+          "suggestion": "tại",
+          "positionStart": 66,
+          "positionEnd": 69
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-006",
+      "category": "sms-typo",
+      "text": "Hoàn tềin 200.000d đã được cộng vào ví của quý khách cho giao dịch tại MEGAMART.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tềin",
+          "suggestion": "tiền",
+          "positionStart": 5,
+          "positionEnd": 9
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-007",
+      "category": "sms-all-unaccented",
+      "text": "Hoan tien 1.500.000d da duoc cong vao vi cua quy khach cho giao dich tai VNCARE.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Hoan",
+          "suggestion": "Hoàn",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 5,
+          "positionEnd": 9
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "da",
+          "suggestion": "đã",
+          "positionStart": 21,
+          "positionEnd": 23
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "duoc",
+          "suggestion": "được",
+          "positionStart": 24,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cong",
+          "suggestion": "cộng",
+          "positionStart": 29,
+          "positionEnd": 33
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vao",
+          "suggestion": "vào",
+          "positionStart": 34,
+          "positionEnd": 37
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vi",
+          "suggestion": "ví",
+          "positionStart": 38,
+          "positionEnd": 40
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cua",
+          "suggestion": "của",
+          "positionStart": 41,
+          "positionEnd": 44
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 45,
+          "positionEnd": 48
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 49,
+          "positionEnd": 54
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dich",
+          "suggestion": "dịch",
+          "positionStart": 64,
+          "positionEnd": 68
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tai",
+          "suggestion": "tại",
+          "positionStart": 69,
+          "positionEnd": 72
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-008",
+      "category": "sms-all-unaccented",
+      "text": "Hoan tien 1.500.000d da duoc cong vao vi cua quy khach cho giao dich tai VNCARE.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Hoan",
+          "suggestion": "Hoàn",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 5,
+          "positionEnd": 9
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "da",
+          "suggestion": "đã",
+          "positionStart": 21,
+          "positionEnd": 23
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "duoc",
+          "suggestion": "được",
+          "positionStart": 24,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cong",
+          "suggestion": "cộng",
+          "positionStart": 29,
+          "positionEnd": 33
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vao",
+          "suggestion": "vào",
+          "positionStart": 34,
+          "positionEnd": 37
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vi",
+          "suggestion": "ví",
+          "positionStart": 38,
+          "positionEnd": 40
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cua",
+          "suggestion": "của",
+          "positionStart": 41,
+          "positionEnd": 44
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 45,
+          "positionEnd": 48
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 49,
+          "positionEnd": 54
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dich",
+          "suggestion": "dịch",
+          "positionStart": 64,
+          "positionEnd": 68
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tai",
+          "suggestion": "tại",
+          "positionStart": 69,
+          "positionEnd": 72
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-009",
+      "category": "sms-all-unaccented",
+      "text": "Hoan tien 499.000d da duoc cong vao vi cua quy khach cho giao dich tai VNCARE.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Hoan",
+          "suggestion": "Hoàn",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 5,
+          "positionEnd": 9
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "da",
+          "suggestion": "đã",
+          "positionStart": 19,
+          "positionEnd": 21
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "duoc",
+          "suggestion": "được",
+          "positionStart": 22,
+          "positionEnd": 26
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cong",
+          "suggestion": "cộng",
+          "positionStart": 27,
+          "positionEnd": 31
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vao",
+          "suggestion": "vào",
+          "positionStart": 32,
+          "positionEnd": 35
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vi",
+          "suggestion": "ví",
+          "positionStart": 36,
+          "positionEnd": 38
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cua",
+          "suggestion": "của",
+          "positionStart": 39,
+          "positionEnd": 42
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 43,
+          "positionEnd": 46
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 47,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dich",
+          "suggestion": "dịch",
+          "positionStart": 62,
+          "positionEnd": 66
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tai",
+          "suggestion": "tại",
+          "positionStart": 67,
+          "positionEnd": 70
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-010",
+      "category": "sms-wrong-diacritic",
+      "text": "Hoàn tiền 200.000d đã được cộng vào ví của quý khách cho giao dịch tài BAOMINH.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tài",
+          "suggestion": "tại",
+          "positionStart": 67,
+          "positionEnd": 70
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-011",
+      "category": "sms-punct",
+      "text": "Hoàn tiền 499.000d đã được cộng vào ví của quý khách cho giao dịch tại TENDOO..",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "REPEATED_PUNCTUATION"
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-012",
+      "category": "sms-typo",
+      "text": "Hoàn tềin 99.000d đã được cnộg vào ví của quý khách cho giao dịch tại HOMECARE.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tềin",
+          "suggestion": "tiền",
+          "positionStart": 5,
+          "positionEnd": 9
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "cnộg",
+          "suggestion": "cộng",
+          "positionStart": 26,
+          "positionEnd": 30
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-013",
+      "category": "sms-some-unaccented",
+      "text": "Hoàn tien 99.000d đã được cộng vào vi của quý khách cho giao dịch tại ANPHAT.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 5,
+          "positionEnd": 9
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vi",
+          "suggestion": "ví",
+          "positionStart": 35,
+          "positionEnd": 37
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-014",
+      "category": "sms-all-unaccented",
+      "text": "Hoan tien 2.000.000d da duoc cong vao vi cua quy khach cho giao dich tai TENDOO.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Hoan",
+          "suggestion": "Hoàn",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 5,
+          "positionEnd": 9
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "da",
+          "suggestion": "đã",
+          "positionStart": 21,
+          "positionEnd": 23
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "duoc",
+          "suggestion": "được",
+          "positionStart": 24,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cong",
+          "suggestion": "cộng",
+          "positionStart": 29,
+          "positionEnd": 33
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vao",
+          "suggestion": "vào",
+          "positionStart": 34,
+          "positionEnd": 37
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vi",
+          "suggestion": "ví",
+          "positionStart": 38,
+          "positionEnd": 40
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cua",
+          "suggestion": "của",
+          "positionStart": 41,
+          "positionEnd": 44
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 45,
+          "positionEnd": 48
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 49,
+          "positionEnd": 54
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dich",
+          "suggestion": "dịch",
+          "positionStart": 64,
+          "positionEnd": 68
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tai",
+          "suggestion": "tại",
+          "positionStart": 69,
+          "positionEnd": 72
+        }
+      ]
+    },
+    {
+      "id": "wallet-03-015",
+      "category": "sms-clean",
+      "text": "Hoàn tiền 2.000.000d đã được cộng vào ví của quý khách cho giao dịch tại VNCARE.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "wallet-04-001",
+      "category": "sms-typo",
+      "text": "Nậhp mã DH2026A khi thanh toán để nhận hoàn tiền đến 30% cho hóa đơn từ 350.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Nậhp",
+          "suggestion": "Nhập",
+          "positionStart": 0,
+          "positionEnd": 4
+        }
+      ]
+    },
+    {
+      "id": "wallet-04-002",
+      "category": "sms-typo",
+      "text": "Nhpậ mã DH2026A khi thanh toán để nhận hoàn tinề đến 50% cho hóa đơn từ 499.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Nhpậ",
+          "suggestion": "Nhập",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tinề",
+          "suggestion": "tiền",
+          "positionStart": 44,
+          "positionEnd": 48
+        }
+      ]
+    },
+    {
+      "id": "wallet-04-003",
+      "category": "sms-some-unaccented",
+      "text": "Nhập mã TT789X khi thanh toán để nhận hoan tien den 10% cho hóa đơn từ 2.000.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoan",
+          "suggestion": "hoàn",
+          "positionStart": 38,
+          "positionEnd": 42
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 43,
+          "positionEnd": 47
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 48,
+          "positionEnd": 51
+        }
+      ]
+    },
+    {
+      "id": "wallet-04-004",
+      "category": "sms-all-unaccented",
+      "text": "Nhap ma VC100K khi thanh toan de nhan hoan tien den 10% cho hoa don tu 2.000.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Nhap",
+          "suggestion": "Nhập",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ma",
+          "suggestion": "mã",
+          "positionStart": 5,
+          "positionEnd": 7
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "toan",
+          "suggestion": "toán",
+          "positionStart": 25,
+          "positionEnd": 29
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "de",
+          "suggestion": "để",
+          "positionStart": 30,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nhan",
+          "suggestion": "nhận",
+          "positionStart": 33,
+          "positionEnd": 37
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoan",
+          "suggestion": "hoàn",
+          "positionStart": 38,
+          "positionEnd": 42
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 43,
+          "positionEnd": 47
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 48,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoa",
+          "suggestion": "hóa",
+          "positionStart": 60,
+          "positionEnd": 63
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "don",
+          "suggestion": "đơn",
+          "positionStart": 64,
+          "positionEnd": 67
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tu",
+          "suggestion": "từ",
+          "positionStart": 68,
+          "positionEnd": 70
+        }
+      ]
+    },
+    {
+      "id": "wallet-04-005",
+      "category": "sms-telex",
+      "text": "Nhập mã MA50K khi thanh toán để nhânj hoàn tiền đến 20% cho hóa đơn tưf 1.500.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "nhânj",
+          "suggestion": "nhận",
+          "positionStart": 32,
+          "positionEnd": 37
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tưf",
+          "suggestion": "từ",
+          "positionStart": 68,
+          "positionEnd": 71
+        }
+      ]
+    },
+    {
+      "id": "wallet-04-006",
+      "category": "sms-punct",
+      "text": "Nhập  mã TT789X khi thanh toán để nhận hoàn tiền đến 10% cho hóa đơn từ 1.500.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "MULTIPLE_WHITESPACE"
+        }
+      ]
+    },
+    {
+      "id": "wallet-04-007",
+      "category": "sms-typo",
+      "text": "Nhập mã TT789X khi thanh toán để nhận hàon tinề đến 50% cho hóa đơn từ 200.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hàon",
+          "suggestion": "hoàn",
+          "positionStart": 38,
+          "positionEnd": 42
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tinề",
+          "suggestion": "tiền",
+          "positionStart": 43,
+          "positionEnd": 47
+        }
+      ]
+    },
+    {
+      "id": "wallet-04-008",
+      "category": "sms-punct",
+      "text": "Nhập mã MA50K khi thanh toán để nhận hoàn tiền đến 30% cho hóa đơn từ 200.000d..",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "REPEATED_PUNCTUATION"
+        }
+      ]
+    },
+    {
+      "id": "wallet-04-009",
+      "category": "sms-clean",
+      "text": "Nhập mã TT789X khi thanh toán để nhận hoàn tiền đến 30% cho hóa đơn từ 2.000.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "wallet-04-010",
+      "category": "sms-telex",
+      "text": "Nhập mã TT789X khi thanh toán để nhận hoanf tiền đến 10% cho hóa đơn từ 1.500.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "hoanf",
+          "suggestion": "hoàn",
+          "positionStart": 38,
+          "positionEnd": 43
+        }
+      ]
+    },
+    {
+      "id": "wallet-04-011",
+      "category": "sms-clean",
+      "text": "Nhập mã KM2026 khi thanh toán để nhận hoàn tiền đến 70% cho hóa đơn từ 499.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "wallet-04-012",
+      "category": "sms-all-unaccented",
+      "text": "Nhap ma KM2026 khi thanh toan de nhan hoan tien den 20% cho hoa don tu 2.000.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Nhap",
+          "suggestion": "Nhập",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ma",
+          "suggestion": "mã",
+          "positionStart": 5,
+          "positionEnd": 7
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "toan",
+          "suggestion": "toán",
+          "positionStart": 25,
+          "positionEnd": 29
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "de",
+          "suggestion": "để",
+          "positionStart": 30,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nhan",
+          "suggestion": "nhận",
+          "positionStart": 33,
+          "positionEnd": 37
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoan",
+          "suggestion": "hoàn",
+          "positionStart": 38,
+          "positionEnd": 42
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 43,
+          "positionEnd": 47
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 48,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoa",
+          "suggestion": "hóa",
+          "positionStart": 60,
+          "positionEnd": 63
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "don",
+          "suggestion": "đơn",
+          "positionStart": 64,
+          "positionEnd": 67
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tu",
+          "suggestion": "từ",
+          "positionStart": 68,
+          "positionEnd": 70
+        }
+      ]
+    },
+    {
+      "id": "wallet-04-013",
+      "category": "sms-all-unaccented",
+      "text": "Nhap ma DH2026A khi thanh toan de nhan hoan tien den 10% cho hoa don tu 200.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Nhap",
+          "suggestion": "Nhập",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ma",
+          "suggestion": "mã",
+          "positionStart": 5,
+          "positionEnd": 7
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "toan",
+          "suggestion": "toán",
+          "positionStart": 26,
+          "positionEnd": 30
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "de",
+          "suggestion": "để",
+          "positionStart": 31,
+          "positionEnd": 33
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nhan",
+          "suggestion": "nhận",
+          "positionStart": 34,
+          "positionEnd": 38
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoan",
+          "suggestion": "hoàn",
+          "positionStart": 39,
+          "positionEnd": 43
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tien",
+          "suggestion": "tiền",
+          "positionStart": 44,
+          "positionEnd": 48
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 49,
+          "positionEnd": 52
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hoa",
+          "suggestion": "hóa",
+          "positionStart": 61,
+          "positionEnd": 64
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "don",
+          "suggestion": "đơn",
+          "positionStart": 65,
+          "positionEnd": 68
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tu",
+          "suggestion": "từ",
+          "positionStart": 69,
+          "positionEnd": 71
+        }
+      ]
+    },
+    {
+      "id": "wallet-04-015",
+      "category": "sms-wrong-diacritic",
+      "text": "Nhập mã MA50K khi thanh toán để nhận hoàn tiền đến 30% cho hóa đón tử 1.500.000d.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đón",
+          "suggestion": "đơn",
+          "positionStart": 63,
+          "positionEnd": 66
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "tử",
+          "suggestion": "từ",
+          "positionStart": 67,
+          "positionEnd": 69
+        }
+      ]
+    },
+    {
+      "id": "serv-06-000",
+      "category": "sms-some-unaccented",
+      "text": "MEGAMART kinh chúc quý khách năm mới an khang thịnh vượng. Cửa hàng nghỉ lễ từ ngày 05/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "kinh",
+          "suggestion": "kính",
+          "positionStart": 9,
+          "positionEnd": 13
+        }
+      ]
+    },
+    {
+      "id": "serv-06-001",
+      "category": "sms-telex",
+      "text": "NHATVIET kính chúc quý khách năm mới an khang thịnh vươngj. Cửa hàng nghỉ lễ từ ngày 05/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "vươngj",
+          "suggestion": "vượng",
+          "positionStart": 52,
+          "positionEnd": 58
+        }
+      ]
+    },
+    {
+      "id": "serv-06-002",
+      "category": "sms-telex",
+      "text": "ANPHAT kính chúc quý khachs năm mới an khang thịnh vượng. Cửa hàng nghỉ lễ từ ngayf 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "khachs",
+          "suggestion": "khách",
+          "positionStart": 21,
+          "positionEnd": 27
+        },
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "ngayf",
+          "suggestion": "ngày",
+          "positionStart": 78,
+          "positionEnd": 83
+        }
+      ]
+    },
+    {
+      "id": "serv-06-003",
+      "category": "sms-all-unaccented",
+      "text": "FPT SHOP kinh chuc quy khach nam moi an khang thinh vuong. Cua hang nghi le tu ngay 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "kinh",
+          "suggestion": "kính",
+          "positionStart": 9,
+          "positionEnd": 13
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "chuc",
+          "suggestion": "chúc",
+          "positionStart": 14,
+          "positionEnd": 18
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 19,
+          "positionEnd": 22
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 23,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nam",
+          "suggestion": "năm",
+          "positionStart": 29,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mới",
+          "positionStart": 33,
+          "positionEnd": 36
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thinh",
+          "suggestion": "thịnh",
+          "positionStart": 46,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vuong",
+          "suggestion": "vượng",
+          "positionStart": 52,
+          "positionEnd": 57
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Cua",
+          "suggestion": "Cửa",
+          "positionStart": 59,
+          "positionEnd": 62
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hang",
+          "suggestion": "hàng",
+          "positionStart": 63,
+          "positionEnd": 67
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nghi",
+          "suggestion": "nghỉ",
+          "positionStart": 68,
+          "positionEnd": 72
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "le",
+          "suggestion": "lễ",
+          "positionStart": 73,
+          "positionEnd": 75
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tu",
+          "suggestion": "từ",
+          "positionStart": 76,
+          "positionEnd": 78
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 79,
+          "positionEnd": 83
+        }
+      ]
+    },
+    {
+      "id": "serv-06-004",
+      "category": "sms-clean",
+      "text": "NHATVIET kính chúc quý khách năm mới an khang thịnh vượng. Cửa hàng nghỉ lễ từ ngày 01/12/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "serv-06-005",
+      "category": "sms-some-unaccented",
+      "text": "SAIGONFOOD kính chúc quý khách năm moi an khang thinh vượng. Cửa hàng nghỉ lễ từ ngày 15/09/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mới",
+          "positionStart": 35,
+          "positionEnd": 38
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thinh",
+          "suggestion": "thịnh",
+          "positionStart": 48,
+          "positionEnd": 53
+        }
+      ]
+    },
+    {
+      "id": "serv-06-006",
+      "category": "sms-clean",
+      "text": "TENDOO kính chúc quý khách năm mới an khang thịnh vượng. Cửa hàng nghỉ lễ từ ngày 15/09/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "serv-06-007",
+      "category": "sms-all-unaccented",
+      "text": "MEGAMART kinh chuc quy khach nam moi an khang thinh vuong. Cua hang nghi le tu ngay 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "kinh",
+          "suggestion": "kính",
+          "positionStart": 9,
+          "positionEnd": 13
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "chuc",
+          "suggestion": "chúc",
+          "positionStart": 14,
+          "positionEnd": 18
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 19,
+          "positionEnd": 22
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 23,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nam",
+          "suggestion": "năm",
+          "positionStart": 29,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mới",
+          "positionStart": 33,
+          "positionEnd": 36
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thinh",
+          "suggestion": "thịnh",
+          "positionStart": 46,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vuong",
+          "suggestion": "vượng",
+          "positionStart": 52,
+          "positionEnd": 57
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Cua",
+          "suggestion": "Cửa",
+          "positionStart": 59,
+          "positionEnd": 62
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hang",
+          "suggestion": "hàng",
+          "positionStart": 63,
+          "positionEnd": 67
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nghi",
+          "suggestion": "nghỉ",
+          "positionStart": 68,
+          "positionEnd": 72
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "le",
+          "suggestion": "lễ",
+          "positionStart": 73,
+          "positionEnd": 75
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tu",
+          "suggestion": "từ",
+          "positionStart": 76,
+          "positionEnd": 78
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 79,
+          "positionEnd": 83
+        }
+      ]
+    },
+    {
+      "id": "serv-06-008",
+      "category": "sms-some-unaccented",
+      "text": "FPT SHOP kính chúc quý khách năm mới an khang thịnh vượng. Cửa hàng nghỉ lễ tu ngày 01/12/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tu",
+          "suggestion": "từ",
+          "positionStart": 76,
+          "positionEnd": 78
+        }
+      ]
+    },
+    {
+      "id": "serv-06-009",
+      "category": "sms-clean",
+      "text": "HOMECARE kính chúc quý khách năm mới an khang thịnh vượng. Cửa hàng nghỉ lễ từ ngày 05/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "serv-06-010",
+      "category": "sms-some-unaccented",
+      "text": "TENDOO kính chuc quý khách năm mới an khang thịnh vượng. Cửa hàng nghỉ le từ ngay 20/11/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "chuc",
+          "suggestion": "chúc",
+          "positionStart": 12,
+          "positionEnd": 16
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "le",
+          "suggestion": "lễ",
+          "positionStart": 71,
+          "positionEnd": 73
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 77,
+          "positionEnd": 81
+        }
+      ]
+    },
+    {
+      "id": "serv-06-011",
+      "category": "sms-some-unaccented",
+      "text": "NHATVIET kính chúc quý khách năm mới an khang thịnh vượng. Cửa hang nghỉ lễ từ ngày 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hang",
+          "suggestion": "hàng",
+          "positionStart": 63,
+          "positionEnd": 67
+        }
+      ]
+    },
+    {
+      "id": "serv-06-013",
+      "category": "sms-clean",
+      "text": "FPT SHOP kính chúc quý khách năm mới an khang thịnh vượng. Cửa hàng nghỉ lễ từ ngày 15/09/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "serv-06-014",
+      "category": "sms-all-unaccented",
+      "text": "NHATVIET kinh chuc quy khach nam moi an khang thinh vuong. Cua hang nghi le tu ngay 12/10/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "kinh",
+          "suggestion": "kính",
+          "positionStart": 9,
+          "positionEnd": 13
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "chuc",
+          "suggestion": "chúc",
+          "positionStart": 14,
+          "positionEnd": 18
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 19,
+          "positionEnd": 22
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 23,
+          "positionEnd": 28
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nam",
+          "suggestion": "năm",
+          "positionStart": 29,
+          "positionEnd": 32
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mới",
+          "positionStart": 33,
+          "positionEnd": 36
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thinh",
+          "suggestion": "thịnh",
+          "positionStart": 46,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vuong",
+          "suggestion": "vượng",
+          "positionStart": 52,
+          "positionEnd": 57
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Cua",
+          "suggestion": "Cửa",
+          "positionStart": 59,
+          "positionEnd": 62
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hang",
+          "suggestion": "hàng",
+          "positionStart": 63,
+          "positionEnd": 67
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nghi",
+          "suggestion": "nghỉ",
+          "positionStart": 68,
+          "positionEnd": 72
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "le",
+          "suggestion": "lễ",
+          "positionStart": 73,
+          "positionEnd": 75
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tu",
+          "suggestion": "từ",
+          "positionStart": 76,
+          "positionEnd": 78
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 79,
+          "positionEnd": 83
+        }
+      ]
+    },
+    {
+      "id": "serv-06-015",
+      "category": "sms-all-unaccented",
+      "text": "SAIGONFOOD kinh chuc quy khach nam moi an khang thinh vuong. Cua hang nghi le tu ngay 20/11/2026.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "kinh",
+          "suggestion": "kính",
+          "positionStart": 11,
+          "positionEnd": 15
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "chuc",
+          "suggestion": "chúc",
+          "positionStart": 16,
+          "positionEnd": 20
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 21,
+          "positionEnd": 24
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 25,
+          "positionEnd": 30
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nam",
+          "suggestion": "năm",
+          "positionStart": 31,
+          "positionEnd": 34
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "moi",
+          "suggestion": "mới",
+          "positionStart": 35,
+          "positionEnd": 38
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thinh",
+          "suggestion": "thịnh",
+          "positionStart": 48,
+          "positionEnd": 53
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "vuong",
+          "suggestion": "vượng",
+          "positionStart": 54,
+          "positionEnd": 59
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Cua",
+          "suggestion": "Cửa",
+          "positionStart": 61,
+          "positionEnd": 64
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hang",
+          "suggestion": "hàng",
+          "positionStart": 65,
+          "positionEnd": 69
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "nghi",
+          "suggestion": "nghỉ",
+          "positionStart": 70,
+          "positionEnd": 74
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "le",
+          "suggestion": "lễ",
+          "positionStart": 75,
+          "positionEnd": 77
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "tu",
+          "suggestion": "từ",
+          "positionStart": 78,
+          "positionEnd": 80
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "ngay",
+          "suggestion": "ngày",
+          "positionStart": 81,
+          "positionEnd": 85
+        }
+      ]
+    },
+    {
+      "id": "serv-07-001",
+      "category": "sms-some-unaccented",
+      "text": "Nhân dịp lễ, MEGAMART gửi lời cảm ơn chân thành đến quý khach da đồng hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 56,
+          "positionEnd": 61
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "da",
+          "suggestion": "đã",
+          "positionStart": 62,
+          "positionEnd": 64
+        }
+      ]
+    },
+    {
+      "id": "serv-07-002",
+      "category": "sms-some-unaccented",
+      "text": "Nhân dịp lễ, NHATVIET gửi lời cảm ơn chân thành đến quý khách đã đồng hanh trong suot thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hanh",
+          "suggestion": "hành",
+          "positionStart": 70,
+          "positionEnd": 74
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "suot",
+          "suggestion": "suốt",
+          "positionStart": 81,
+          "positionEnd": 85
+        }
+      ]
+    },
+    {
+      "id": "serv-07-003",
+      "category": "sms-clean",
+      "text": "Nhân dịp lễ, BAOMINH gửi lời cảm ơn chân thành đến quý khách đã đồng hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "serv-07-004",
+      "category": "sms-clean",
+      "text": "Nhân dịp lễ, FPT SHOP gửi lời cảm ơn chân thành đến quý khách đã đồng hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "serv-07-005",
+      "category": "sms-typo",
+      "text": "Nâhn dịp lễ, VIETSHOP gửi lời cảm ơn chân thành đến quý khách đã đồng hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Nâhn",
+          "suggestion": "Nhân",
+          "positionStart": 0,
+          "positionEnd": 4
+        }
+      ]
+    },
+    {
+      "id": "serv-07-006",
+      "category": "sms-boundary",
+      "text": "Nhân dịp lễ, NHATVIET gửilời cảm ơn chân thành đến quý khách đã đồng hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_WORD_BOUNDARY_ERROR",
+          "value": "gửilời",
+          "suggestion": "gửi lời",
+          "positionStart": 22,
+          "positionEnd": 28
+        }
+      ]
+    },
+    {
+      "id": "serv-07-007",
+      "category": "sms-clean",
+      "text": "Nhân dịp lễ, HOMECARE gửi lời cảm ơn chân thành đến quý khách đã đồng hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "serv-07-008",
+      "category": "sms-some-unaccented",
+      "text": "Nhân dịp lễ, HOMECARE gửi lời cảm ơn chân thành den quý khach đã dong hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 48,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 56,
+          "positionEnd": 61
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dong",
+          "suggestion": "đồng",
+          "positionStart": 65,
+          "positionEnd": 69
+        }
+      ]
+    },
+    {
+      "id": "serv-07-009",
+      "category": "sms-wrong-diacritic",
+      "text": "Nhân dịp lễ, SAIGONFOOD gửi lời cảm ơn chân thành đến quý khách đã đóng hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "đóng",
+          "suggestion": "đồng",
+          "positionStart": 67,
+          "positionEnd": 71
+        }
+      ]
+    },
+    {
+      "id": "serv-07-010",
+      "category": "sms-wrong-diacritic",
+      "text": "Nhận dịp lễ, HOMECARE gửi lời cảm ơn chân thành đến quý khách đã đồng hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_SPELLING_ERROR",
+          "value": "Nhận",
+          "suggestion": "Nhân",
+          "positionStart": 0,
+          "positionEnd": 4
+        }
+      ]
+    },
+    {
+      "id": "serv-07-011",
+      "category": "sms-clean",
+      "text": "Nhân dịp lễ, NHATVIET gửi lời cảm ơn chân thành đến quý khách đã đồng hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "serv-07-012",
+      "category": "sms-punct",
+      "text": "Nhân  dịp lễ, NHATVIET gửi lời cảm ơn chân thành đến quý khách đã đồng hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "MULTIPLE_WHITESPACE"
+        }
+      ]
+    },
+    {
+      "id": "serv-07-013",
+      "category": "sms-all-unaccented",
+      "text": "Nhan dip le, HOMECARE gui loi cam on chan thanh den quy khach da dong hanh trong suot thoi gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Nhan",
+          "suggestion": "Nhân",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dip",
+          "suggestion": "dịp",
+          "positionStart": 5,
+          "positionEnd": 8
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "le",
+          "suggestion": "lễ",
+          "positionStart": 9,
+          "positionEnd": 11
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "gui",
+          "suggestion": "gửi",
+          "positionStart": 22,
+          "positionEnd": 25
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "loi",
+          "suggestion": "lời",
+          "positionStart": 26,
+          "positionEnd": 29
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cam",
+          "suggestion": "cảm",
+          "positionStart": 30,
+          "positionEnd": 33
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "on",
+          "suggestion": "ơn",
+          "positionStart": 34,
+          "positionEnd": 36
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "chan",
+          "suggestion": "chân",
+          "positionStart": 37,
+          "positionEnd": 41
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thanh",
+          "suggestion": "thành",
+          "positionStart": 42,
+          "positionEnd": 47
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 48,
+          "positionEnd": 51
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 52,
+          "positionEnd": 55
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 56,
+          "positionEnd": 61
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "da",
+          "suggestion": "đã",
+          "positionStart": 62,
+          "positionEnd": 64
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dong",
+          "suggestion": "đồng",
+          "positionStart": 65,
+          "positionEnd": 69
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hanh",
+          "suggestion": "hành",
+          "positionStart": 70,
+          "positionEnd": 74
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "suot",
+          "suggestion": "suốt",
+          "positionStart": 81,
+          "positionEnd": 85
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thoi",
+          "suggestion": "thời",
+          "positionStart": 86,
+          "positionEnd": 90
+        }
+      ]
+    },
+    {
+      "id": "serv-07-014",
+      "category": "sms-clean",
+      "text": "Nhân dịp lễ, TENDOO gửi lời cảm ơn chân thành đến quý khách đã đồng hành trong suốt thời gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": []
+    },
+    {
+      "id": "serv-07-015",
+      "category": "sms-all-unaccented",
+      "text": "Nhan dip le, VNCARE gui loi cam on chan thanh den quy khach da dong hanh trong suot thoi gian qua.",
+      "mode": "ACCENTED",
+      "brand": "VT_TENDOO",
+      "fullyLabeledRuleIds": [
+        "POSSIBLE_MISSING_DIACRITIC",
+        "POSSIBLE_SPELLING_ERROR",
+        "POSSIBLE_WORD_BOUNDARY_ERROR"
+      ],
+      "expect": [
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "Nhan",
+          "suggestion": "Nhân",
+          "positionStart": 0,
+          "positionEnd": 4
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dip",
+          "suggestion": "dịp",
+          "positionStart": 5,
+          "positionEnd": 8
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "le",
+          "suggestion": "lễ",
+          "positionStart": 9,
+          "positionEnd": 11
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "gui",
+          "suggestion": "gửi",
+          "positionStart": 20,
+          "positionEnd": 23
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "loi",
+          "suggestion": "lời",
+          "positionStart": 24,
+          "positionEnd": 27
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "cam",
+          "suggestion": "cảm",
+          "positionStart": 28,
+          "positionEnd": 31
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "on",
+          "suggestion": "ơn",
+          "positionStart": 32,
+          "positionEnd": 34
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "chan",
+          "suggestion": "chân",
+          "positionStart": 35,
+          "positionEnd": 39
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thanh",
+          "suggestion": "thành",
+          "positionStart": 40,
+          "positionEnd": 45
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "den",
+          "suggestion": "đến",
+          "positionStart": 46,
+          "positionEnd": 49
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "quy",
+          "suggestion": "quý",
+          "positionStart": 50,
+          "positionEnd": 53
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "khach",
+          "suggestion": "khách",
+          "positionStart": 54,
+          "positionEnd": 59
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "da",
+          "suggestion": "đã",
+          "positionStart": 60,
+          "positionEnd": 62
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "dong",
+          "suggestion": "đồng",
+          "positionStart": 63,
+          "positionEnd": 67
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "hanh",
+          "suggestion": "hành",
+          "positionStart": 68,
+          "positionEnd": 72
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "suot",
+          "suggestion": "suốt",
+          "positionStart": 79,
+          "positionEnd": 83
+        },
+        {
+          "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+          "value": "thoi",
+          "suggestion": "thời",
+          "positionStart": 84,
+          "positionEnd": 88
+        }
+      ]
+    }
+  ]
+}
