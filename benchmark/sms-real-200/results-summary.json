@@ -1,0 +1,426 @@
+{
+  "runInfo": {
+    "dataset": "SMS real 200/corpus-sms-real-200.json",
+    "datasetRecords": 200,
+    "repo": [
+      {
+        "label": "UPSTREAM",
+        "path": "repos/upstream",
+        "branch": "main",
+        "commit": "b925c98856f28e48e9aeba1450d7037017f9e174",
+        "profile": "default/full",
+        "lmArtifact": "src/data/lm-ngrams.tsv",
+        "lexiconArtifact": "src/data/lexicon.txt"
+      },
+      {
+        "label": "FORK_FULL",
+        "path": "repos/fork-full",
+        "branch": "review-fixes-and-sms-local-profile",
+        "commit": "fb2e2d68bf3ad1a5535a9dce35321a27ad0d5ca0",
+        "profile": "full",
+        "lmArtifact": "src/data/lm-ngrams.tsv",
+        "lexiconArtifact": "src/data/lexicon.txt"
+      },
+      {
+        "label": "FORK_LITE",
+        "path": "repos/fork-lite",
+        "branch": "review-fixes-and-sms-local-profile",
+        "commit": "fb2e2d68bf3ad1a5535a9dce35321a27ad0d5ca0",
+        "profile": "lite",
+        "lmArtifact": "src/data/lm-ngrams.sms.tsv",
+        "lexiconArtifact": "src/data/lexicon-sms.txt"
+      }
+    ],
+    "node": "v24.13.0",
+    "os": "win32 10.0.26200 (x64)",
+    "timestamp": "2026-09-06T10:26:47.024Z",
+    "exactCommands": [
+      "node run-benchmark.mjs",
+      "worker: node worker.mjs --repo=<config repo> --dataset=<corpus-sms-real-200.json>"
+    ],
+    "testSuites": {
+      "UPSTREAM": {
+        "command": "npm test",
+        "result": "PASS: 34 passed, 2 skipped, 0 failed"
+      },
+      "FORK_FULL": {
+        "command": "$env:ENGINE_PROFILE='full'; npm test",
+        "result": "PASS: 284 passed, 5 skipped, 0 failed"
+      },
+      "FORK_LITE": {
+        "command": "$env:ENGINE_PROFILE='lite'; npm test",
+        "result": "FAIL: 280 passed, 5 skipped, 4 failed"
+      }
+    },
+    "warmupCount": 3,
+    "scoring": "Issue-level one-to-one span/token matching; exact suggestion after NFC/case/punctuation normalization."
+  },
+  "summary": {
+    "UPSTREAM": {
+      "messages": 200,
+      "errors": 525,
+      "detection": {
+        "tp": 329,
+        "fp": 3,
+        "fn": 196,
+        "precision": 0.9909638554216867,
+        "recall": 0.6266666666666667,
+        "f1": 0.7677946324387397
+      },
+      "correction": {
+        "detectedErrors": 329,
+        "correctSuggestions": 317,
+        "correctionAccuracyAmongDetected": 0.9635258358662614,
+        "endToEndCorrectionRecall": 0.6038095238095238
+      },
+      "clean": {
+        "messages": 40,
+        "messagesWithFalsePositive": 1,
+        "falsePositiveRate": 0.025,
+        "falsePositiveIssues": 1,
+        "fpPer100Messages": 2.5,
+        "fpPer1000Tokens": 2.4096385542168677
+      },
+      "protected": {
+        "messages": 20,
+        "spans": 29,
+        "violatingMessages": 0,
+        "violations": 0,
+        "protectedSpanViolationRate": 0,
+        "messageViolationRate": 0
+      },
+      "latencyMs": {
+        "median": 8.449599999999919,
+        "p95": 23.132300000000214,
+        "p99": 25.77930000000015,
+        "max": 30.321500000000015
+      },
+      "category": {
+        "CLEAN": {
+          "messages": 40,
+          "errors": 0,
+          "precision": 0,
+          "recall": 1,
+          "f1": 0,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 1,
+          "fp": 1
+        },
+        "ALL_UNACCENTED": {
+          "messages": 40,
+          "errors": 375,
+          "precision": 1,
+          "recall": 0.6346666666666667,
+          "f1": 0.7765089722675368,
+          "correctionAccuracy": 0.9663865546218487,
+          "endToEndCorrectionRecall": 0.6133333333333333,
+          "fp": 0
+        },
+        "SOME_UNACCENTED": {
+          "messages": 30,
+          "errors": 60,
+          "precision": 1,
+          "recall": 0.65,
+          "f1": 0.787878787878788,
+          "correctionAccuracy": 0.9743589743589743,
+          "endToEndCorrectionRecall": 0.6333333333333333,
+          "fp": 0
+        },
+        "WRONG_DIACRITIC": {
+          "messages": 25,
+          "errors": 25,
+          "precision": 0.6666666666666666,
+          "recall": 0.08,
+          "f1": 0.14285714285714285,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 0.08,
+          "fp": 1
+        },
+        "TYPO_TELEX": {
+          "messages": 25,
+          "errors": 25,
+          "precision": 1,
+          "recall": 0.84,
+          "f1": 0.9130434782608696,
+          "correctionAccuracy": 0.9523809523809523,
+          "endToEndCorrectionRecall": 0.8,
+          "fp": 0
+        },
+        "PROTECTED_ENTITY": {
+          "messages": 20,
+          "errors": 20,
+          "precision": 1,
+          "recall": 0.8,
+          "f1": 0.888888888888889,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 0.8,
+          "fp": 0
+        },
+        "CODE_SWITCH": {
+          "messages": 10,
+          "errors": 10,
+          "precision": 0.9,
+          "recall": 0.9,
+          "f1": 0.9,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 0.9,
+          "fp": 1
+        },
+        "ADVERSARIAL_MINIMAL_PAIR": {
+          "messages": 10,
+          "errors": 10,
+          "precision": 1,
+          "recall": 0.4,
+          "f1": 0.5714285714285715,
+          "correctionAccuracy": 0.5,
+          "endToEndCorrectionRecall": 0.2,
+          "fp": 0
+        }
+      }
+    },
+    "FORK_FULL": {
+      "messages": 200,
+      "errors": 525,
+      "detection": {
+        "tp": 346,
+        "fp": 2,
+        "fn": 179,
+        "precision": 0.9942528735632183,
+        "recall": 0.659047619047619,
+        "f1": 0.7926689576174113
+      },
+      "correction": {
+        "detectedErrors": 346,
+        "correctSuggestions": 335,
+        "correctionAccuracyAmongDetected": 0.9682080924855492,
+        "endToEndCorrectionRecall": 0.638095238095238
+      },
+      "clean": {
+        "messages": 40,
+        "messagesWithFalsePositive": 1,
+        "falsePositiveRate": 0.025,
+        "falsePositiveIssues": 1,
+        "fpPer100Messages": 2.5,
+        "fpPer1000Tokens": 2.4096385542168677
+      },
+      "protected": {
+        "messages": 20,
+        "spans": 29,
+        "violatingMessages": 0,
+        "violations": 0,
+        "protectedSpanViolationRate": 0,
+        "messageViolationRate": 0
+      },
+      "latencyMs": {
+        "median": 10.122000000001208,
+        "p95": 24.602999999999156,
+        "p99": 29.445700000000215,
+        "max": 36.46380000000045
+      },
+      "category": {
+        "CLEAN": {
+          "messages": 40,
+          "errors": 0,
+          "precision": 0,
+          "recall": 1,
+          "f1": 0,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 1,
+          "fp": 1
+        },
+        "ALL_UNACCENTED": {
+          "messages": 40,
+          "errors": 375,
+          "precision": 1,
+          "recall": 0.68,
+          "f1": 0.8095238095238095,
+          "correctionAccuracy": 0.9725490196078431,
+          "endToEndCorrectionRecall": 0.6613333333333333,
+          "fp": 0
+        },
+        "SOME_UNACCENTED": {
+          "messages": 30,
+          "errors": 60,
+          "precision": 1,
+          "recall": 0.65,
+          "f1": 0.787878787878788,
+          "correctionAccuracy": 0.9743589743589743,
+          "endToEndCorrectionRecall": 0.6333333333333333,
+          "fp": 0
+        },
+        "WRONG_DIACRITIC": {
+          "messages": 25,
+          "errors": 25,
+          "precision": 0.6666666666666666,
+          "recall": 0.08,
+          "f1": 0.14285714285714285,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 0.08,
+          "fp": 1
+        },
+        "TYPO_TELEX": {
+          "messages": 25,
+          "errors": 25,
+          "precision": 1,
+          "recall": 0.84,
+          "f1": 0.9130434782608696,
+          "correctionAccuracy": 0.9523809523809523,
+          "endToEndCorrectionRecall": 0.8,
+          "fp": 0
+        },
+        "PROTECTED_ENTITY": {
+          "messages": 20,
+          "errors": 20,
+          "precision": 1,
+          "recall": 0.8,
+          "f1": 0.888888888888889,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 0.8,
+          "fp": 0
+        },
+        "CODE_SWITCH": {
+          "messages": 10,
+          "errors": 10,
+          "precision": 1,
+          "recall": 0.9,
+          "f1": 0.9473684210526316,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 0.9,
+          "fp": 0
+        },
+        "ADVERSARIAL_MINIMAL_PAIR": {
+          "messages": 10,
+          "errors": 10,
+          "precision": 1,
+          "recall": 0.4,
+          "f1": 0.5714285714285715,
+          "correctionAccuracy": 0.5,
+          "endToEndCorrectionRecall": 0.2,
+          "fp": 0
+        }
+      }
+    },
+    "FORK_LITE": {
+      "messages": 200,
+      "errors": 525,
+      "detection": {
+        "tp": 333,
+        "fp": 1,
+        "fn": 192,
+        "precision": 0.9970059880239521,
+        "recall": 0.6342857142857142,
+        "f1": 0.7753201396973224
+      },
+      "correction": {
+        "detectedErrors": 333,
+        "correctSuggestions": 320,
+        "correctionAccuracyAmongDetected": 0.960960960960961,
+        "endToEndCorrectionRecall": 0.6095238095238096
+      },
+      "clean": {
+        "messages": 40,
+        "messagesWithFalsePositive": 0,
+        "falsePositiveRate": 0,
+        "falsePositiveIssues": 0,
+        "fpPer100Messages": 0,
+        "fpPer1000Tokens": 0
+      },
+      "protected": {
+        "messages": 20,
+        "spans": 29,
+        "violatingMessages": 0,
+        "violations": 0,
+        "protectedSpanViolationRate": 0,
+        "messageViolationRate": 0
+      },
+      "latencyMs": {
+        "median": 8.005800000000363,
+        "p95": 23.07699999999977,
+        "p99": 40.566499999999905,
+        "max": 49.18730000000005
+      },
+      "category": {
+        "CLEAN": {
+          "messages": 40,
+          "errors": 0,
+          "precision": 1,
+          "recall": 1,
+          "f1": 1,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 1,
+          "fp": 0
+        },
+        "ALL_UNACCENTED": {
+          "messages": 40,
+          "errors": 375,
+          "precision": 1,
+          "recall": 0.6426666666666667,
+          "f1": 0.7824675324675325,
+          "correctionAccuracy": 0.9585062240663901,
+          "endToEndCorrectionRecall": 0.616,
+          "fp": 0
+        },
+        "SOME_UNACCENTED": {
+          "messages": 30,
+          "errors": 60,
+          "precision": 1,
+          "recall": 0.6666666666666666,
+          "f1": 0.8,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 0.6666666666666666,
+          "fp": 0
+        },
+        "WRONG_DIACRITIC": {
+          "messages": 25,
+          "errors": 25,
+          "precision": 0.75,
+          "recall": 0.12,
+          "f1": 0.20689655172413793,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 0.12,
+          "fp": 1
+        },
+        "TYPO_TELEX": {
+          "messages": 25,
+          "errors": 25,
+          "precision": 1,
+          "recall": 0.88,
+          "f1": 0.9361702127659575,
+          "correctionAccuracy": 0.9090909090909091,
+          "endToEndCorrectionRecall": 0.8,
+          "fp": 0
+        },
+        "PROTECTED_ENTITY": {
+          "messages": 20,
+          "errors": 20,
+          "precision": 1,
+          "recall": 0.7,
+          "f1": 0.8235294117647058,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 0.7,
+          "fp": 0
+        },
+        "CODE_SWITCH": {
+          "messages": 10,
+          "errors": 10,
+          "precision": 1,
+          "recall": 0.9,
+          "f1": 0.9473684210526316,
+          "correctionAccuracy": 1,
+          "endToEndCorrectionRecall": 0.9,
+          "fp": 0
+        },
+        "ADVERSARIAL_MINIMAL_PAIR": {
+          "messages": 10,
+          "errors": 10,
+          "precision": 1,
+          "recall": 0.4,
+          "f1": 0.5714285714285715,
+          "correctionAccuracy": 0.75,
+          "endToEndCorrectionRecall": 0.3,
+          "fp": 0
+        }
+      }
+    }
+  }
+}

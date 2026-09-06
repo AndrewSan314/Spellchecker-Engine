@@ -1,0 +1,7 @@
+"engine","id","category","input","issue_start","issue_end","value","suggestions"
+"UPSTREAM","sms-real-029","CLEAN","Kết quả thi đã được công bố trên hệ thống.",8,11,"thi","thì"
+"UPSTREAM","sms-real-130","WRONG_DIACRITIC","Điểm thường sẽ được cộng sau khi đơn hàng hoàn tất.",20,24,"cộng","công | cũng | cổng"
+"UPSTREAM","sms-real-190","CODE_SWITCH","Live chat hien đang bận, vui lòng thử lại sau.",5,9,"chat","chất"
+"FORK_FULL","sms-real-029","CLEAN","Kết quả thi đã được công bố trên hệ thống.",8,11,"thi","thì"
+"FORK_FULL","sms-real-130","WRONG_DIACRITIC","Điểm thường sẽ được cộng sau khi đơn hàng hoàn tất.",20,24,"cộng","công | cũng | cổng"
+"FORK_LITE","sms-real-130","WRONG_DIACRITIC","Điểm thường sẽ được cộng sau khi đơn hàng hoàn tất.",20,24,"cộng","công | cũng | cổng"

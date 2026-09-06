@@ -1,0 +1,18 @@
+[
+  {
+    "id": "special-ma-nay",
+    "content": "Khong chia se ma nay cho bat ky ai",
+    "messageMode": "ACCENTED",
+    "expect": [
+      { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "Khong", "suggestion": "Không", "positionStart": 0, "positionEnd": 5 },
+      { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "se", "suggestion": "sẻ", "positionStart": 11, "positionEnd": 13 },
+      { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "ma", "suggestion": "mã", "positionStart": 14, "positionEnd": 16 },
+      { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "nay", "suggestion": "này", "positionStart": 17, "positionEnd": 20 },
+      { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "bat", "suggestion": "bất", "positionStart": 25, "positionEnd": 28 },
+      { "ruleId": "POSSIBLE_MISSING_DIACRITIC", "value": "ky", "suggestion": "kỳ", "positionStart": 29, "positionEnd": 31 }
+    ],
+    "clean": "Không chia sẻ mã này cho bất kỳ ai.",
+    "category": "SPECIAL_CASE",
+    "protected_spans": []
+  }
+]

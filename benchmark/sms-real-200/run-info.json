@@ -1,0 +1,56 @@
+{
+  "dataset": "SMS real 200/corpus-sms-real-200.json",
+  "datasetRecords": 200,
+  "repo": [
+    {
+      "label": "UPSTREAM",
+      "path": "repos/upstream",
+      "branch": "main",
+      "commit": "b925c98856f28e48e9aeba1450d7037017f9e174",
+      "profile": "default/full",
+      "lmArtifact": "src/data/lm-ngrams.tsv",
+      "lexiconArtifact": "src/data/lexicon.txt"
+    },
+    {
+      "label": "FORK_FULL",
+      "path": "repos/fork-full",
+      "branch": "review-fixes-and-sms-local-profile",
+      "commit": "fb2e2d68bf3ad1a5535a9dce35321a27ad0d5ca0",
+      "profile": "full",
+      "lmArtifact": "src/data/lm-ngrams.tsv",
+      "lexiconArtifact": "src/data/lexicon.txt"
+    },
+    {
+      "label": "FORK_LITE",
+      "path": "repos/fork-lite",
+      "branch": "review-fixes-and-sms-local-profile",
+      "commit": "fb2e2d68bf3ad1a5535a9dce35321a27ad0d5ca0",
+      "profile": "lite",
+      "lmArtifact": "src/data/lm-ngrams.sms.tsv",
+      "lexiconArtifact": "src/data/lexicon-sms.txt"
+    }
+  ],
+  "node": "v24.13.0",
+  "os": "win32 10.0.26200 (x64)",
+  "timestamp": "2026-09-06T10:26:47.024Z",
+  "exactCommands": [
+    "node run-benchmark.mjs",
+    "worker: node worker.mjs --repo=<config repo> --dataset=<corpus-sms-real-200.json>"
+  ],
+  "testSuites": {
+    "UPSTREAM": {
+      "command": "npm test",
+      "result": "PASS: 34 passed, 2 skipped, 0 failed"
+    },
+    "FORK_FULL": {
+      "command": "$env:ENGINE_PROFILE='full'; npm test",
+      "result": "PASS: 284 passed, 5 skipped, 0 failed"
+    },
+    "FORK_LITE": {
+      "command": "$env:ENGINE_PROFILE='lite'; npm test",
+      "result": "FAIL: 280 passed, 5 skipped, 4 failed"
+    }
+  },
+  "warmupCount": 3,
+  "scoring": "Issue-level one-to-one span/token matching; exact suggestion after NFC/case/punctuation normalization."
+}

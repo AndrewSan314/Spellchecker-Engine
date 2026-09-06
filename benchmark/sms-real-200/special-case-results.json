@@ -1,0 +1,841 @@
+{
+  "input": {
+    "id": "special-ma-nay",
+    "content": "Khong chia se ma nay cho bat ky ai",
+    "messageMode": "ACCENTED",
+    "expect": [
+      {
+        "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+        "value": "Khong",
+        "suggestion": "Không",
+        "positionStart": 0,
+        "positionEnd": 5
+      },
+      {
+        "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+        "value": "se",
+        "suggestion": "sẻ",
+        "positionStart": 11,
+        "positionEnd": 13
+      },
+      {
+        "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+        "value": "ma",
+        "suggestion": "mã",
+        "positionStart": 14,
+        "positionEnd": 16
+      },
+      {
+        "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+        "value": "nay",
+        "suggestion": "này",
+        "positionStart": 17,
+        "positionEnd": 20
+      },
+      {
+        "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+        "value": "bat",
+        "suggestion": "bất",
+        "positionStart": 25,
+        "positionEnd": 28
+      },
+      {
+        "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+        "value": "ky",
+        "suggestion": "kỳ",
+        "positionStart": 29,
+        "positionEnd": 31
+      }
+    ],
+    "clean": "Không chia sẻ mã này cho bất kỳ ai.",
+    "category": "SPECIAL_CASE",
+    "protected_spans": []
+  },
+  "results": [
+    {
+      "config": {
+        "key": "upstream",
+        "label": "UPSTREAM",
+        "repo": "repos/upstream",
+        "profile": "default/full",
+        "envProfile": null,
+        "branch": "main"
+      },
+      "result": {
+        "id": "special-ma-nay",
+        "category": "SPECIAL_CASE",
+        "input": "Khong chia se ma nay cho bat ky ai",
+        "messageMode": "ACCENTED",
+        "groundTruth": {
+          "clean": "Không chia sẻ mã này cho bất kỳ ai.",
+          "correctionPairs": [
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "Khong",
+              "suggestion": "Không",
+              "positionStart": 0,
+              "positionEnd": 5
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "se",
+              "suggestion": "sẻ",
+              "positionStart": 11,
+              "positionEnd": 13
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ma",
+              "suggestion": "mã",
+              "positionStart": 14,
+              "positionEnd": 16
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "nay",
+              "suggestion": "này",
+              "positionStart": 17,
+              "positionEnd": 20
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "bat",
+              "suggestion": "bất",
+              "positionStart": 25,
+              "positionEnd": 28
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ky",
+              "suggestion": "kỳ",
+              "positionStart": 29,
+              "positionEnd": 31
+            }
+          ],
+          "protectedSpans": []
+        },
+        "issues": [
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 0,
+            "end": 5,
+            "value": "Khong",
+            "suggestions": [
+              "không"
+            ],
+            "confidence": 0.98,
+            "message": "Từ \"Khong\" có thể đang thiếu dấu (gợi ý: \"không\")."
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 11,
+            "end": 13,
+            "value": "se",
+            "suggestions": [
+              "sẻ"
+            ],
+            "confidence": 0.99,
+            "message": "Từ \"se\" có thể đang thiếu dấu (gợi ý: \"sẻ\")."
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 17,
+            "end": 20,
+            "value": "nay",
+            "suggestions": [
+              "này"
+            ],
+            "confidence": 0.99,
+            "message": "Từ \"nay\" có thể đang thiếu dấu (gợi ý: \"này\")."
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 25,
+            "end": 28,
+            "value": "bat",
+            "suggestions": [
+              "bất"
+            ],
+            "confidence": 1,
+            "message": "Từ \"bat\" có thể đang thiếu dấu (gợi ý: \"bất\")."
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 29,
+            "end": 31,
+            "value": "ky",
+            "suggestions": [
+              "kỳ"
+            ],
+            "confidence": 1,
+            "message": "Từ \"ky\" có thể đang thiếu dấu (gợi ý: \"kỳ\")."
+          }
+        ],
+        "durationMs": 6.052599999999984,
+        "matched": [
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "Khong",
+              "suggestion": "Không",
+              "positionStart": 0,
+              "positionEnd": 5
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 0,
+              "end": 5,
+              "value": "Khong",
+              "suggestions": [
+                "không"
+              ],
+              "confidence": 0.98,
+              "message": "Từ \"Khong\" có thể đang thiếu dấu (gợi ý: \"không\")."
+            }
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "se",
+              "suggestion": "sẻ",
+              "positionStart": 11,
+              "positionEnd": 13
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 11,
+              "end": 13,
+              "value": "se",
+              "suggestions": [
+                "sẻ"
+              ],
+              "confidence": 0.99,
+              "message": "Từ \"se\" có thể đang thiếu dấu (gợi ý: \"sẻ\")."
+            }
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ma",
+              "suggestion": "mã",
+              "positionStart": 14,
+              "positionEnd": 16
+            },
+            "detected": false,
+            "corrected": false,
+            "issue": null
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "nay",
+              "suggestion": "này",
+              "positionStart": 17,
+              "positionEnd": 20
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 17,
+              "end": 20,
+              "value": "nay",
+              "suggestions": [
+                "này"
+              ],
+              "confidence": 0.99,
+              "message": "Từ \"nay\" có thể đang thiếu dấu (gợi ý: \"này\")."
+            }
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "bat",
+              "suggestion": "bất",
+              "positionStart": 25,
+              "positionEnd": 28
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 25,
+              "end": 28,
+              "value": "bat",
+              "suggestions": [
+                "bất"
+              ],
+              "confidence": 1,
+              "message": "Từ \"bat\" có thể đang thiếu dấu (gợi ý: \"bất\")."
+            }
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ky",
+              "suggestion": "kỳ",
+              "positionStart": 29,
+              "positionEnd": 31
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 29,
+              "end": 31,
+              "value": "ky",
+              "suggestions": [
+                "kỳ"
+              ],
+              "confidence": 1,
+              "message": "Từ \"ky\" có thể đang thiếu dấu (gợi ý: \"kỳ\")."
+            }
+          }
+        ],
+        "falsePositives": [],
+        "missed": [
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "value": "ma",
+            "suggestion": "mã",
+            "positionStart": 14,
+            "positionEnd": 16
+          }
+        ],
+        "protectedViolations": []
+      }
+    },
+    {
+      "config": {
+        "key": "fork-full",
+        "label": "FORK_FULL",
+        "repo": "repos/fork-full",
+        "profile": "full",
+        "envProfile": "full",
+        "branch": "review-fixes-and-sms-local-profile"
+      },
+      "result": {
+        "id": "special-ma-nay",
+        "category": "SPECIAL_CASE",
+        "input": "Khong chia se ma nay cho bat ky ai",
+        "messageMode": "ACCENTED",
+        "groundTruth": {
+          "clean": "Không chia sẻ mã này cho bất kỳ ai.",
+          "correctionPairs": [
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "Khong",
+              "suggestion": "Không",
+              "positionStart": 0,
+              "positionEnd": 5
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "se",
+              "suggestion": "sẻ",
+              "positionStart": 11,
+              "positionEnd": 13
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ma",
+              "suggestion": "mã",
+              "positionStart": 14,
+              "positionEnd": 16
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "nay",
+              "suggestion": "này",
+              "positionStart": 17,
+              "positionEnd": 20
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "bat",
+              "suggestion": "bất",
+              "positionStart": 25,
+              "positionEnd": 28
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ky",
+              "suggestion": "kỳ",
+              "positionStart": 29,
+              "positionEnd": 31
+            }
+          ],
+          "protectedSpans": []
+        },
+        "issues": [
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 0,
+            "end": 5,
+            "value": "Khong",
+            "suggestions": [
+              "không"
+            ],
+            "confidence": 0.9761566018664946,
+            "message": "Từ \"Khong\" có thể đang thiếu dấu (gợi ý: \"không\")."
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 11,
+            "end": 13,
+            "value": "se",
+            "suggestions": [
+              "sẻ"
+            ],
+            "confidence": 0.9918859280821277,
+            "message": "Từ \"se\" có thể đang thiếu dấu (gợi ý: \"sẻ\")."
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 17,
+            "end": 20,
+            "value": "nay",
+            "suggestions": [
+              "này"
+            ],
+            "confidence": 0.9108243892498116,
+            "message": "Từ \"nay\" có thể đang thiếu dấu (gợi ý: \"này\")."
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 25,
+            "end": 28,
+            "value": "bat",
+            "suggestions": [
+              "bất"
+            ],
+            "confidence": 0.9969999874490159,
+            "message": "Từ \"bat\" có thể đang thiếu dấu (gợi ý: \"bất\")."
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 29,
+            "end": 31,
+            "value": "ky",
+            "suggestions": [
+              "kỳ"
+            ],
+            "confidence": 0.9993754214632801,
+            "message": "Từ \"ky\" có thể đang thiếu dấu (gợi ý: \"kỳ\")."
+          }
+        ],
+        "durationMs": 8.967599999999948,
+        "matched": [
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "Khong",
+              "suggestion": "Không",
+              "positionStart": 0,
+              "positionEnd": 5
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 0,
+              "end": 5,
+              "value": "Khong",
+              "suggestions": [
+                "không"
+              ],
+              "confidence": 0.9761566018664946,
+              "message": "Từ \"Khong\" có thể đang thiếu dấu (gợi ý: \"không\")."
+            }
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "se",
+              "suggestion": "sẻ",
+              "positionStart": 11,
+              "positionEnd": 13
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 11,
+              "end": 13,
+              "value": "se",
+              "suggestions": [
+                "sẻ"
+              ],
+              "confidence": 0.9918859280821277,
+              "message": "Từ \"se\" có thể đang thiếu dấu (gợi ý: \"sẻ\")."
+            }
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ma",
+              "suggestion": "mã",
+              "positionStart": 14,
+              "positionEnd": 16
+            },
+            "detected": false,
+            "corrected": false,
+            "issue": null
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "nay",
+              "suggestion": "này",
+              "positionStart": 17,
+              "positionEnd": 20
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 17,
+              "end": 20,
+              "value": "nay",
+              "suggestions": [
+                "này"
+              ],
+              "confidence": 0.9108243892498116,
+              "message": "Từ \"nay\" có thể đang thiếu dấu (gợi ý: \"này\")."
+            }
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "bat",
+              "suggestion": "bất",
+              "positionStart": 25,
+              "positionEnd": 28
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 25,
+              "end": 28,
+              "value": "bat",
+              "suggestions": [
+                "bất"
+              ],
+              "confidence": 0.9969999874490159,
+              "message": "Từ \"bat\" có thể đang thiếu dấu (gợi ý: \"bất\")."
+            }
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ky",
+              "suggestion": "kỳ",
+              "positionStart": 29,
+              "positionEnd": 31
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 29,
+              "end": 31,
+              "value": "ky",
+              "suggestions": [
+                "kỳ"
+              ],
+              "confidence": 0.9993754214632801,
+              "message": "Từ \"ky\" có thể đang thiếu dấu (gợi ý: \"kỳ\")."
+            }
+          }
+        ],
+        "falsePositives": [],
+        "missed": [
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "value": "ma",
+            "suggestion": "mã",
+            "positionStart": 14,
+            "positionEnd": 16
+          }
+        ],
+        "protectedViolations": []
+      }
+    },
+    {
+      "config": {
+        "key": "fork-lite",
+        "label": "FORK_LITE",
+        "repo": "repos/fork-lite",
+        "profile": "lite",
+        "envProfile": "lite",
+        "branch": "review-fixes-and-sms-local-profile"
+      },
+      "result": {
+        "id": "special-ma-nay",
+        "category": "SPECIAL_CASE",
+        "input": "Khong chia se ma nay cho bat ky ai",
+        "messageMode": "ACCENTED",
+        "groundTruth": {
+          "clean": "Không chia sẻ mã này cho bất kỳ ai.",
+          "correctionPairs": [
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "Khong",
+              "suggestion": "Không",
+              "positionStart": 0,
+              "positionEnd": 5
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "se",
+              "suggestion": "sẻ",
+              "positionStart": 11,
+              "positionEnd": 13
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ma",
+              "suggestion": "mã",
+              "positionStart": 14,
+              "positionEnd": 16
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "nay",
+              "suggestion": "này",
+              "positionStart": 17,
+              "positionEnd": 20
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "bat",
+              "suggestion": "bất",
+              "positionStart": 25,
+              "positionEnd": 28
+            },
+            {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ky",
+              "suggestion": "kỳ",
+              "positionStart": 29,
+              "positionEnd": 31
+            }
+          ],
+          "protectedSpans": []
+        },
+        "issues": [
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 0,
+            "end": 5,
+            "value": "Khong",
+            "suggestions": [
+              "không"
+            ],
+            "confidence": 0.9761611407769116,
+            "message": "Từ \"Khong\" có thể đang thiếu dấu (gợi ý: \"không\")."
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 11,
+            "end": 13,
+            "value": "se",
+            "suggestions": [
+              "sẻ"
+            ],
+            "confidence": 0.9691498955380821,
+            "message": "Từ \"se\" có thể đang thiếu dấu (gợi ý: \"sẻ\")."
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 25,
+            "end": 28,
+            "value": "bat",
+            "suggestions": [
+              "bất"
+            ],
+            "confidence": 0.9925342858769819,
+            "message": "Từ \"bat\" có thể đang thiếu dấu (gợi ý: \"bất\")."
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "severity": "WARNING",
+            "start": 29,
+            "end": 31,
+            "value": "ky",
+            "suggestions": [
+              "kỳ"
+            ],
+            "confidence": 0.9993972726473286,
+            "message": "Từ \"ky\" có thể đang thiếu dấu (gợi ý: \"kỳ\")."
+          }
+        ],
+        "durationMs": 7.063900000000103,
+        "matched": [
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "Khong",
+              "suggestion": "Không",
+              "positionStart": 0,
+              "positionEnd": 5
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 0,
+              "end": 5,
+              "value": "Khong",
+              "suggestions": [
+                "không"
+              ],
+              "confidence": 0.9761611407769116,
+              "message": "Từ \"Khong\" có thể đang thiếu dấu (gợi ý: \"không\")."
+            }
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "se",
+              "suggestion": "sẻ",
+              "positionStart": 11,
+              "positionEnd": 13
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 11,
+              "end": 13,
+              "value": "se",
+              "suggestions": [
+                "sẻ"
+              ],
+              "confidence": 0.9691498955380821,
+              "message": "Từ \"se\" có thể đang thiếu dấu (gợi ý: \"sẻ\")."
+            }
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ma",
+              "suggestion": "mã",
+              "positionStart": 14,
+              "positionEnd": 16
+            },
+            "detected": false,
+            "corrected": false,
+            "issue": null
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "nay",
+              "suggestion": "này",
+              "positionStart": 17,
+              "positionEnd": 20
+            },
+            "detected": false,
+            "corrected": false,
+            "issue": null
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "bat",
+              "suggestion": "bất",
+              "positionStart": 25,
+              "positionEnd": 28
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 25,
+              "end": 28,
+              "value": "bat",
+              "suggestions": [
+                "bất"
+              ],
+              "confidence": 0.9925342858769819,
+              "message": "Từ \"bat\" có thể đang thiếu dấu (gợi ý: \"bất\")."
+            }
+          },
+          {
+            "expected": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "value": "ky",
+              "suggestion": "kỳ",
+              "positionStart": 29,
+              "positionEnd": 31
+            },
+            "detected": true,
+            "corrected": true,
+            "issue": {
+              "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+              "severity": "WARNING",
+              "start": 29,
+              "end": 31,
+              "value": "ky",
+              "suggestions": [
+                "kỳ"
+              ],
+              "confidence": 0.9993972726473286,
+              "message": "Từ \"ky\" có thể đang thiếu dấu (gợi ý: \"kỳ\")."
+            }
+          }
+        ],
+        "falsePositives": [],
+        "missed": [
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "value": "ma",
+            "suggestion": "mã",
+            "positionStart": 14,
+            "positionEnd": 16
+          },
+          {
+            "ruleId": "POSSIBLE_MISSING_DIACRITIC",
+            "value": "nay",
+            "suggestion": "này",
+            "positionStart": 17,
+            "positionEnd": 20
+          }
+        ],
+        "protectedViolations": []
+      }
+    }
+  ]
+}
