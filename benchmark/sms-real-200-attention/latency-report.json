@@ -1,0 +1,128 @@
+{
+  "OFF": {
+    "coldStartMs": 7642.716,
+    "rssBeforeLoadBytes": 62763008,
+    "rssAfterLoadBytes": 988151808,
+    "engine": {
+      "p50Ms": 8.6654,
+      "p95Ms": 19.9357,
+      "p99Ms": 24.5686
+    },
+    "attention": {
+      "callsPerMessage": {
+        "mean": 0,
+        "median": 0,
+        "p95": 0,
+        "max": 0
+      },
+      "totalMsPerMessage": {
+        "mean": 0,
+        "median": 0,
+        "p95": 0,
+        "max": 0
+      },
+      "msPerCall": 0,
+      "candidateTokensEvaluatedPerMessage": {
+        "mean": 0,
+        "median": 0,
+        "p95": 0,
+        "max": 0
+      },
+      "totalCalls": 0,
+      "totalMs": 0,
+      "traceCallMismatches": 0
+    },
+    "environment": {
+      "node": "v24.13.0",
+      "platform": "win32",
+      "release": "10.0.26200",
+      "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+      "engineProfile": "default",
+      "warmupCount": 3
+    }
+  },
+  "SHADOW": {
+    "coldStartMs": 7692.5133,
+    "rssBeforeLoadBytes": 62230528,
+    "rssAfterLoadBytes": 987725824,
+    "engine": {
+      "p50Ms": 59.5481,
+      "p95Ms": 103.6385,
+      "p99Ms": 120.9467
+    },
+    "attention": {
+      "callsPerMessage": {
+        "mean": 9.62,
+        "median": 10,
+        "p95": 12,
+        "max": 14
+      },
+      "totalMsPerMessage": {
+        "mean": 20.320537,
+        "median": 19.7394,
+        "p95": 29.7218,
+        "max": 44.1292
+      },
+      "msPerCall": 2.112322,
+      "candidateTokensEvaluatedPerMessage": {
+        "mean": 69.69,
+        "median": 70,
+        "p95": 89,
+        "max": 105
+      },
+      "totalCalls": 1924,
+      "totalMs": 4064.1075,
+      "traceCallMismatches": 0
+    },
+    "environment": {
+      "node": "v24.13.0",
+      "platform": "win32",
+      "release": "10.0.26200",
+      "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+      "engineProfile": "default",
+      "warmupCount": 3
+    }
+  },
+  "ACTIVE": {
+    "coldStartMs": 7178.4629,
+    "rssBeforeLoadBytes": 62382080,
+    "rssAfterLoadBytes": 987697152,
+    "engine": {
+      "p50Ms": 33.63,
+      "p95Ms": 78.9082,
+      "p99Ms": 100.2123
+    },
+    "attention": {
+      "callsPerMessage": {
+        "mean": 9.645,
+        "median": 10,
+        "p95": 12,
+        "max": 14
+      },
+      "totalMsPerMessage": {
+        "mean": 15.874564,
+        "median": 16.5823,
+        "p95": 28.1695,
+        "max": 84.8877
+      },
+      "msPerCall": 1.645885,
+      "candidateTokensEvaluatedPerMessage": {
+        "mean": 69.89,
+        "median": 70,
+        "p95": 89,
+        "max": 105
+      },
+      "totalCalls": 1929,
+      "totalMs": 3174.9128,
+      "traceCallMismatches": 0
+    },
+    "environment": {
+      "node": "v24.13.0",
+      "platform": "win32",
+      "release": "10.0.26200",
+      "cpu": "12th Gen Intel(R) Core(TM) i7-12700H",
+      "engineProfile": "default",
+      "warmupCount": 3
+    }
+  }
+}

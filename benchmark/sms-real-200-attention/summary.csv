@@ -1,0 +1,14 @@
+Metric,OFF,SHADOW,ACTIVE,ACTIVE delta vs OFF
+Precision,0.994253,0.994253,0.878049,-0.116204
+Recall,0.659048,0.659048,0.274286,-0.384762
+F1,0.792669,0.792669,0.417997,-0.374672
+E2E correction recall,0.638095,0.638095,0.253333,-0.384762
+Clean FP messages,1,1,4,3
+Protected violations,0,0,0,0
+Candidate pool oracle,,0.994286,0.994286,
+Shortlist@8 oracle,,0.994286,0.994286,
+Transformer top1 given gold@8,,0.668582,0.668582,
+p50 latency,8.6654,59.5481,33.63,24.9646
+p95 latency,19.9357,103.6385,78.9082,58.9725
+p99 latency,24.5686,120.9467,100.2123,75.6437
+attention calls/msg,0,9.62,9.645,9.645
