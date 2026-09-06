@@ -8,7 +8,7 @@ This is a direct test-set evaluation. No training, fine-tuning, artifact regener
 
 | Field | Value |
 | --- | --- |
-| Architecture | A |
+| Architecture | A — Pre-LN Transformer self-attention encoder with shared option scorer |
 | Blocks | 1 |
 | Hidden dim | 48 |
 | Heads / head dim | 2 / 24 |
@@ -76,7 +76,7 @@ ACTIVE recall is 27.43% vs OFF 65.90% (38.48% absolute delta); F1 is 41.80% vs 7
 
 ### 2. Which category drives recall change?
 
-The largest ACTIVE-vs-OFF recall delta is **WRONG_DIACRITIC** at +12.00%. Full per-category numbers are in category-breakdown.csv.
+ACTIVE has no overall recall improvement. The largest positive category delta is **WRONG_DIACRITIC** at +12.00%; the largest drop is **ALL_UNACCENTED** at -48.00%. Full per-category numbers are in category-breakdown.csv.
 
 ### 3. Precision or clean-FP impact
 

@@ -27,6 +27,7 @@
   "model": {
     "architecture": {
       "arch": "A",
+      "description": "Pre-LN Transformer self-attention encoder with shared option scorer",
       "blocks": 1,
       "hiddenDim": 48,
       "numHeads": 2,

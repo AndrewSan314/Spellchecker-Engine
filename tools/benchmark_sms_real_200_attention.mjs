@@ -717,6 +717,7 @@ function buildReport({ runInfo, metrics, arms, categoryRows, attributionRows, pa
       return { category: row.category, delta: round(row.recall - offRow.recall) };
     }).sort((a, b) => b.delta - a.delta);
   const bestCategory = categoryDelta[0];
+  const worstCategory = categoryDelta[categoryDelta.length - 1];
   const attention = arms.ACTIVE.runtime.attention;
   const activeRecallDelta = round(active.recall - off.recall);
   const activeE2eDelta = round(active.endToEndCorrectionRecall - off.endToEndCorrectionRecall);
@@ -795,7 +796,7 @@ ACTIVE recall is ${formatPercent(active.recall)} vs OFF ${formatPercent(off.reca
 
 ### 2. Which category drives recall change?
 
-The largest ACTIVE-vs-OFF recall delta is **${bestCategory.category}** at ${bestCategory.delta >= 0 ? '+' : ''}${formatPercent(Math.abs(bestCategory.delta))}. Full per-category numbers are in category-breakdown.csv.
+  ACTIVE has no overall recall improvement. The largest positive category delta is **${bestCategory.category}** at ${bestCategory.delta >= 0 ? '+' : ''}${formatPercent(Math.abs(bestCategory.delta))}; the largest drop is **${worstCategory.category}** at ${worstCategory.delta >= 0 ? '+' : ''}${formatPercent(Math.abs(worstCategory.delta))}. Full per-category numbers are in category-breakdown.csv.
 
 ### 3. Precision or clean-FP impact
 
@@ -941,6 +942,7 @@ function buildRunInfo({ datasetPath, rows, categoryCounts, commit, arms }) {
     model: {
       architecture: {
         arch: metadata.arch,
+        description: 'Pre-LN Transformer self-attention encoder with shared option scorer',
         blocks: metadata.config.blocks,
         hiddenDim: metadata.config.hidden_dim,
         numHeads: metadata.config.num_heads,
