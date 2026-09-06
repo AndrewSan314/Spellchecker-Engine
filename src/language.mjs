@@ -269,7 +269,7 @@ export class NGramLanguageModel {
         { path: artPath, line: lineNo, reason },
       );
     };
-    const lines = raw.split('\n');
+    const lines = raw.split(/\r?\n/);
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       if (!line) continue;
